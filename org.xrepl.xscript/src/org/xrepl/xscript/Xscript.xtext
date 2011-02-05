@@ -1,0 +1,33 @@
+grammar org.xrepl.xscript.Xscript with org.eclipse.xtext.xbase.Xbase
+
+import "platform:/resource/org.xrepl.xscript/model/Xscript.ecore" 
+import "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore" as base
+import "platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore" as types
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+ 
+XScript:
+	{XScript}
+	(expressions+=XExpression | expressions+=XScriptExpression | expressions+= XVariableDeclaration)*
+;
+ 
+XScriptExpression:
+	XImport | XPackageUse
+;
+ 
+//XConstructorCall returns XNewEObject: 
+//	'new' type=[ecore::EClass] ('{' '}')?
+//;
+
+  
+QualifiedNameWithWildCard :  
+	QualifiedName  ('.' '*')?;
+
+XImport: 
+	'import' importedNamespace=QualifiedNameWithWildCard
+;
+
+XPackageUse:
+	'use' nsUri = STRING ('as' name=ID)? 
+;
+  
