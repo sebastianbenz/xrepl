@@ -45,7 +45,7 @@ public interface XscriptPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://www.xrepl.org/xscript/2011";
+	String eNS_URI = "http://www.xrepl.org/xscript/";
 
 	/**
 	 * The package namespace name.

@@ -31,7 +31,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory {
 	 */
 	public static XscriptFactory init() {
 		try {
-			XscriptFactory theXscriptFactory = (XscriptFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.xrepl.org/xscript/2011"); 
+			XscriptFactory theXscriptFactory = (XscriptFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.xrepl.org/xscript/"); 
 			if (theXscriptFactory != null) {
 				return theXscriptFactory;
 			}

@@ -12,11 +12,11 @@ XScript:
 ;
  
 XScriptExpression:
-	XImport | XPackageUse
+	XImport | XPackageUse 
 ;
  
 //XConstructorCall returns XNewEObject: 
-//	'new' type=[ecore::EClass] ('{' '}')?
+//	'new' type=[ecore::EClass] ('{' '}')? 
 //;
 
   

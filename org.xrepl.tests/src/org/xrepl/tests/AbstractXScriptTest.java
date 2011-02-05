@@ -8,6 +8,8 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.util.StringInputStream;
 import org.jmock.integration.junit3.MockObjectTestCase;
 import org.xrepl.xscript.XscriptPackage;
+import org.xrepl.xscript.XscriptRuntimeModule;
+import org.xrepl.xscript.XscriptStandaloneSetup;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -18,7 +20,6 @@ public abstract class AbstractXScriptTest extends MockObjectTestCase {
 		@Override
 		public Injector createInjector() {
 			return Guice.createInjector(new XscriptRuntimeModule() {
-				@Override
 				public ClassLoader bindClassLoaderToInstance() {
 					return AbstractXScriptTest.class.getClassLoader();
 				}

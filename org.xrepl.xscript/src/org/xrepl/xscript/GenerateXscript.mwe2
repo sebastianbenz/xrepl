@@ -3,7 +3,7 @@ module org.xrepl.xscript.Xscript
 import org.eclipse.emf.mwe.utils.*
 import org.eclipse.xtext.generator.*
 import org.eclipse.xtext.ui.generator.*
-import org.eclips.xtext.base.*
+import org.eclipse.xtext.generator.parser.antlr.*
 
 var grammarURI = "classpath:/org/xrepl/xscript/Xscript.xtext"
 var file.extensions = "xscript"
@@ -11,7 +11,7 @@ var projectName = "org.xrepl.xscript"
 var runtimeProject = "../${projectName}"
 
 Workflow {
-    bean = StandaloneSetup {
+	bean = StandaloneSetup {
 		platformUri = "${runtimeProject}/.."
 	}
 
@@ -48,53 +48,27 @@ Workflow {
 				fileExtensions = file.extensions
 			}
 
-			// The antlr parser generator fragment.
-			fragment = parser.antlr.XtextAntlrGeneratorFragment {
-			//  options = {
-			//		backtrack = true
-			//	}
+			fragment = XtextAntlrGeneratorFragment {
+				options = auto-inject {}
+				antlrParam = "-Xconversiontimeout"
+				antlrParam = "10000"
 			}
-
-			// java-based API for validation 
-			fragment = validation.JavaValidatorFragment {
-				composedCheck = "org.eclipse.xtext.validation.ImportUriValidator"
-				composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
-				// registerForImportedPackages = true
+			fragment = DebugAntlrGeneratorFragment {
+				options = auto-inject {}
 			}
-
-			// scoping and exporting API
-			// fragment = scoping.ImportURIScopingFragment {}
-			// fragment = exporting.SimpleNamesFragment {}
-
-			// scoping and exporting API 
+			fragment = validation.JavaValidatorFragment {}
 			fragment = scoping.ImportNamespacesScopingFragment {}
-			fragment = exporting.QualifiedNamesFragment {}
-			fragment = builder.BuilderIntegrationFragment {}
-
-			// formatter API 
+			fragment = types.TypesGeneratorFragment {}
 			fragment = formatting.FormatterFragment {}
-
-			// labeling API 
-			fragment = labeling.LabelProviderFragment {}
-
-			// outline API 
-			fragment = outline.OutlineTreeProviderFragment {}
-			fragment = outline.QuickOutlineFragment {}
-
-			// quickfix API 
 			fragment = quickfix.QuickfixProviderFragment {}
-
-			// content assist API  
+			fragment = labeling.LabelProviderFragment {}
+			fragment = outline.OutlineTreeProviderFragment {}
 			fragment = contentAssist.JavaBasedContentAssistFragment {}
-
-			// generates a more lightweight Antlr parser and lexer tailored for content assist  
-			fragment = parser.antlr.XtextAntlrUiGeneratorFragment {}
-
-			// project wizard (optional) 
-			// fragment = projectWizard.SimpleProjectWizardFragment {
-			// 		generatorProjectName = "${projectName}.generator" 
-			//		modelFileExtension = file.extensions
-			// }
+			fragment = XtextAntlrUiGeneratorFragment {
+				options = auto-inject {}
+				antlrParam = "-Xconversiontimeout"
+				antlrParam = "10000"
+			}
 		}
 	}
 }

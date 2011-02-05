@@ -12,7 +12,7 @@
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="http://www.xrepl.org/xscript/2011"
+            uri="http://www.xrepl.org/xscript/"
             class="org.xrepl.xscript.XscriptPackage"
             genModel="model/Xscript.genmodel"/>
    </extension>
