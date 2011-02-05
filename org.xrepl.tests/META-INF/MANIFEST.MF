@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.xrepl.tests
 Bundle-Version: 0.7.0.qualifier
-Bundle-Activator: org.eclipse.xtext.xbase.repl.tests.util.ReplTestsActivator
+Bundle-Activator: org.xrepl.tests.util.ReplTestsActivator
 Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,

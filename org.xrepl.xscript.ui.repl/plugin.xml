@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+ <extension point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+            label="Interactive Xbase"
+            class="org.xrepl.xscript.ui.repl.XscriptReplExecutableExtensionFactory:org.xrepl.ui.console.XbaseConsoleFactory"
+            icon="$nl$/icons/elcl16/console.gif">
+      </consoleFactory>
+   </extension>
+</plugin>
