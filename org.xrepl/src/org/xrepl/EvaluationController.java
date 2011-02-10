@@ -47,7 +47,6 @@ public class EvaluationController {
 		this.repl = repl;
 		this.inputField = inputField;
 		this.outputView = outputView;
-		inputField.setContext(repl.getResourceSet());
 	}
 
 	public void evaluate(String input) {
@@ -78,10 +77,6 @@ public class EvaluationController {
 	public void reset() {
 		repl.reset();
 		outputView.clear();
-	}
-
-	public XtextResourceSet getResourceSet() {
-		return repl.getResourceSet();
 	}
 
 	public boolean isEvaluationTrigger(TextChange textChange) {

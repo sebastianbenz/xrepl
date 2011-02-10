@@ -32,6 +32,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.util.StringInputStream;
 import org.jmock.Expectations;
 import org.xrepl.DefaultEvaluator;
@@ -43,6 +44,9 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 
 	@Inject
 	private DefaultEvaluator evaluator;
+	
+	@Inject
+	private ResourceSet resourceSet;
 	
 	public void testShouldReportSyntaxErrors(){
 		assertThat(evaluator.canEvaluate("1 + 1"), is(true));
@@ -127,7 +131,7 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 
 
 	private Iterable<String> resourceSet() {
-		TreeIterator<Notifier> allContents = evaluator.getResourceSet()
+		TreeIterator<Notifier> allContents = resourceSet
 				.getAllContents();
 		Iterator<String> allNames = transform(allContents,
 				new Function<Notifier, String>() {

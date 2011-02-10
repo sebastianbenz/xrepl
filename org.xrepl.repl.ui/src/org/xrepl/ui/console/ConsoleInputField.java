@@ -44,8 +44,4 @@ public class ConsoleInputField implements InputField {
 		return sourceEditor.getDocument().getLength();
 	}
 
-	public void setContext(XtextResourceSet resourceSet) {
-		sourceEditor.setResourceSet(resourceSet);
-	}
-
 }

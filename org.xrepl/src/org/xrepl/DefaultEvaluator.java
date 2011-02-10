@@ -17,6 +17,7 @@ import java.io.IOException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.resource.IResourceFactory;
 import org.eclipse.xtext.resource.SynchronizedXtextResourceSet;
@@ -42,7 +43,7 @@ public class DefaultEvaluator implements Evaluator {
 
 	private static final Object NOTHING = "";
 
-	private XtextResourceSet resourceSet;
+	private ResourceSet resourceSet;
 
 	private final IExpressionInterpreter interpreter;
 
@@ -52,20 +53,21 @@ public class DefaultEvaluator implements Evaluator {
 	private int steps = 0;
 
 	private IEvaluationContext context;
+	
+	
 
 	@Inject
 	@Named(Constants.FILE_EXTENSIONS)
 	private String fileExtension;
 
-	@Inject
-	private IResourceFactory resourceFactory;
 
 	private String lastEvaluatedString = "";
 
 	@Inject
-	public DefaultEvaluator(IExpressionInterpreter interpreter) {
+	public DefaultEvaluator(IExpressionInterpreter interpreter, ResourceSet resourceSet) {
 		super();
 		this.interpreter = interpreter;
+		this.resourceSet = resourceSet;
 	}
 
 	private String asScript(String toEvaluate) {
@@ -168,10 +170,10 @@ public class DefaultEvaluator implements Evaluator {
 	}
 
 	private void load(String input) throws IOException {
-		currentResource = getResourceSet().getResource(
+		currentResource = resourceSet.getResource(
 				URI.createURI("Test" + steps + "." + fileExtension), false);
 		if (currentResource == null) {
-			currentResource = resourceSet.createResource(URI.createURI("Test"
+			currentResource = resourceSet.createResource(URI.createURI("Step"
 					+ steps + "." + fileExtension));
 		} else {
 			currentResource.unload();
@@ -179,14 +181,6 @@ public class DefaultEvaluator implements Evaluator {
 		currentResource.load(new StringInputStream(input), null);
 	}
 
-	public XtextResourceSet getResourceSet() {
-		if (resourceSet == null) {
-			resourceSet = new SynchronizedXtextResourceSet();
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
-					.put(fileExtension, resourceFactory);
-		}
-		return resourceSet;
-	}
 
 	public void reset() {
 		handleResetCommand();

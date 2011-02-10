@@ -17,7 +17,6 @@ import static org.junit.Assert.assertThat;
 import java.io.IOException;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.resource.XtextResourceSet;
 import org.jmock.Expectations;
 import org.jmock.Sequence;
 import org.xrepl.EvaluationController;
@@ -41,12 +40,6 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		checking(new Expectations() {
-			{
-				ignoring(inputField).setContext(
-						(XtextResourceSet) with(anything()));
-			}
-		});
 	}
 
 	public void testShouldEvaluateInput() throws Exception {

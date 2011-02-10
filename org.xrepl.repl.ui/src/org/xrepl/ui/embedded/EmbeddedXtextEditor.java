@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.text.IDocument;
@@ -547,7 +548,9 @@ public class EmbeddedXtextEditor {
 	}
 
 	private List<ActionHandler> fActionHandlers = Lists.newArrayList();
-	private XtextResourceSet resourceSet;
+	
+	@Inject
+	private ResourceSet resourceSet;
 
 	/**
 	 * Source viewer focus listener that activates/deactivates action handlers
@@ -627,8 +630,5 @@ public class EmbeddedXtextEditor {
 		return result;
 	}
 	
-	public void setResourceSet(XtextResourceSet resourceSet) {
-		this.resourceSet = resourceSet;
-	}
 
 }
