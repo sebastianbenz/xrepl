@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.xrepl.runtime"
+      label="Xrepl Runtime"
+      version="0.7.0.qualifier"
+      provider-name="Sebastian Benz">
+
+   <description url="http://www.xrepl.org">
+      The eclipse UI of the Xbase interactive console.
+   </description>
+
+   <copyright>
+      Copyright (c) 2010 Sebastian Benz and others.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License
+v1.0 which accompanies this distribution, and is available at
+http://www.eclipse.org/legal/epl-v10.html Description here.
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/epl-v10.html">
+      %license
+   </license>
+
+   <plugin
+         id="org.xrepl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.xrepl.xscript"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <url>
+      <discovery label="Xtext Milestones" url="http://download.eclipse.org/modeling/tmf/updates/milestones"/>
+   </url>
+</feature>
