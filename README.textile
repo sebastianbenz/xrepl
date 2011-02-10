@@ -1,0 +1,14 @@
+h1 Xrepl - an interactive console for Xtext
+
+For more information see: "xrepl.org":http://www.xrepl.org
+
+h2 Installation
+
+Update site: http://sebastianbenz.github.com/xrepl/updatesite/milestones/
+
+h2 License
+
+Copyright (C) 2010 Sebastian Benz
+
+Distributed under the Eclipse Public License.
+

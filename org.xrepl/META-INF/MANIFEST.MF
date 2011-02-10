@@ -5,12 +5,12 @@ Bundle-SymbolicName: org.xrepl
 Bundle-Version: 0.7.0.qualifier
 Bundle-Vendor: %pluginName
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Require-Bundle: org.eclipse.xtext.xbase;bundle-version="1.0.1",
+Require-Bundle: org.eclipse.xtext.xbase;bundle-version="2.0.0",
  com.google.inject;bundle-version="2.0.0",
  com.google.collect;bundle-version="1.0.0",
  org.eclipse.emf;bundle-version="2.5.0",
  org.eclipse.xtext;bundle-version="2.0.0",
- org.eclipse.xtext.xbase.lib;bundle-version="1.0.0";visibility:=reexport,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.0.0";visibility:=reexport,
  org.eclipse.xtext.common.types;bundle-version="2.0.0"
 Import-Package: org.apache.log4j;version="1.2.15"
 Export-Package: org.xrepl

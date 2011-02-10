@@ -6,7 +6,7 @@
       provider-name="Sebastian Benz">
 
    <description url="http://www.xrepl.org">
-      The eclipse UI of the Xbase interactive console.
+      The runtime of the Xbase interactive console.
    </description>
 
    <copyright>
@@ -22,6 +22,29 @@ http://www.eclipse.org/legal/epl-v10.html Description here.
       %license
    </license>
 
+   <url>
+      <discovery label="Xtext Milestones" url="http://download.eclipse.org/modeling/tmf/updates/milestones"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.xtext.xbase" version="1.0.1" match="greaterOrEqual"/>
+      <import plugin="com.google.inject" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="com.google.collect" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf" version="2.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="0.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.common.types" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.xtext.xbase" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.common.types.shared" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.util"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.common"/>
+      <import plugin="org.antlr.runtime"/>
+      <import plugin="org.apache.commons.logging"/>
+   </requires>
+
    <plugin
          id="org.xrepl"
          download-size="0"
@@ -35,7 +58,5 @@ http://www.eclipse.org/legal/epl-v10.html Description here.
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-   <url>
-      <discovery label="Xtext Milestones" url="http://download.eclipse.org/modeling/tmf/updates/milestones"/>
-   </url>
+
 </feature>

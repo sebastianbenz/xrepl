@@ -22,6 +22,33 @@ http://www.eclipse.org/legal/epl-v10.html Description here.
       <discovery label="Xtext Milestones" url="http://download.eclipse.org/modeling/tmf/updates/milestones"/>
    </url>
 
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.xrepl" version="0.7.0" match="greaterOrEqual"/>
+      <import plugin="com.google.collect" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="com.google.inject" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.ui.shared" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.console" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.expressions" version="3.4.200" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.common.types" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.xrepl.xscript"/>
+      <import plugin="org.eclipse.ui.editors" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.ide" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.xtext.builder"/>
+      <import plugin="org.antlr.runtime"/>
+      <import plugin="org.eclipse.xtext.xbase.ui" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.common.types.ui"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.logging"/>
+      <import plugin="org.xrepl.ui" version="0.7.0" match="greaterOrEqual"/>
+      <import plugin="org.xrepl.xscript" version="0.7.0" match="greaterOrEqual"/>
+      <import plugin="org.xrepl.xscript.ui" version="0.7.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.xtext.xbase.lib" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
    <plugin
          id="org.xrepl.ui"
          download-size="0"

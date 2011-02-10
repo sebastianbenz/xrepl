@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.xrepl.xscript.ui
-Bundle-Vendor: My Company
-Bundle-Version: 1.0.0
+Bundle-Vendor: Sebastian Benz
+Bundle-Version: 0.7.0.qualifier
 Bundle-SymbolicName: org.xrepl.xscript.ui; singleton:=true
 Bundle-ActivationPolicy: lazy
 Require-Bundle: org.xrepl.xscript;visibility:=reexport,
