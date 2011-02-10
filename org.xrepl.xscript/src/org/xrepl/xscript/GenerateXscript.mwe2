@@ -12,7 +12,7 @@ var runtimeProject = "../${projectName}"
 
 Workflow {
 	bean = StandaloneSetup {
-		platformUri = "${runtimeProject}/.."
+		platformUri = "${runtimeProject}/../.."
 	}
 
 	component = DirectoryCleaner {
@@ -59,6 +59,7 @@ Workflow {
 			fragment = validation.JavaValidatorFragment {}
 			fragment = scoping.ImportNamespacesScopingFragment {}
 			fragment = types.TypesGeneratorFragment {}
+			fragment = xbase.XbaseGeneratorFragment {}
 			fragment = formatting.FormatterFragment {}
 			fragment = quickfix.QuickfixProviderFragment {}
 			fragment = labeling.LabelProviderFragment {}

@@ -12,7 +12,7 @@ XScript:
 ;
  
 XScriptExpression:
-	XImport | XPackageUse 
+	XImport // | XPackageUse 
 ;
  
 //XConstructorCall returns XNewEObject: 
@@ -27,7 +27,7 @@ XImport:
 	'import' importedNamespace=QualifiedNameWithWildCard
 ;
 
-XPackageUse:
-	'use' nsUri = STRING ('as' name=ID)? 
-;
+//XPackageUse:
+//	'use' nsUri = STRING ('as' name=ID)? 
+//;
   

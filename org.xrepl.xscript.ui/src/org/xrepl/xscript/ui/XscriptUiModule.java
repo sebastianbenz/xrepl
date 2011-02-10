@@ -14,8 +14,6 @@
 package org.xrepl.xscript.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.eclipse.xtext.ui.editor.syntaxcoloring.AbstractAntlrTokenToAttributeIdMapper;
-import org.eclipse.xtext.xbase.ui.syntaxcoloring.XbaseTokenToAttributeIdMapper;
 
 /**
  * Use this class to register components to be used within the IDE.
@@ -23,10 +21,5 @@ import org.eclipse.xtext.xbase.ui.syntaxcoloring.XbaseTokenToAttributeIdMapper;
 public class XscriptUiModule extends org.xrepl.xscript.ui.AbstractXscriptUiModule {
 	public XscriptUiModule(AbstractUIPlugin plugin) {
 		super(plugin);
-	}
-	
-
-	public Class<? extends AbstractAntlrTokenToAttributeIdMapper> bindTokenToAttributeIdMapper() {
-		return XbaseTokenToAttributeIdMapper.class;
 	}
 }

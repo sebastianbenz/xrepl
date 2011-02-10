@@ -14,8 +14,7 @@ ruleXScript :
 
 // Rule XScriptExpression
 ruleXScriptExpression :
-	ruleXImport |
-	ruleXPackageUse
+	ruleXImport
 ;
 
 // Rule QualifiedNameWithWildCard
@@ -28,13 +27,6 @@ ruleQualifiedNameWithWildCard :
 // Rule XImport
 ruleXImport :
 	'import' ruleQualifiedNameWithWildCard
-;
-
-// Rule XPackageUse
-ruleXPackageUse :
-	'use' RULE_STRING (
-		'as' RULE_ID
-	)?
 ;
 
 // Rule XExpression
@@ -219,7 +211,11 @@ ruleXMemberFeatureCall :
 			'('
 			) => '(' ) (
 				( (
-				ruleXShortClosure
+				(
+					ruleJvmFormalParameter (
+						',' ruleJvmFormalParameter
+					)*
+				)? '|'
 				) => ruleXShortClosure ) |
 				ruleXExpression (
 					',' ruleXExpression
@@ -241,6 +237,7 @@ ruleXPrimaryExpression :
 	ruleXWhileExpression |
 	ruleXDoWhileExpression |
 	ruleXThrowExpression |
+	ruleXReturnExpression |
 	ruleXTryCatchFinallyExpression |
 	ruleXParenthesizedExpression
 ;
@@ -266,11 +263,19 @@ ruleXClosure :
 
 // Rule XShortClosure
 ruleXShortClosure :
+	( (
 	(
 		ruleJvmFormalParameter (
 			',' ruleJvmFormalParameter
 		)*
-	)? '|' ruleXExpression
+	)? '|'
+	) => (
+		(
+			ruleJvmFormalParameter (
+				',' ruleJvmFormalParameter
+			)*
+		)? '|'
+	) ) ruleXExpression
 ;
 
 // Rule XParenthesizedExpression
@@ -364,7 +369,11 @@ ruleXFeatureCall :
 		'('
 		) => '(' ) (
 			( (
-			ruleXShortClosure
+			(
+				ruleJvmFormalParameter (
+					',' ruleJvmFormalParameter
+				)*
+			)? '|'
 			) => ruleXShortClosure ) |
 			ruleXExpression (
 				',' ruleXExpression
@@ -381,7 +390,11 @@ ruleXConstructorCall :
 		)* '>'
 	)? '(' (
 		( (
-		ruleXShortClosure
+		(
+			ruleJvmFormalParameter (
+				',' ruleJvmFormalParameter
+			)*
+		)? '|'
 		) => ruleXShortClosure ) |
 		ruleXExpression (
 			',' ruleXExpression
@@ -420,11 +433,18 @@ ruleXThrowExpression :
 	'throw' ruleXExpression
 ;
 
+// Rule XReturnExpression
+ruleXReturnExpression :
+	'return' ( (
+	ruleXExpression
+	) => ruleXExpression )?
+;
+
 // Rule XTryCatchFinallyExpression
 ruleXTryCatchFinallyExpression :
 	'try' ruleXExpression (
 		( (
-		ruleXCatchClause
+		'catch'
 		) => ruleXCatchClause )+ (
 			( (
 			'finally'
@@ -436,7 +456,9 @@ ruleXTryCatchFinallyExpression :
 
 // Rule XCatchClause
 ruleXCatchClause :
-	'catch' '(' ruleJvmFormalParameter ')' ruleXExpression
+	( (
+	'catch'
+	) => 'catch' ) '(' ruleJvmFormalParameter ')' ruleXExpression
 ;
 
 // Rule QualifiedName

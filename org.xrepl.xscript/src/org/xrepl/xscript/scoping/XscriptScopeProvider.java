@@ -44,15 +44,12 @@ public class XscriptScopeProvider extends XbaseScopeProvider {
 	private EPackageScopeProvider packageScopeProvider;
 
 	public class DeclarativeScopeProvider extends AbstractDeclarativeScopeProvider{
-		
 		public IScope scope_XNewEObject_type(XNewEObject context, EReference ref){
 			 return packageScopeProvider.createEClassScope(context.eResource());
 		}
-		
 	}
 	
 	private DeclarativeScopeProvider internalScopeProvider = new DeclarativeScopeProvider();
-	
 	
 	@Override
 	public IScope getScope(EObject context, EReference reference) {
@@ -62,15 +59,15 @@ public class XscriptScopeProvider extends XbaseScopeProvider {
 		return super.getScope(context, reference);
 	}
 	
-	protected IScope createLocalVarScope(EObject context, EReference reference, IScope parentScope) {
+	@Override
+	protected IScope createLocalVarScope(EObject context, EReference reference, IScope parentScope, boolean includeCurrentBlock, int idx) {
 		if (context instanceof XScript) {
 			XScript xScript = (XScript) context;
 			return new SimpleScope(allVariables(xScript));
 		}else{
-			return super.createLocalVarScope(context, reference, parentScope);
+			return super.createLocalVarScope(context, reference, parentScope,includeCurrentBlock,idx);
 		}
 	}
-
 
 	private Iterable<IEObjectDescription> allVariables(XScript xScript) {
 		List<XVariableDeclaration> variables = Lists.newArrayList();
