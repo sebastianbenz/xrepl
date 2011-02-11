@@ -6,6 +6,93 @@
   <head> 
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" /> 
     <title>Xrepl - An interactive console for Xbase</title> 
+
+    <style type="text/css">
+#container
+{
+  margin: 0 auto;
+  width: 640px;
+  font-family: sans-serif;
+}
+
+#header
+{
+  padding: 20px;
+  text-align: center;
+}
+
+#header h1 { margin: 0; 
+font-family: sans-serif;
+}
+
+
+#navigation ul
+{
+  margin: 0;
+  padding: 0;
+}
+
+#navigation ul li
+{
+  list-style-type: none;
+  display: inline;
+}
+
+#navigation li a
+{
+  display: block;
+  float: left;
+  padding: 5px 10px;
+  color:#fff;
+  text-decoration: none;
+  border-right: 1px solid#fff;
+}
+
+#navigation li a:hover { background:#383; }
+
+#content
+{
+  clear: left;
+  padding: 20px;
+}
+
+
+
+#content h2
+{
+  color:#000;
+  font-size: 130%;
+  margin: 0 0 .5em;
+  font-family: sans-serif;
+}
+
+#content p
+{
+  font-family: sans-serif;
+}
+
+#content p a
+{
+  display: block;
+  float: left;
+  padding: 5px 10px;
+  color:#fff;
+  text-decoration: none;
+  border-right: 1px solid#fff;
+}
+
+#footer
+{
+  font-family: sans-serif;
+  background:#ccc;
+  text-align: right;
+  padding: 20px;
+  height: 1%;
+}
+
+    </style>
+
+
     <script type="text/javascript">
 
   var _gaq = _gaq || [];
@@ -21,19 +108,25 @@
 </script>
   </head> 
   <body>
-  <div align="center">
-  <h1>Xrepl</h1>
-  </div>
-  <div>
-  <p align="center">
-  Xrepl is an interactive programming environment for <a href="http://www.xtext.org">Xtext's</a> upcoming expression language Xbase ( <a href="http://sebastianbenz.de/introducing-an-interactive-programming-enviro">more</a>)
-  </p> 
-  </div>
-  <div align="center">
-  <iframe src="http://player.vimeo.com/video/17680833" width="640" height="480" frameborder="0"></iframe>
-  </div>
-  <div>
-  <p align="center"><a href="http://sebastianbenz.github.com/xrepl/updatesite/milestones/">Milestones Update Site</a>: http://sebastianbenz.github.com/xrepl/updatesite/milestones/
-  </div>
-  </body> 
+    <div id="container">
+      <div id="header">
+        <h1>Xrepl</h1>
+      </div>
+      <div id="body">
+        <p>
+        Xrepl is an interactive programming environment for <a href="http://www.xtext.org">Xtext's</a> upcoming expression language Xbase (<a href="http://sebastianbenz.de/introducing-an-interactive-programming-enviro">more...</a>)
+        </p> 
+        <p>
+        <iframe src="http://player.vimeo.com/video/17680833" width="640" height="480" frameborder="0"></iframe>
+        </p>
+        <h2>Installation</h2>
+        <p>Update site: http://xrepl.org/updatesite/milestones/
+        <h2>Author</h2>
+
+        <p>
+          <a href="http://www.sebastianbenz.de">Sebastian Benz</a> / <a href="http://twitter.com/#!/sebabenz">@sebabenz</a>
+        </p>
+      </div>
+    </div>
+  </body>
 </html> 
