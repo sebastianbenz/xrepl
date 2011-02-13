@@ -106,6 +106,7 @@ public class XbaseConsolePage extends Page {
 		createDocumentEvaluator();
 		registerSelectionListener();
 		createActions();
+		setFocus();
 	}
 
 	private void createEditor() {
@@ -221,7 +222,7 @@ public class XbaseConsolePage extends Page {
 
 	@Override
 	public void setFocus() {
-		sourceEditor.getControl().setFocus();
+		sourceEditor.setFocus();
 	}
 
 	@Override

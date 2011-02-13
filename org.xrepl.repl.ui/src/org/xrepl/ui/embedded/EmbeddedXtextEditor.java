@@ -629,6 +629,10 @@ public class EmbeddedXtextEditor {
 		resourceSet.getResources().add(result);
 		return result;
 	}
+
+	public void setFocus() {
+		getViewer().getTextWidget().setFocus();
+	}
 	
 
 }
