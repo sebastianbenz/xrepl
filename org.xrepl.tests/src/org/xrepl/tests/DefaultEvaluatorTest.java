@@ -17,12 +17,11 @@ import static com.google.common.collect.Lists.newArrayList;
 import static org.eclipse.xtext.util.SimpleAttributeResolver.NAME_RESOLVER;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.internal.matchers.IsCollectionContaining.hasItem;
 
-import java.io.IOException;
-import java.util.Collections;
 import java.util.Iterator;
 
 import org.eclipse.emf.common.notify.Notifier;
@@ -33,8 +32,8 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtext.util.StringInputStream;
-import org.jmock.Expectations;
+import org.hamcrest.CoreMatchers;
+import org.junit.Before;
 import org.xrepl.DefaultEvaluator;
 
 import com.google.common.base.Function;
@@ -44,11 +43,17 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 
 	@Inject
 	private DefaultEvaluator evaluator;
-	
+
 	@Inject
 	private ResourceSet resourceSet;
-	
-	public void testShouldReportSyntaxErrors(){
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		evaluator.setResourceSet(resourceSet);
+	}
+
+	public void testShouldReportSyntaxErrors() {
 		assertThat(evaluator.canEvaluate("1 + 1"), is(true));
 		assertThat(evaluator.canEvaluate("1 &? 2"), is(false));
 	}
@@ -81,10 +86,10 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 
 	private Throwable evalutionException(String string) {
 		try {
-			eval(getName());
-			fail("no exception");
+			eval(string);
 			return null;
 		} catch (Throwable e) {
+			e.printStackTrace();
 			return e;
 		}
 	}
@@ -106,33 +111,56 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 	public void testShouldAllowSettingAttributes() throws Throwable {
 		evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'");
 		eval("var aPackage = new EPackage");
-		assertThat(evalToString("aPackage.name = 'test'"), is("test"));
+		eval("aPackage.name = 'test'");
+		assertThat(evalToString("aPackage.name"), is("test"));
 	}
 
 	public void testShouldAllowSettingAttributesViaSetMethod() throws Throwable {
 		evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'");
 		eval("var aPackage = new EPackage");
-		assertThat(evalToString("aPackage.setName('test')"), is("test"));
+		eval("aPackage.setName('test')");
+		assertThat(evalToString("aPackage.name"), is("test"));
 	}
 
 	@SuppressWarnings("restriction")
 	public void testShouldRemoveElementsFromResourceOnException()
 			throws Throwable {
-		try{
+		try {
 			eval("{" + "  var x = 'shouldBeRemovedAfterException' "
-				+ "  null.toString" + "}");
+					+ "  null.toString" + "}");
 			fail("no exception");
-		}catch (Exception e) {
+		} catch (Exception e) {
 			// expected
 		}
 		eval("'This triggers a new evaluation'");
 		assertThat(resourceSet(), not(hasItem("x")));
 	}
 
+	public void testShouldFullyResetTheInterpreter() throws Throwable {
+		eval("var x = 'aVariable'");
+		eval("'another input'");
+		evaluator.reset();
+		assertFalse("Variable is still in scope", evaluator.canEvaluate("x"));
+	}
+
+	@SuppressWarnings("restriction")
+	public void testShouldKeepNonEvaluatorResources() throws Throwable {
+		Resource resource = resourceSet.createResource(URI
+				.createFileURI("shouldBeKept.ecore"));
+		eval("var x = 'aVariable'");
+		eval("'another input'");
+		evaluator.reset();
+		assertThat(resourceSet.getResources(), hasItem(resource));
+	}
+
+	public void testShouldResetEvaluationContext() throws Throwable {
+		eval("var x = 'aVariable'");
+		evaluator.reset();
+		assertThat(evalutionException("var x = 'aVariable'"), is(nullValue()));
+	}
 
 	private Iterable<String> resourceSet() {
-		TreeIterator<Notifier> allContents = resourceSet
-				.getAllContents();
+		TreeIterator<Notifier> allContents = resourceSet.getAllContents();
 		Iterator<String> allNames = transform(allContents,
 				new Function<Notifier, String>() {
 

@@ -14,13 +14,16 @@ import java.io.IOException;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.util.StringInputStream;
 import org.jmock.integration.junit3.MockObjectTestCase;
+import org.xrepl.ResourceSetProvider;
 import org.xrepl.xscript.XscriptPackage;
 import org.xrepl.xscript.XscriptRuntimeModule;
 import org.xrepl.xscript.XscriptStandaloneSetup;
 
+import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -41,6 +44,7 @@ public abstract class AbstractXScriptTest extends MockObjectTestCase {
 	protected void setUp() throws Exception {
 		XscriptPackage.eINSTANCE.getClass();
 		getInjector().injectMembers(this);
+		
 	}
 	
 

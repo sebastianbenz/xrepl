@@ -61,6 +61,26 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 public class XbaseConsolePage extends Page {
+	
+
+	private class ResetAndClearAction extends ClearOutputAction {
+
+		ResetAndClearAction() {
+			super(outputViewer);
+		}
+
+		@Override
+		public String getToolTipText() {
+			return "Resets the interpreter";
+		}
+
+		@Override
+		public void run() {
+			sourceEditor.update("");
+			evaluator.reset();
+		}
+	}
+
 
 	private Composite page;
 
@@ -114,7 +134,8 @@ public class XbaseConsolePage extends Page {
 		sourceEditor.getViewer().addTextListener(new ITextListener() {
 
 			public void textChanged(TextEvent event) {
-				if (evaluator.isEvaluationTrigger(TextChangeEventWrapper.wrap(event))) {
+				if (evaluator.isEvaluationTrigger(TextChangeEventWrapper
+						.wrap(event))) {
 					triggerEvaluationJob();
 				}
 			}
@@ -159,25 +180,16 @@ public class XbaseConsolePage extends Page {
 	}
 
 	private void createActions() {
-		ClearOutputAction clear = new ClearOutputAction(outputViewer);
-		CloseAction close = new CloseAction();
-		SaveAction save = new SaveAction();
-		LoadAction load = new LoadAction();
+		ResetAndClearAction resetAndClear = new ResetAndClearAction();
 
 		IMenuManager menu = getSite().getActionBars().getMenuManager();
-		menu.add(load);
-		menu.add(save);
-		menu.add(clear);
-		menu.add(close);
+		menu.add(resetAndClear);
 
 		IMenuManager metamodelMenu = new MenuManager("Metamodel"); //$NON-NLS-1$
 		menu.add(metamodelMenu);
 
 		IToolBarManager toolbar = getSite().getActionBars().getToolBarManager();
-		toolbar.appendToGroup(IConsoleConstants.OUTPUT_GROUP, load);
-		toolbar.appendToGroup(IConsoleConstants.OUTPUT_GROUP, save);
-		toolbar.appendToGroup(IConsoleConstants.OUTPUT_GROUP, clear);
-		toolbar.appendToGroup(IConsoleConstants.OUTPUT_GROUP, close);
+		toolbar.appendToGroup(IConsoleConstants.OUTPUT_GROUP, resetAndClear);
 	}
 
 	private void registerSelectionListener() {
@@ -209,7 +221,6 @@ public class XbaseConsolePage extends Page {
 		evaluator = documentEvaluatorFactory.create(inputViewWrapper,
 				outputViewWrapper);
 	}
-
 
 	private IXtextDocument getDocument() {
 		return sourceEditor.getDocument();
@@ -251,91 +262,6 @@ public class XbaseConsolePage extends Page {
 
 	String toString(Object object) {
 		return String.valueOf(object);
-	}
-
-	private class CloseAction extends Action {
-		private final String tip;
-
-		CloseAction() {
-			super("Reset...", PlatformUI.getWorkbench().getSharedImages()
-					.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE));
-
-			tip = "Resets the interpreter";
-		}
-
-		@Override
-		public String getToolTipText() {
-			return tip;
-		}
-
-		@Override
-		public void run() {
-			sourceEditor.update("");
-			evaluator.reset();
-		}
-	}
-
-	private class SaveAction extends Action {
-		private final String tip;
-
-		SaveAction() {
-			super("Save...", ImageDescriptor.createFromURL(FileLocator.find(
-					ReplActivator.getInstance().getBundle(), new Path(
-							"$nl$/icons/elcl16/save.gif"), //$NON-NLS-1$
-					null)));
-
-			tip = "Save the current script";
-		}
-
-		@Override
-		public String getToolTipText() {
-			return tip;
-		}
-
-		@Override
-		public void run() {
-			Shell shell = getControl().getShell();
-
-			MessageDialog.openWarning(shell, "Saving not possible",
-					"No yet implemented");
-		}
-	}
-
-	private class LoadAction extends Action {
-		private final String tip;
-
-		LoadAction() {
-			super("Load...", PlatformUI.getWorkbench().getSharedImages()
-					.getImageDescriptor(ISharedImages.IMG_OBJ_FILE));
-
-			tip = "Loads a new Xscript";
-		}
-
-		@Override
-		public String getToolTipText() {
-			return tip;
-		}
-
-		@Override
-		public void run() {
-			Shell shell = getControl().getShell();
-
-			FileDialog dlg = new FileDialog(shell, SWT.OPEN);
-			dlg.setFilterExtensions(new String[] { "*.xscript" }); //$NON-NLS-1$
-			dlg.setText("Load Xscript");
-
-			String file = dlg.open();
-			if (file != null) {
-				try {
-					MessageDialog.openWarning(shell, "Saving not possible",
-							"No yet implemented");
-				} catch (Exception e) {
-					MessageDialog.openError(shell, e.getClass().getSimpleName()
-							+ " while loading: ", e.getLocalizedMessage());
-				}
-			}
-		}
-
 	}
 
 }

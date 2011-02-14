@@ -14,6 +14,7 @@ import static com.google.common.collect.Iterables.addAll;
 import static com.google.common.collect.Iterables.filter;
 import static org.eclipse.xtext.scoping.Scopes.scopedElementsFor;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
@@ -70,6 +71,9 @@ public class XscriptScopeProvider extends XbaseScopeProvider {
 	}
 
 	private Iterable<IEObjectDescription> allVariables(XScript xScript) {
+		if(xScript.eResource() == null || xScript.eResource().getResourceSet() == null){
+			return Collections.emptyList();
+		}
 		List<XVariableDeclaration> variables = Lists.newArrayList();
 		for (Resource resource : xScript.eResource().getResourceSet().getResources()) {
 			for (XScript script : filter(resource.getContents(), XScript.class)) {

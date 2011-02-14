@@ -20,7 +20,9 @@ public class History {
 		private Stack<String> contents = new Stack<String>();
 
 		public void undo() {
-			contents.pop();
+			if(!contents.isEmpty()){
+				contents.pop();
+			}
 		}
 
 		public History append(String string) {

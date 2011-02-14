@@ -10,19 +10,16 @@
  *******************************************************************************/
 package org.xrepl;
 
-import static org.eclipse.xtext.EcoreUtil2.resolveAll;
+import static org.eclipse.emf.ecore.util.EcoreUtil.resolveAll;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
-import org.eclipse.xtext.resource.IResourceFactory;
-import org.eclipse.xtext.resource.SynchronizedXtextResourceSet;
-import org.eclipse.xtext.resource.XtextResourceSet;
-import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationContext;
@@ -36,12 +33,9 @@ import com.google.inject.name.Named;
 
 public class DefaultEvaluator implements Evaluator {
 
+	private static final String PREFIX = "__REPL_RESOURCE_";
+
 	public static final String LINE_BREAK = "\n";
-
-	private static final String RESET_COMMAND = "reset";
-	private static final String EXIT_COMMAND = "exit";
-
-	private static final Object NOTHING = "";
 
 	private ResourceSet resourceSet;
 
@@ -71,11 +65,15 @@ public class DefaultEvaluator implements Evaluator {
 	}
 
 	private String asScript(String toEvaluate) {
+		history().append(toEvaluate + LINE_BREAK).toString();
+		return toEvaluate;
+	}
+
+	private History history() {
 		if (history == null) {
 			history = new History();
 		}
-		history.append(toEvaluate + LINE_BREAK).toString();
-		return toEvaluate;
+		return history;
 	}
 
 	public boolean canEvaluate(String input) {
@@ -89,19 +87,12 @@ public class DefaultEvaluator implements Evaluator {
 	}
 
 	public Object evaluate(String input) throws Throwable {
-		if (input.equals(EXIT_COMMAND)) {
-			return handleExitCommand();
-		} else if (input.equals(RESET_COMMAND)) {
-			return handleResetCommand();
-		} else {
-			try {
-				return execute(input);
-			} catch (Exception e) {
-				history.undo();
-				throw e;
-			}
+		try {
+			return execute(input);
+		} catch (Exception e) {
+			history().undo();
+			throw e;
 		}
-
 	}
 
 	private Object execute(String toEvaluate) throws Throwable {
@@ -139,15 +130,14 @@ public class DefaultEvaluator implements Evaluator {
 		throw exception;
 	}
 
-	private Object handleResetCommand() {
-		history = null;
-		currentResource.unload();
-		steps = 0;
-		return NOTHING;
-	}
-
-	private Object handleExitCommand() {
-		return handleResetCommand();
+	private void clearReplResources() {
+		Iterator<Resource> allResources = resourceSet.getResources().iterator();
+		while (allResources.hasNext()) {
+			Resource resource = (Resource) allResources.next();
+			if(resource.getURI().lastSegment().startsWith(PREFIX)){
+				allResources.remove();
+			}
+		}
 	}
 
 	private void parseScript(String toEvaluate) throws IOException {
@@ -155,7 +145,7 @@ public class DefaultEvaluator implements Evaluator {
 			return;
 		}
 		load(asScript(toEvaluate));
-		resolveAll(currentResource, CancelIndicator.NullImpl);
+		resolveAll(currentResource);
 		lastEvaluatedString = toEvaluate;
 	}
 
@@ -170,20 +160,34 @@ public class DefaultEvaluator implements Evaluator {
 	}
 
 	private void load(String input) throws IOException {
+		URI uri = uniqueResourceUri();
 		currentResource = resourceSet.getResource(
-				URI.createURI("Test" + steps + "." + fileExtension), false);
+				uri, false);
 		if (currentResource == null) {
-			currentResource = resourceSet.createResource(URI.createURI("Step"
-					+ steps + "." + fileExtension));
+			currentResource = resourceSet.createResource(uri);
 		} else {
 			currentResource.unload();
 		}
 		currentResource.load(new StringInputStream(input), null);
 	}
 
+	private URI uniqueResourceUri() {
+		return URI.createURI(PREFIX
+				+ steps + "." + fileExtension);
+	}
+
 
 	public void reset() {
-		handleResetCommand();
+		history = null;
+		currentResource = null;
+		lastEvaluatedString = "";
+		context = null;
+		steps = 0;
+		clearReplResources();
+	}
+
+	public void setResourceSet(ResourceSet resourceSet) {
+		this.resourceSet = resourceSet;
 	}
 
 }
