@@ -19,7 +19,9 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 import static org.junit.internal.matchers.IsCollectionContaining.hasItem;
 
 import java.util.Iterator;
@@ -32,8 +34,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.hamcrest.CoreMatchers;
-import org.junit.Before;
+import org.junit.Test;
 import org.xrepl.DefaultEvaluator;
 
 import com.google.common.base.Function;
@@ -48,37 +49,37 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 	private ResourceSet resourceSet;
 
 	@Override
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		super.setUp();
 		evaluator.setResourceSet(resourceSet);
 	}
 
-	public void testShouldReportSyntaxErrors() {
+	@Test public void shouldReportSyntaxErrors() {
 		assertThat(evaluator.canEvaluate("1 + 1"), is(true));
 		assertThat(evaluator.canEvaluate("1 &? 2"), is(false));
 	}
 
-	public void testShouldEvaluteAssignments() throws Throwable {
+	@Test public void shouldEvaluteAssignments() throws Throwable {
 		assertThat(evalToString("var x = 3"), is("3"));
 	}
 
-	public void testShouldAllowFeatureCalls() throws Throwable {
+	@Test public void shouldAllowFeatureCalls() throws Throwable {
 		assertThat(evalToString("'literal'.toUpperCase()"), is("LITERAL"));
 	}
 
-	public void testShouldEvaluateUseStatement() throws Throwable {
+	@Test public void shouldEvaluateUseStatement() throws Throwable {
 		assertThat(evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'"),
 				is(EcorePackage.eINSTANCE.toString()));
 	}
 
-	public void testShouldReturnErrorIfPackageNotFoundUseStatement()
+	@Test public void shouldReturnErrorIfPackageNotFoundUseStatement()
 			throws Throwable {
 		assertThat(
 				evalutionException("use 'http://www.eclipse.org/emf/2002/Ecore'"),
 				is(instanceOf(Exception.class)));
 	}
 
-	public void testShouldKeepVariableDeclarations() throws Throwable {
+	@Test public void shouldKeepVariableDeclarations() throws Throwable {
 		eval("var x = 'result'");
 		eval("var y = x");
 		assertThat(evalToString("y"), is("result"));
@@ -89,33 +90,32 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 			eval(string);
 			return null;
 		} catch (Throwable e) {
-			e.printStackTrace();
 			return e;
 		}
 	}
 
-	public void testShouldAllowCreationOfNewEObjects() throws Throwable {
+	@Test public void shouldAllowCreationOfNewEObjects() throws Throwable {
 		evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'");
 		assertThat(eval("var newEPackage = new EPackage"),
 				is(instanceOf(EPackage.class)));
 	}
 
-	public void testShouldAddTwoIntegers() throws Throwable {
+	@Test public void shouldAddTwoIntegers() throws Throwable {
 		assertThat((Integer) eval("1 + 1"), is(2));
 	}
 
-	public void testShouldCompareTwoValues() throws Throwable {
+	@Test public void shouldCompareTwoValues() throws Throwable {
 		assertThat((Boolean) eval("1 == 1"), is(true));
 	}
 
-	public void testShouldAllowSettingAttributes() throws Throwable {
+	@Test public void shouldAllowSettingAttributes() throws Throwable {
 		evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'");
 		eval("var aPackage = new EPackage");
 		eval("aPackage.name = 'test'");
 		assertThat(evalToString("aPackage.name"), is("test"));
 	}
 
-	public void testShouldAllowSettingAttributesViaSetMethod() throws Throwable {
+	@Test public void shouldAllowSettingAttributesViaSetMethod() throws Throwable {
 		evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'");
 		eval("var aPackage = new EPackage");
 		eval("aPackage.setName('test')");
@@ -123,7 +123,7 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 	}
 
 	@SuppressWarnings("restriction")
-	public void testShouldRemoveElementsFromResourceOnException()
+	@Test public void shouldRemoveElementsFromResourceOnException()
 			throws Throwable {
 		try {
 			eval("{" + "  var x = 'shouldBeRemovedAfterException' "
@@ -136,7 +136,7 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 		assertThat(resourceSet(), not(hasItem("x")));
 	}
 
-	public void testShouldFullyResetTheInterpreter() throws Throwable {
+	@Test public void shouldFullyResetTheInterpreter() throws Throwable {
 		eval("var x = 'aVariable'");
 		eval("'another input'");
 		evaluator.reset();
@@ -144,7 +144,7 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 	}
 
 	@SuppressWarnings("restriction")
-	public void testShouldKeepNonEvaluatorResources() throws Throwable {
+	@Test public void shouldKeepNonEvaluatorResources() throws Throwable {
 		Resource resource = resourceSet.createResource(URI
 				.createFileURI("shouldBeKept.ecore"));
 		eval("var x = 'aVariable'");
@@ -153,7 +153,7 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 		assertThat(resourceSet.getResources(), hasItem(resource));
 	}
 
-	public void testShouldResetEvaluationContext() throws Throwable {
+	@Test public void shouldResetEvaluationContext() throws Throwable {
 		eval("var x = 'aVariable'");
 		evaluator.reset();
 		assertThat(evalutionException("var x = 'aVariable'"), is(nullValue()));

@@ -16,9 +16,9 @@ import static org.junit.Assert.assertThat;
 
 import java.io.IOException;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.jmock.Expectations;
 import org.jmock.Sequence;
+import org.junit.Test;
 import org.xrepl.EvaluationController;
 import org.xrepl.InputField;
 import org.xrepl.OutputView;
@@ -37,12 +37,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 
 	private final Sequence outputs = sequence("outputs");
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-	}
-
-	public void testShouldEvaluateInput() throws Exception {
+	@Test public void shouldEvaluateInput() throws Exception {
 		checking(new Expectations() {
 			{
 				oneOf(output).showInput("1 == 1");
@@ -59,7 +54,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 		evaluate("1 == 1");
 	}
 
-	public void testShouldHandleEvaluationException() throws Exception {
+	@Test public void shouldHandleEvaluationException() throws Exception {
 		checking(new Expectations() {
 			{
 				oneOf(output).showInput("null.toString");
@@ -77,7 +72,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 		evaluate("null.toString");
 	}
 
-	public void testShouldUndoEmptyInput() throws Exception {
+	@Test public void shouldUndoEmptyInput() throws Exception {
 		checking(new Expectations() {
 			{
 				oneOf(inputField).revert();
@@ -87,7 +82,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 		evaluate("");
 	}
 
-	public void testShouldUndoWhitespaceInputWithCursorAtTheEnd()
+	@Test public void shouldUndoWhitespaceInputWithCursorAtTheEnd()
 			throws Exception {
 		checking(new Expectations() {
 			{
@@ -98,23 +93,23 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 		evaluate("\n");
 	}
 
-	public void testShouldDoNothingOnSyntaxError() throws Exception {
+	@Test public void shouldDoNothingOnSyntaxError() throws Exception {
 		evaluate("1 %$¤ 2");
 	}
 
-	public void testShouldTriggerEvaluationIfEnterIsPressedAndCursorAtTheEnd() {
+	@Test public void shouldTriggerEvaluationIfEnterIsPressedAndCursorAtTheEnd() {
 		assertThat(isEvaluationTrigger("\n"), is(true));
 	}
 
-	public void testShouldTriggerEvaluationIfEnterIsPressedWithLineBreaksInBetween() {
+	@Test public void shouldTriggerEvaluationIfEnterIsPressedWithLineBreaksInBetween() {
 		assertThat(isEvaluationTrigger("true\ntrue\n"), is(true));
 	}
 
-	public void testShouldTriggerEvaluationIfEnterIsPressedWithTabInNextLine() {
+	@Test public void shouldTriggerEvaluationIfEnterIsPressedWithTabInNextLine() {
 		assertThat(isEvaluationTrigger("\ttrue\n\t"), is(true));
 	}
 
-	public void testShouldNotTriggerEvaluationIfEnterIsPressedAndCursorNotAtTheEnd() {
+	@Test public void shouldNotTriggerEvaluationIfEnterIsPressedAndCursorNotAtTheEnd() {
 		assertThat(isEvaluationTrigger("true\ntrue\n", 3, 30), is(false));
 	}
 
@@ -148,7 +143,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 	}
 
 	private void evaluate(String input) throws IOException {
-		Resource resource = load(input);
+		load(input);
 		getFixture().evaluate(input);
 	}
 

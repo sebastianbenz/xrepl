@@ -6,7 +6,7 @@ Bundle-Version: 0.7.0.qualifier
 Bundle-Activator: org.xrepl.tests.util.ReplTestsActivator
 Bundle-Vendor: %providerName
 Require-Bundle: org.eclipse.core.runtime,
- org.junit,
+ org.junit;bundle-version="4.8.1",
  com.google.inject;bundle-version="2.0.0",
  org.xrepl;bundle-version="0.7.0",
  org.xrepl.xscript;bundle-version="0.7.0",

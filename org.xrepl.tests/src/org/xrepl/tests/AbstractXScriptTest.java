@@ -14,21 +14,28 @@ import java.io.IOException;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.util.StringInputStream;
-import org.jmock.integration.junit3.MockObjectTestCase;
-import org.xrepl.ResourceSetProvider;
+import org.jmock.Expectations;
+import org.jmock.Mockery;
+import org.jmock.Sequence;
+import org.jmock.integration.junit4.JMock;
+import org.jmock.integration.junit4.JUnit4Mockery;
+import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.xrepl.OutputView;
 import org.xrepl.xscript.XscriptPackage;
 import org.xrepl.xscript.XscriptRuntimeModule;
 import org.xrepl.xscript.XscriptStandaloneSetup;
 
-import com.google.inject.Binder;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-public abstract class AbstractXScriptTest extends MockObjectTestCase {
+@RunWith(JMock.class)
+public abstract class AbstractXScriptTest {
 
+	protected Mockery context = new JUnit4Mockery();
+	
 	static Injector injector = new XscriptStandaloneSetup() {
 		@Override
 		public Injector createInjector() {
@@ -40,8 +47,8 @@ public abstract class AbstractXScriptTest extends MockObjectTestCase {
 		}
 	}.createInjectorAndDoEMFRegistration();
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		XscriptPackage.eINSTANCE.getClass();
 		getInjector().injectMembers(this);
 		
@@ -57,5 +64,20 @@ public abstract class AbstractXScriptTest extends MockObjectTestCase {
 				.createURI("Test.xscript"));
 		resource.load(new StringInputStream(input), null);
 		return resource;
+	}
+
+
+	public <T> T mock(Class<T> typeToMock) {
+		return context.mock(typeToMock);
+	}
+
+
+	public Sequence sequence(String name) {
+		return context.sequence(name);
+	}
+
+
+	public void checking(Expectations expectations) {
+		context.checking(expectations);
 	}
 }
