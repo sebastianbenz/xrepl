@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.xrepl.ui;singleton:=true
 Bundle-Version: 0.7.0.qualifier
-Bundle-Activator: org.xrepl.ui.internal.ReplActivator
+Bundle-Activator: org.xrepl.ui.internal.XreplActivator
 Require-Bundle: org.eclipse.core.runtime,
  org.xrepl;bundle-version="0.7.0";visibility:=reexport,
  com.google.collect;bundle-version="1.0.0",
