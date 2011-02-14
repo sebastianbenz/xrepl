@@ -43,7 +43,6 @@ public class DefaultEvaluator implements Evaluator {
 
 	private History history;
 	private Resource currentResource;
-
 	private int steps = 0;
 
 	private IEvaluationContext context;
@@ -64,9 +63,9 @@ public class DefaultEvaluator implements Evaluator {
 		this.resourceSet = resourceSet;
 	}
 
-	private String asScript(String toEvaluate) {
+	private void appendToHistory(String toEvaluate) {
 		history().append(toEvaluate + LINE_BREAK).toString();
-		return toEvaluate;
+		lastEvaluatedString = toEvaluate;
 	}
 
 	private History history() {
@@ -144,15 +143,14 @@ public class DefaultEvaluator implements Evaluator {
 		if (isAlreadyParsed(toEvaluate)) {
 			return;
 		}
-		load(asScript(toEvaluate));
+		load(toEvaluate);
 		resolveAll(currentResource);
-		lastEvaluatedString = toEvaluate;
+		appendToHistory(toEvaluate);
 	}
 
-	private XExpression currentExpression() {
-		XExpression expression = (XExpression) currentResource.getContents()
+	protected XExpression currentExpression() {
+		return (XExpression) currentResource.getContents()
 				.get(0);
-		return expression;
 	}
 
 	private boolean isAlreadyParsed(String toEvaluate) {
