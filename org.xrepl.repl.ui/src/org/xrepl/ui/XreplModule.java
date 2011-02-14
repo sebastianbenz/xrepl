@@ -12,19 +12,19 @@ package org.xrepl.ui;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.xrepl.ResourceSetProvider;
-import org.xrepl.ui.console.XbaseConsole;
+import org.xrepl.ui.console.XreplConsole;
 import org.xrepl.ui.embedded.EmbeddedXtextEditorModule;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 
-public class ReplModule extends EmbeddedXtextEditorModule implements Module {
+public class XreplModule extends EmbeddedXtextEditorModule implements Module {
 	
 	@Override
 	public void configure(Binder binder) {
 		super.configure(binder);
-		binder.bind(String.class).annotatedWith(Names.named(XbaseConsole.CONSOLE_TITLE)).toInstance(getConsoleTitle());
+		binder.bind(String.class).annotatedWith(Names.named(XreplConsole.CONSOLE_TITLE)).toInstance(getConsoleTitle());
 	}
 	
 	

@@ -55,12 +55,12 @@ import org.xrepl.EvaluationController;
 import org.xrepl.InputField;
 import org.xrepl.OutputView;
 import org.xrepl.ui.embedded.EmbeddedXtextEditor;
-import org.xrepl.ui.internal.ReplActivator;
+import org.xrepl.ui.internal.XreplActivator;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 
-public class XbaseConsolePage extends Page {
+public class XreplConsolePage extends Page {
 	
 
 	private class ResetAndClearAction extends ClearOutputAction {
@@ -109,7 +109,7 @@ public class XbaseConsolePage extends Page {
 	private Injector injector;
 
 	@Inject
-	public XbaseConsolePage(
+	public XreplConsolePage(
 			EvaluationController.Factory documentEvaluatorFactory,
 			ConsoleOutputView.Factory outputFactory,
 			ConsoleInputField.Factory inputFieldFactory) {
@@ -196,7 +196,7 @@ public class XbaseConsolePage extends Page {
 		selectionListener = new ISelectionListener() {
 			public void selectionChanged(IWorkbenchPart part,
 					ISelection selection) {
-				XbaseConsolePage.this.selectionChanged(selection);
+				XreplConsolePage.this.selectionChanged(selection);
 			}
 		};
 		selectionService = getSite().getWorkbenchWindow().getSelectionService();

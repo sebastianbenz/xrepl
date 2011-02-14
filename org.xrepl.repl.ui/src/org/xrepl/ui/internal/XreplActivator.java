@@ -13,7 +13,7 @@ package org.xrepl.ui.internal;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-public class ReplActivator extends AbstractUIPlugin {
+public class XreplActivator extends AbstractUIPlugin {
 
 	private static BundleContext context;
 
@@ -21,7 +21,7 @@ public class ReplActivator extends AbstractUIPlugin {
 		return context;
 	}
 
-	private static ReplActivator INSTANCE;
+	private static XreplActivator INSTANCE;
 
 	/*
 	 * (non-Javadoc)
@@ -32,7 +32,7 @@ public class ReplActivator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		super.start(bundleContext);
-		ReplActivator.context = bundleContext;
+		XreplActivator.context = bundleContext;
 		INSTANCE = this;
 	}
 
@@ -43,10 +43,10 @@ public class ReplActivator extends AbstractUIPlugin {
 	 * org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
-		ReplActivator.context = null;
+		XreplActivator.context = null;
 	}
 
-	public static ReplActivator getInstance() {
+	public static XreplActivator getInstance() {
 		return INSTANCE;
 	}
 

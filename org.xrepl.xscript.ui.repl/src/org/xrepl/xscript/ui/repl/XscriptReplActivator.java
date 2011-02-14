@@ -15,7 +15,7 @@ import static org.eclipse.xtext.util.Modules2.mixin;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-import org.xrepl.ui.ReplModule;
+import org.xrepl.ui.XreplModule;
 import org.xrepl.xscript.XscriptRuntimeModule;
 import org.xrepl.xscript.ui.XscriptUiModule;
 
@@ -60,7 +60,7 @@ public class XscriptReplActivator extends AbstractUIPlugin {
 	}
 
 	protected Module replModule() {
-		return new ReplModule();
+		return new XreplModule();
 	}
 
 	protected Module runtimeModule() {

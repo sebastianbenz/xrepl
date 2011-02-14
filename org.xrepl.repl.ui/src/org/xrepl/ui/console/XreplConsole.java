@@ -23,7 +23,7 @@ import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleView;
 import org.eclipse.ui.part.IPageBookViewPage;
-import org.xrepl.ui.internal.ReplActivator;
+import org.xrepl.ui.internal.XreplActivator;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -31,15 +31,15 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
 @Singleton
-public class XbaseConsole extends AbstractConsole {
+public class XreplConsole extends AbstractConsole {
 
 	public static final String CONSOLE_TITLE = "_consoleTitle";
 	
-	private Provider<XbaseConsolePage> consolePageProvider;
+	private Provider<XreplConsolePage> consolePageProvider;
 	
 	@Inject
-	public XbaseConsole(@Named(CONSOLE_TITLE) String title, Provider<XbaseConsolePage> consolePageProvider) {
-		super(title, ImageDescriptor.createFromURL(ReplActivator
+	public XreplConsole(@Named(CONSOLE_TITLE) String title, Provider<XreplConsolePage> consolePageProvider) {
+		super(title, ImageDescriptor.createFromURL(XreplActivator
 				.getInstance().getBundle().getEntry("/icons/console.gif"))); //$NON-NLS-1
 		this.consolePageProvider = consolePageProvider;
 		ConsolePlugin.getDefault().getConsoleManager().addConsoles(

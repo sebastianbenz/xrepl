@@ -18,13 +18,13 @@ import org.eclipse.ui.console.IConsoleManager;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-public class XbaseConsoleFactory implements IConsoleFactory {
+public class XreplConsoleFactory implements IConsoleFactory {
 	
 	@Inject
-	private Provider<XbaseConsole> consoleProvider;
+	private Provider<XreplConsole> consoleProvider;
 	
 	public void openConsole() {
-		XbaseConsole console = consoleProvider.get();
+		XreplConsole console = consoleProvider.get();
 		IConsoleManager mgr = ConsolePlugin.getDefault().getConsoleManager();
 		
 		// must do this twice due to a bug in the Console API
