@@ -8,87 +8,72 @@
     <title>Xrepl - An interactive console for Xbase</title> 
 
     <style type="text/css">
+
+body 
+{
+  background-color:#556270;
+  font: normal 14px/20px helvetica,arial,sans-serif;
+  color:  #333333;
+}
+
 #container
 {
   margin: 0 auto;
   width: 640px;
-  font-family: sans-serif;
+  background-color:#FFFFFF;
+  padding: 20px;
+  border-radius: 10px;
 }
 
 #header
 {
-  padding: 20px;
-  text-align: center;
+  margin: 0; 
+  padding: 0; 
+  vertical-align:top; 
+  border: 0px; 
 }
 
-#header h1 { margin: 0; 
-font-family: sans-serif;
+#header h1 { 
+  top: 0px;
+  text-indent: -100em; 
 }
 
-
-#navigation ul
-{
-  margin: 0;
-  padding: 0;
-}
-
-#navigation ul li
-{
-  list-style-type: none;
-  display: inline;
-}
-
-#navigation li a
-{
+#header h1 img { 
   display: block;
-  float: left;
-  padding: 5px 10px;
-  color:#fff;
-  text-decoration: none;
-  border-right: 1px solid#fff;
+  margin-left: auto;
+  margin-right: auto;
+  top: 0px;
 }
-
-#navigation li a:hover { background:#383; }
 
 #content
 {
   clear: left;
-  padding: 20px;
+  padding: 10px;
+
 }
-
-
 
 #content h2
 {
-  color:#000;
-  font-size: 130%;
-  margin: 0 0 .5em;
-  font-family: sans-serif;
+ font-weight: bold;
+  font-size:    18px;
+  line-height:  24px;
+  margin-bottom:  10px;
 }
 
 #content p
 {
   font-family: sans-serif;
+  text-align: justify;
 }
 
-#content p a
-{
-  display: block;
-  float: left;
-  padding: 5px 10px;
-  color:#fff;
-  text-decoration: none;
-  border-right: 1px solid#fff;
+a {
+  font-weight:  bold;
+  text-decoration:  none;
+  color:    #333333;
+  border-bottom:  1px dotted #a6a6a6;
+  margin-right: 1px;
 }
 
-#footer
-{
-  font-family: sans-serif;
-  background:#ccc;
-  text-align: right;
-  padding: 20px;
-  height: 1%;
-}
 
     </style>
 
@@ -110,21 +95,30 @@ font-family: sans-serif;
   <body>
     <div id="container">
       <div id="header">
-        <h1>Xrepl</h1>
+        <h1>Xrepl<img src="images/XreplLogo.png" alt="Xrepl" width="250" height="99"/></h1>
       </div>
       <div id="body">
+        <h2>What is it?</h2>
         <p>
-        Xrepl is an interactive programming environment for <a href="http://www.xtext.org">Xtext's</a> upcoming expression language Xbase (<a href="http://sebastianbenz.de/introducing-an-interactive-programming-enviro">more...</a>)
-        </p> 
-        <p>
-        <iframe src="http://player.vimeo.com/video/17680833" width="640" height="480" frameborder="0"></iframe>
+        <a href="http://www.xtext.org">Xtext</a> is an excellent framework for creating textual languages together with a rich editing environment. One of the exciting new features of the upcoming Xtext 2.0 is the integration of the general purpose expression language <a href="http://blog.efftinge.de/2010/09/xbase-new-programming-language.html">Xbase</a>. One of the best ways to explore such a new language is via an interactive programming environment (often called a REPL for Read-Evaluate-Print-Loop). So far Xtext only provides an interpreter for Xbase, without an actual REPL. The goal of <b>Xrepl</b> is to provide such an interactive console for languages that are based on Xbase. <b>Xrepl</b> is currently work in progress and will have its first release after the release of Xtext 2.0. But there is a development version available that works with the current Xtext 2.0M5 milestone.
+
+        <h2>Screencast</h2>
+        <p align="center">
+       <iframe style="width:640px; height:480px; 
+                    -moz-box-shadow: 5px 5px 5px #888;
+                    -webkit-box-shadow: 5px 5px 5px #888;
+                    box-shadow: 5px 5px 5px #888;
+                    border-radius: 10px;"
+             src="http://player.vimeo.com/video/17680833?title=0&amp;byline=0&amp;portrait=0&amp;color=ffffff" width="640" height="480" frameborder="0"></iframe>
         </p>
         <h2>Installation</h2>
-        <p>Update site: http://xrepl.org/updatesite/milestones/
+        <p>Update site: <a href="http://xrepl.org/updatesite/milestones/">http://xrepl.org/updatesite/milestones/</a></p>
+        <p>Source code: <a href="https://github.com/sebastianbenz/xrepl">https://github.com/sebastianbenz/xrepl</a></p> 
+        <h2>License</h2>
+Distributed under the <a href="http://www.eclipse.org/legal/epl-v10.html">Eclipse Public License</a>.
         <h2>Author</h2>
-
         <p>
-          <a href="http://www.sebastianbenz.de">Sebastian Benz</a> / <a href="http://twitter.com/#!/sebabenz">@sebabenz</a>
+          <a href="http://www.sebastianbenz.de">Sebastian Benz</a> (<a href="http://twitter.com/#!/sebabenz">@sebabenz</a>)
         </p>
       </div>
     </div>
