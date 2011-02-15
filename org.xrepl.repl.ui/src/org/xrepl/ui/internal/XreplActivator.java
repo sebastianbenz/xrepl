@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.xrepl.ui.internal;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -48,6 +49,10 @@ public class XreplActivator extends AbstractUIPlugin {
 
 	public static XreplActivator getInstance() {
 		return INSTANCE;
+	}
+	
+	public static ImageDescriptor getImageDescriptor(String imageFilePath) {
+		return imageDescriptorFromPlugin(INSTANCE.getBundle().getSymbolicName(), imageFilePath);
 	}
 
 }

@@ -19,6 +19,6 @@ public interface InputField {
 
 	public void revert();
 
-	public int getLength();
+	public int inputLength();
 
 }

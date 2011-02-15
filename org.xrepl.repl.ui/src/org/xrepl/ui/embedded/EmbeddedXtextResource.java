@@ -13,9 +13,9 @@
 package org.xrepl.ui.embedded;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.linking.lazy.LazyLinkingResource;
+import org.eclipse.xtext.resource.XtextResource;
 
-public class EmbeddedXtextResource extends LazyLinkingResource {
+public class EmbeddedXtextResource extends XtextResource {
 
 	private Resource parentResource = null;
 

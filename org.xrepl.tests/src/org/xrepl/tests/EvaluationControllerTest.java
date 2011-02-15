@@ -112,7 +112,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 	@Test public void shouldNotTriggerEvaluationIfEnterIsPressedAndCursorNotAtTheEnd() {
 		assertThat(isEvaluationTrigger("true\ntrue\n", 3, 30), is(false));
 	}
-
+	
 	private boolean isEvaluationTrigger(String text) {
 		return isEvaluationTrigger(text, 0, text.length());
 	}
@@ -121,7 +121,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 			final int documentLength) {
 		checking(new Expectations() {
 			{
-				oneOf(inputField).getLength();
+				oneOf(inputField).inputLength();
 				will(returnValue(documentLength));
 			}
 		});

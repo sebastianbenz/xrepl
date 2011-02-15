@@ -10,19 +10,11 @@
  *******************************************************************************/
 package org.xrepl.ui.console;
 
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.MenuManager;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.Document;
@@ -37,14 +29,9 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.IConsoleConstants;
 import org.eclipse.ui.console.actions.ClearOutputAction;
 import org.eclipse.ui.part.Page;
@@ -61,7 +48,33 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 
 public class XreplConsolePage extends Page {
-	
+
+	public class CancelAction extends Action {
+
+		public CancelAction() {
+			setDisabledImageDescriptor(getImage("dlcl16/cancel.gif"));
+			setImageDescriptor(getImage("elcl16/cancel.gif"));
+			setEnabled(false);
+		}
+
+		@Override
+		public void run() {
+			if(executionThread != null){
+				executionThread.interrupt();
+			}
+			setEnabled(false);
+		}
+
+		@Override
+		public String getToolTipText() {
+			return "Cancel execution";
+		}
+
+		private ImageDescriptor getImage(String path) {
+			return XreplActivator.getImageDescriptor("icons/" + path);
+		}
+
+	}
 
 	private class ResetAndClearAction extends ClearOutputAction {
 
@@ -76,11 +89,11 @@ public class XreplConsolePage extends Page {
 
 		@Override
 		public void run() {
+			super.run();
 			sourceEditor.update("");
 			evaluator.reset();
 		}
 	}
-
 
 	private Composite page;
 
@@ -108,6 +121,8 @@ public class XreplConsolePage extends Page {
 	@Inject
 	private Injector injector;
 
+	private CancelAction cancelAction;
+
 	@Inject
 	public XreplConsolePage(
 			EvaluationController.Factory documentEvaluatorFactory,
@@ -134,45 +149,37 @@ public class XreplConsolePage extends Page {
 		sourceEditor.getViewer().addTextListener(new ITextListener() {
 
 			public void textChanged(TextEvent event) {
+				if(event.getDocumentEvent() == null){
+					return;
+				}
 				if (evaluator.isEvaluationTrigger(TextChangeEventWrapper
 						.wrap(event))) {
-					triggerEvaluationJob();
+					triggerEvaluation();
 				}
 			}
 
 		});
 	}
 
-	private void triggerEvaluationJob() {
-		new Job("Update Console") {
+	private Thread executionThread;
 
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				runInUiThread(new Runnable() {
+	private void triggerEvaluation() {
+		cancelAction.setEnabled(true);
+		getDocument().modify(new IUnitOfWork<Object, XtextResource>() {
 
-					public void run() {
-						getDocument().modify(
-								new IUnitOfWork<Object, XtextResource>() {
 
-									public Object exec(XtextResource state)
-											throws Exception {
-										evaluator.evaluate(getDocument().get());
-										return null;
-									}
-
-								});
-					}
-
-				});
-				return Status.OK_STATUS;
+			public Object exec(XtextResource state) throws Exception {
+//				executionThread = new Thread() {
+//					public void run() {
+						evaluator.evaluate(getDocument().get());
+//					};
+//				};
+//				executionThread.start();
+				cancelAction.setEnabled(false);
+				return null;
 			}
 
-		}.schedule();
-
-	}
-
-	private void runInUiThread(Runnable runnable) {
-		Display.getDefault().asyncExec(runnable);
+		});
 	}
 
 	private void createPanel(Composite parent) {
@@ -180,16 +187,33 @@ public class XreplConsolePage extends Page {
 	}
 
 	private void createActions() {
-		ResetAndClearAction resetAndClear = new ResetAndClearAction();
+		ResetAndClearAction resetAndClear = createResetAndClearAction();
+		cancelAction = createCancelAction();
+		
+		addToMenu(resetAndClear, cancelAction);
+		
+		addToToolbar(IConsoleConstants.OUTPUT_GROUP, resetAndClear);
+		addToToolbar(IConsoleConstants.LAUNCH_GROUP, cancelAction);
+	}
 
-		IMenuManager menu = getSite().getActionBars().getMenuManager();
-		menu.add(resetAndClear);
-
-		IMenuManager metamodelMenu = new MenuManager("Metamodel"); //$NON-NLS-1$
-		menu.add(metamodelMenu);
-
+	protected void addToToolbar(String group, Action action) {
 		IToolBarManager toolbar = getSite().getActionBars().getToolBarManager();
-		toolbar.appendToGroup(IConsoleConstants.OUTPUT_GROUP, resetAndClear);
+		toolbar.appendToGroup(group, action);
+	}
+
+	protected void addToMenu(Action... actions) {
+		IMenuManager menu = getSite().getActionBars().getMenuManager();
+		for (Action action : actions) {
+			menu.add(action);
+		}
+	}
+
+	protected CancelAction createCancelAction() {
+		return new CancelAction();
+	}
+
+	protected ResetAndClearAction createResetAndClearAction() {
+		return new ResetAndClearAction();
 	}
 
 	private void registerSelectionListener() {
@@ -258,10 +282,6 @@ public class XreplConsolePage extends Page {
 				}
 			}
 		}
-	}
-
-	String toString(Object object) {
-		return String.valueOf(object);
 	}
 
 }

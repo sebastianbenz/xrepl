@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.xrepl;
 
-import org.eclipse.xtext.resource.XtextResourceSet;
-
 import com.google.inject.Inject;
 
 public class EvaluationController {
@@ -80,6 +78,7 @@ public class EvaluationController {
 	}
 
 	public boolean isEvaluationTrigger(TextChange textChange) {
+		System.out.println(textChange.getText() + " ("  + textChange.getOffset() + ")");
 		return isEnterPressed(textChange)
 				&& cursorAtTheEnd(textChange, bottomIndexEndOffset());
 	}
@@ -93,7 +92,7 @@ public class EvaluationController {
 	}
 
 	private int bottomIndexEndOffset() {
-		return inputField.getLength();
+		return inputField.inputLength();
 	}
 
 	public boolean canEvaluate(String input) {

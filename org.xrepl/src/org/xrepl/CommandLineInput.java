@@ -25,7 +25,7 @@ public class CommandLineInput implements InputField {
 		//
 	}
 
-	public int getLength() {
+	public int inputLength() {
 		return -1;
 	}
 

@@ -11,6 +11,7 @@
 package org.xrepl.ui.console;
 
 import static org.eclipse.xtext.util.Exceptions.throwUncheckedException;
+import static org.xrepl.ui.util.Displays.runInUiThread;
 
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
@@ -24,7 +25,7 @@ import com.google.inject.Inject;
 
 public class ConsoleOutputView implements OutputView {
 
-	public static class Factory  {
+	public static class Factory {
 
 		@Inject
 		private ColorManager colorManager;
@@ -51,12 +52,23 @@ public class ConsoleOutputView implements OutputView {
 	}
 
 	private void scrollOutputViewer() {
-		outputViewer.revealRange(getOutputViewerDocument().getLength(), 0);
+		runInUiThread(new Runnable() {
+
+			public void run() {
+				outputViewer.revealRange(getOutputViewerDocument().getLength(),
+						0);
+			}
+		});
 	}
 
 	public void clear() {
 		isOutputEmpty = true;
-		outputViewer.getDocument().set("");
+		runInUiThread(new Runnable() {
+
+			public void run() {
+				outputViewer.getDocument().set("");
+			}
+		});
 	}
 
 	public void showInput(String input) {
@@ -93,34 +105,38 @@ public class ConsoleOutputView implements OutputView {
 		scrollOutputViewer();
 	}
 
-	private void append(String text, Color color, boolean bold) {
+	private void append(final String text, final Color color, final boolean bold) {
+		runInUiThread(new Runnable() {
 
-		IDocument doc = getOutputViewerDocument();
-		try {
-			int offset = doc.getLength();
-			int length = text.length();
+			public void run() {
+				IDocument doc = getOutputViewerDocument();
+				try {
+					int offset = doc.getLength();
+					int length = text.length();
 
-			text = text + '\n';
+					String command = text + '\n';
 
-			if (offset > 0) {
-				doc.replace(offset, 0, text);
-			} else {
-				doc.set(text);
+					if (offset > 0) {
+						doc.replace(offset, 0, command);
+					} else {
+						doc.set(command);
+					}
+
+					final StyleRange style = new StyleRange();
+					style.start = offset;
+					style.length = length;
+					style.foreground = color;
+
+					if (bold) {
+						style.fontStyle = SWT.BOLD;
+					}
+
+					outputViewer.getTextWidget().setStyleRange(style);
+				} catch (BadLocationException e) {
+					throwUncheckedException(e);
+				}
 			}
-
-			StyleRange style = new StyleRange();
-			style.start = offset;
-			style.length = length;
-			style.foreground = color;
-
-			if (bold) {
-				style.fontStyle = SWT.BOLD;
-			}
-
-			outputViewer.getTextWidget().setStyleRange(style);
-		} catch (BadLocationException e) {
-			throwUncheckedException(e);
-		}
+		});
 	}
 
 	private void appendLineBreakToOutput(Color outputDefault) {
