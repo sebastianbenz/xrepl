@@ -78,7 +78,6 @@ public class EvaluationController {
 	}
 
 	public boolean isEvaluationTrigger(TextChange textChange) {
-		System.out.println(textChange.getText() + " ("  + textChange.getOffset() + ")");
 		return isEnterPressed(textChange)
 				&& cursorAtTheEnd(textChange, bottomIndexEndOffset());
 	}

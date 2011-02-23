@@ -5,13 +5,15 @@
     editDirectory="/org.xrepl.xscript.edit/src-emf" editorDirectory="/org.xrepl.xscript.editor/src-emf"
     modelPluginID="org.xrepl.xscript" modelName="Xscript" importerID="org.eclipse.emf.importer.ecore"
     complianceLevel="5.0" copyrightFields="false" runtimeVersion="2.5" language=""
-    usedGenPackages="platform:/plugin/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase">
+    usedGenPackages="../../org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel#//types ../../org.eclipse.xtext.xbase/model/Xbase.genmodel#//xbase">
   <foreignModel>Xscript.ecore</foreignModel>
   <genPackages prefix="Xscript" basePackage="org.xrepl" disposableProviderFactory="true"
       ecorePackage="Xscript.ecore#/">
     <genClasses ecoreClass="Xscript.ecore#//XScript"/>
     <genClasses ecoreClass="Xscript.ecore#//XImport">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XImport/importedNamespace"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XImport/extension"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XImport/static"/>
     </genClasses>
     <genClasses ecoreClass="Xscript.ecore#//XNamespace">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XNamespace/name"/>

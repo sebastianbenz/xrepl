@@ -34,6 +34,11 @@ public class XreplModule extends EmbeddedXtextEditorModule implements Module {
 
 
 	// contributed by org.eclipse.xtext.generator.types.TypesGeneratorFragment
+	public java.lang.ClassLoader bindClassLoaderToInstance() {
+		return getClass().getClassLoader();
+	}
+
+	// contributed by org.eclipse.xtext.generator.types.TypesGeneratorFragment
 	public org.eclipse.xtext.common.types.TypesFactory bindTypesFactoryToInstance() {
 		return org.eclipse.xtext.common.types.TypesFactory.eINSTANCE;
 	}
@@ -42,7 +47,6 @@ public class XreplModule extends EmbeddedXtextEditorModule implements Module {
 	public Class<? extends org.eclipse.xtext.common.types.access.IJvmTypeProvider.Factory> bindIJvmTypeProvider$Factory() {
 		return org.eclipse.xtext.common.types.access.ClasspathTypeProviderFactory.class;
 	}
-	
 
 	// contributed by org.eclipse.xtext.generator.types.TypesGeneratorFragment
 	public Class<? extends org.eclipse.xtext.common.types.xtext.AbstractTypeScopeProvider> bindAbstractTypeScopeProvider() {
@@ -52,6 +56,15 @@ public class XreplModule extends EmbeddedXtextEditorModule implements Module {
 	// contributed by org.eclipse.xtext.generator.types.TypesGeneratorFragment
 	public Class<? extends org.eclipse.xtext.scoping.IGlobalScopeProvider> bindIGlobalScopeProvider() {
 		return org.eclipse.xtext.common.types.xtext.TypesAwareDefaultGlobalScopeProvider.class;
+	}
+	// contributed by org.eclipse.xtext.generator.xbase.XbaseGeneratorFragment
+	public void configureIScopeProviderDelegate(com.google.inject.Binder binder) {
+		binder.bind(org.eclipse.xtext.scoping.IScopeProvider.class).annotatedWith(Names.named(org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider.NAMED_DELEGATE)).to(org.eclipse.xtext.xbase.scoping.XbaseImportedNamespaceScopeProvider.class);
+	}
+
+	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment
+	public Class<? extends org.eclipse.xtext.resource.IContainer.Manager> bindIContainer$Manager() {
+		return org.eclipse.xtext.resource.containers.StateBasedContainerManager.class;
 	}
 
 	// contributed by org.eclipse.xtext.generator.builder.BuilderIntegrationFragment

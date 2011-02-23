@@ -12,22 +12,22 @@ XScript:
 ;
  
 XScriptExpression:
-	XImport // | XPackageUse 
+	XImport | XPackageUse 
 ;
  
-//XConstructorCall returns XNewEObject: 
-//	'new' type=[ecore::EClass] ('{' '}')? 
-//;
+XConstructorCall returns XNewEObject: 
+	'new' type=[ecore::EClass] 
+;
 
   
 QualifiedNameWithWildCard :  
 	QualifiedName  ('.' '*')?;
 
-XImport: 
-	'import' importedNamespace=QualifiedNameWithWildCard
+XImport returns XImport: 
+	'import' (static?='static' extension?='extension'?)? importedNamespace=QualifiedNameWithWildCard
 ;
 
-//XPackageUse:
-//	'use' nsUri = STRING ('as' name=ID)? 
-//;
+XPackageUse:
+	'use' nsUri = STRING ('as' name=ID)? 
+;
   

@@ -10,15 +10,28 @@
  *******************************************************************************/
 package org.xrepl.xscript;
 
+import static java.lang.Thread.currentThread;
+
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationContext;
+import org.eclipse.xtext.xbase.interpreter.impl.EvaluationException;
 import org.eclipse.xtext.xbase.interpreter.impl.XbaseInterpreter;
 
 public class XscriptInterpreter extends XbaseInterpreter {
+	
+	
+	@Override
+	protected Object internalEvaluate(XExpression expression,
+			IEvaluationContext context) throws EvaluationException {
+		if(currentThread().isInterrupted()){
+			throw new RuntimeException("Execution interrupted");
+		}
+		return super.internalEvaluate(expression, context);
+	}
 	
 	public Object _evaluateUseEPackage(
 			XPackageUse packageUse, IEvaluationContext context) {

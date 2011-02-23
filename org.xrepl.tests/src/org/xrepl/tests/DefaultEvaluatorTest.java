@@ -34,6 +34,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xrepl.DefaultEvaluator;
 
@@ -75,7 +76,7 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 	@Test public void shouldReturnErrorIfPackageNotFoundUseStatement()
 			throws Throwable {
 		assertThat(
-				evalutionException("use 'http://www.eclipse.org/emf/2002/Ecore'"),
+				evalutionException("use 'NotExistingPackage'"),
 				is(instanceOf(Exception.class)));
 	}
 

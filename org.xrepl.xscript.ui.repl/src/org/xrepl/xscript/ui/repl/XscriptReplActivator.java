@@ -51,10 +51,11 @@ public class XscriptReplActivator extends AbstractUIPlugin {
 	public Injector getInjector() {
 		if(injector == null){
 			injector = createInjector(mixin(
-					runtimeModule(), 
 					uiModule(), 
 					sharedStateModule(),
-					replModule()));
+					runtimeModule(), 
+					replModule()
+					));
 		}
 		return injector;
 	}

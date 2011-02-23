@@ -100,7 +100,7 @@ public class EmbeddedXtextEditor {
 	private int fStyle;
 
 	private XtextSourceViewer fSourceViewer;
-	private EmbeddedXtextResource fResource;
+	private XtextResource fResource;
 	private XtextDocument fDocument;
 
 	@Inject
@@ -125,7 +125,7 @@ public class EmbeddedXtextEditor {
 	private Provider<XtextDocument> fDocumentProvider;
 
 	@Inject
-	private Provider<EmbeddedXtextResource> fEmbeddedXtextResourceProvider;
+	private Provider<XtextResource> fXtextResourceProvider;
 	@Inject
 	private IResourceValidator fResourceValidator;
 
@@ -245,8 +245,8 @@ public class EmbeddedXtextEditor {
 		fSourceViewer.setDocument(document, annotationModel);
 	}
 
-	private EmbeddedXtextResource createResource(String content) {
-		EmbeddedXtextResource result = createResource();
+	private XtextResource createResource(String content) {
+		XtextResource result = createResource();
 		try {
 			result.load(new StringInputStream(content, result.getEncoding()),
 					Collections.emptyMap());
@@ -621,8 +621,8 @@ public class EmbeddedXtextEditor {
 		}
 	}
 
-	protected EmbeddedXtextResource createResource() {
-		EmbeddedXtextResource result = (EmbeddedXtextResource) fEmbeddedXtextResourceProvider
+	protected XtextResource createResource() {
+		XtextResource result = (XtextResource) fXtextResourceProvider
 				.get();
 		result.setURI(URI.createURI(fGrammarAccess.getGrammar().getName() + "."
 				+ fFileExtension));

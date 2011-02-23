@@ -11,13 +11,19 @@
 package org.xrepl.xscript.typing;
 
 import org.eclipse.xtext.common.types.JvmTypeReference;
+import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.typing.XbaseTypeProvider;
 import org.xrepl.xscript.XNewEObject;
 
+import com.google.inject.Inject;
+
 public class XscriptTypeProvider extends XbaseTypeProvider {
 	
-//	protected JvmTypeReference _type(final XNewEObject object) {
-//		return getTypesService().getTypeForName(object.getType().getInstanceClass(), object);
-//	}
+	@Inject
+	private TypeReferences typeRefs;
+	
+	protected JvmTypeReference _type(final XNewEObject object, boolean raw) {
+		return typeRefs.getTypeForName(object.getType().getInstanceClass(), object);
+	}
 
 }

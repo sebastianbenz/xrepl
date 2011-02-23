@@ -27,6 +27,7 @@ import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.util.StringInputStream;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.xrepl.xscript.XNewEObject;
 import org.xrepl.xscript.XScript;
@@ -40,6 +41,7 @@ public class XscriptScopeProviderTest extends AbstractXScriptTest {
 	@Inject 
 	private IScopeProvider scopeProvider;
 	
+	@Ignore // not yet implemented
 	@Test public void shouldResolveUsedEPackages() throws Exception {
 		 XNewEObject newEObject = get(XNewEObject.class, "use 'http://www.eclipse.org/emf/2002/Ecore' " +
 									"var x = new EPackage");
