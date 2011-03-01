@@ -34,7 +34,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.xrepl.DefaultEvaluator;
 
@@ -69,14 +68,14 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 	}
 
 	@Test public void shouldEvaluateUseStatement() throws Throwable {
-		assertThat(evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'"),
+		assertThat(evalToString("import 'http://www.eclipse.org/emf/2002/Ecore'"),
 				is(EcorePackage.eINSTANCE.toString()));
 	}
 
 	@Test public void shouldReturnErrorIfPackageNotFoundUseStatement()
 			throws Throwable {
 		assertThat(
-				evalutionException("use 'NotExistingPackage'"),
+				evalutionException("import 'NotExistingPackage'"),
 				is(instanceOf(Exception.class)));
 	}
 
@@ -94,10 +93,15 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 			return e;
 		}
 	}
+	
+	@Test public void shouldAllowCreationOfObjects() throws Throwable {
+		assertThat(evalToString("new java.lang.String('aString')"),
+				is("aString"));
+	}
 
-	@Test public void shouldAllowCreationOfNewEObjects() throws Throwable {
-		evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'");
-		assertThat(eval("var newEPackage = new EPackage"),
+	@Test public void shouldAllowCreationOfEObjects() throws Throwable {
+		evalToString("import 'http://www.eclipse.org/emf/2002/Ecore'");
+		assertThat(eval("var newEPackage = create EPackage"),
 				is(instanceOf(EPackage.class)));
 	}
 
@@ -110,15 +114,15 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 	}
 
 	@Test public void shouldAllowSettingAttributes() throws Throwable {
-		evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'");
-		eval("var aPackage = new EPackage");
+		evalToString("import 'http://www.eclipse.org/emf/2002/Ecore'");
+		eval("var aPackage = create EPackage");
 		eval("aPackage.name = 'test'");
 		assertThat(evalToString("aPackage.name"), is("test"));
 	}
 
 	@Test public void shouldAllowSettingAttributesViaSetMethod() throws Throwable {
-		evalToString("use 'http://www.eclipse.org/emf/2002/Ecore'");
-		eval("var aPackage = new EPackage");
+		evalToString("import 'http://www.eclipse.org/emf/2002/Ecore'");
+		eval("var aPackage = create EPackage");
 		eval("aPackage.setName('test')");
 		assertThat(evalToString("aPackage.name"), is("test"));
 	}

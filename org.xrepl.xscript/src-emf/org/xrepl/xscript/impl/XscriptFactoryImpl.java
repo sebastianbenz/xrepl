@@ -70,7 +70,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 			case XscriptPackage.XSCRIPT: return createXScript();
 			case XscriptPackage.XIMPORT: return createXImport();
 			case XscriptPackage.XNAMESPACE: return createXNamespace();
-			case XscriptPackage.XPACKAGE_USE: return createXPackageUse();
+			case XscriptPackage.XE_PACKAGE_IMPORT: return createXEPackageImport();
 			case XscriptPackage.XNEW_EOBJECT: return createXNewEObject();
 			case XscriptPackage.XE_CLASS_TYPE: return createXEClassType();
 			default:
@@ -116,10 +116,10 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public XPackageUse createXPackageUse()
+	public XEPackageImport createXEPackageImport()
 	{
-		XPackageUseImpl xPackageUse = new XPackageUseImpl();
-		return xPackageUse;
+		XEPackageImportImpl xePackageImport = new XEPackageImportImpl();
+		return xePackageImport;
 	}
 
 	/**

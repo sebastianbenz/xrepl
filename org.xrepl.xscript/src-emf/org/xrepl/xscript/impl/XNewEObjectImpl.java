@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.xtext.xbase.impl.XConstructorCallImplCustom;
+import org.eclipse.xtext.xbase.impl.XExpressionImpl;
 
 import org.xrepl.xscript.XNewEObject;
 import org.xrepl.xscript.XscriptPackage;
@@ -30,7 +30,7 @@ import org.xrepl.xscript.XscriptPackage;
  *
  * @generated
  */
-public class XNewEObjectImpl extends XConstructorCallImplCustom implements XNewEObject
+public class XNewEObjectImpl extends XExpressionImpl implements XNewEObject
 {
 	/**
 	 * The cached value of the '{@link #getType() <em>Type</em>}' reference.

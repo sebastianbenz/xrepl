@@ -7,8 +7,6 @@ package org.xrepl.xscript;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.xtext.xbase.XConstructorCall;
-
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>XNew EObject</b></em>'.
@@ -25,7 +23,7 @@ import org.eclipse.xtext.xbase.XConstructorCall;
  * @model
  * @generated
  */
-public interface XNewEObject extends XConstructorCall
+public interface XNewEObject extends XScriptExpression
 {
 	/**
 	 * Returns the value of the '<em><b>Type</b></em>' reference.

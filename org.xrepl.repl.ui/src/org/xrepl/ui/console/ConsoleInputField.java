@@ -12,6 +12,7 @@ package org.xrepl.ui.console;
 
 import static org.xrepl.ui.util.Displays.runInUiThread;
 
+import org.eclipse.swt.custom.StyledText;
 import org.xrepl.InputField;
 import org.xrepl.ui.embedded.EmbeddedXtextEditor;
 
@@ -53,5 +54,27 @@ public class ConsoleInputField implements InputField {
 
 	public int inputLength() {
 		return sourceEditor.getDocument().getLength();
+	}
+
+	public void freeze() {
+		runInUiThread(new Runnable() {
+
+			public void run() {
+				textWidget().setEditable(false);
+			}
+		});
+	}
+
+	protected StyledText textWidget() {
+		return sourceEditor.getViewer().getTextWidget();
+	}
+
+	public void unfreeze() {
+		runInUiThread(new Runnable() {
+
+			public void run() {
+				textWidget().setEditable(true);
+			}
+		});
 	}
 }

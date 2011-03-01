@@ -11,6 +11,10 @@
 package org.xrepl.ui.console;
 
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
@@ -59,9 +63,7 @@ public class XreplConsolePage extends Page {
 
 		@Override
 		public void run() {
-			if(executionThread != null){
-				executionThread.interrupt();
-			}
+			evaluator.cancel();
 			setEnabled(false);
 		}
 
@@ -149,7 +151,7 @@ public class XreplConsolePage extends Page {
 		sourceEditor.getViewer().addTextListener(new ITextListener() {
 
 			public void textChanged(TextEvent event) {
-				if(event.getDocumentEvent() == null){
+				if (event.getDocumentEvent() == null) {
 					return;
 				}
 				if (evaluator.isEvaluationTrigger(TextChangeEventWrapper
@@ -161,21 +163,25 @@ public class XreplConsolePage extends Page {
 		});
 	}
 
-	private Thread executionThread;
-
 	private void triggerEvaluation() {
 		cancelAction.setEnabled(true);
-		getDocument().modify(new IUnitOfWork<Object, XtextResource>() {
-
-
+		getDocument().readOnly(new IUnitOfWork<Object, XtextResource>() {
 			public Object exec(XtextResource state) throws Exception {
-//				executionThread = new Thread() {
-//					public void run() {
-						evaluator.evaluate(getDocument().get());
-//					};
-//				};
-//				executionThread.start();
-				cancelAction.setEnabled(false);
+				final String input = getDocument().get();
+				new Job("evaluating script") {
+					{
+						setPriority(INTERACTIVE);
+					}
+					@Override
+					protected IStatus run(IProgressMonitor monitor) {
+						try {
+							evaluator.evaluate(input);
+						} finally {
+							cancelAction.setEnabled(false);
+						}
+						return Status.OK_STATUS;
+					}
+				}.schedule();
 				return null;
 			}
 
@@ -189,9 +195,9 @@ public class XreplConsolePage extends Page {
 	private void createActions() {
 		ResetAndClearAction resetAndClear = createResetAndClearAction();
 		cancelAction = createCancelAction();
-		
+
 		addToMenu(resetAndClear, cancelAction);
-		
+
 		addToToolbar(IConsoleConstants.OUTPUT_GROUP, resetAndClear);
 		addToToolbar(IConsoleConstants.LAUNCH_GROUP, cancelAction);
 	}

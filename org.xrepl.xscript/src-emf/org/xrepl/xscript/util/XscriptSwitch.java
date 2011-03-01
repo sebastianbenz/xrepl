@@ -20,7 +20,6 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 
 import org.eclipse.xtext.xbase.XBlockExpression;
-import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 
 import org.xrepl.xscript.*;
@@ -135,12 +134,12 @@ public class XscriptSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case XscriptPackage.XPACKAGE_USE:
+			case XscriptPackage.XE_PACKAGE_IMPORT:
 			{
-				XPackageUse xPackageUse = (XPackageUse)theEObject;
-				T result = caseXPackageUse(xPackageUse);
-				if (result == null) result = caseXScriptExpression(xPackageUse);
-				if (result == null) result = caseXExpression(xPackageUse);
+				XEPackageImport xePackageImport = (XEPackageImport)theEObject;
+				T result = caseXEPackageImport(xePackageImport);
+				if (result == null) result = caseXScriptExpression(xePackageImport);
+				if (result == null) result = caseXExpression(xePackageImport);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -148,7 +147,7 @@ public class XscriptSwitch<T>
 			{
 				XNewEObject xNewEObject = (XNewEObject)theEObject;
 				T result = caseXNewEObject(xNewEObject);
-				if (result == null) result = caseXConstructorCall(xNewEObject);
+				if (result == null) result = caseXScriptExpression(xNewEObject);
 				if (result == null) result = caseXExpression(xNewEObject);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
@@ -229,17 +228,17 @@ public class XscriptSwitch<T>
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>XPackage Use</em>'.
+	 * Returns the result of interpreting the object as an instance of '<em>XE Package Import</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
 	 * returning a non-null result will terminate the switch.
 	 * <!-- end-user-doc -->
 	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>XPackage Use</em>'.
+	 * @return the result of interpreting the object as an instance of '<em>XE Package Import</em>'.
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseXPackageUse(XPackageUse object)
+	public T caseXEPackageImport(XEPackageImport object)
 	{
 		return null;
 	}
@@ -320,22 +319,6 @@ public class XscriptSwitch<T>
 	 * @generated
 	 */
 	public T caseXBlockExpression(XBlockExpression object)
-	{
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>XConstructor Call</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>XConstructor Call</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseXConstructorCall(XConstructorCall object)
 	{
 		return null;
 	}

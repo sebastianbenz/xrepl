@@ -13,24 +13,24 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
 import org.eclipse.xtext.xbase.impl.XExpressionImpl;
 
-import org.xrepl.xscript.XPackageUse;
+import org.xrepl.xscript.XEPackageImport;
 import org.xrepl.xscript.XscriptPackage;
 
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>XPackage Use</b></em>'.
+ * An implementation of the model object '<em><b>XE Package Import</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.xrepl.xscript.impl.XPackageUseImpl#getNsUri <em>Ns Uri</em>}</li>
- *   <li>{@link org.xrepl.xscript.impl.XPackageUseImpl#getName <em>Name</em>}</li>
+ *   <li>{@link org.xrepl.xscript.impl.XEPackageImportImpl#getNsUri <em>Ns Uri</em>}</li>
+ *   <li>{@link org.xrepl.xscript.impl.XEPackageImportImpl#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
+public class XEPackageImportImpl extends XExpressionImpl implements XEPackageImport
 {
 	/**
 	 * The default value of the '{@link #getNsUri() <em>Ns Uri</em>}' attribute.
@@ -77,7 +77,7 @@ public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected XPackageUseImpl()
+	protected XEPackageImportImpl()
 	{
 		super();
 	}
@@ -90,7 +90,7 @@ public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
 	@Override
 	protected EClass eStaticClass()
 	{
-		return XscriptPackage.Literals.XPACKAGE_USE;
+		return XscriptPackage.Literals.XE_PACKAGE_IMPORT;
 	}
 
 	/**
@@ -113,7 +113,7 @@ public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
 		String oldNsUri = nsUri;
 		nsUri = newNsUri;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, XscriptPackage.XPACKAGE_USE__NS_URI, oldNsUri, nsUri));
+			eNotify(new ENotificationImpl(this, Notification.SET, XscriptPackage.XE_PACKAGE_IMPORT__NS_URI, oldNsUri, nsUri));
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
 		String oldName = name;
 		name = newName;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, XscriptPackage.XPACKAGE_USE__NAME, oldName, name));
+			eNotify(new ENotificationImpl(this, Notification.SET, XscriptPackage.XE_PACKAGE_IMPORT__NAME, oldName, name));
 	}
 
 	/**
@@ -149,9 +149,9 @@ public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
 	{
 		switch (featureID)
 		{
-			case XscriptPackage.XPACKAGE_USE__NS_URI:
+			case XscriptPackage.XE_PACKAGE_IMPORT__NS_URI:
 				return getNsUri();
-			case XscriptPackage.XPACKAGE_USE__NAME:
+			case XscriptPackage.XE_PACKAGE_IMPORT__NAME:
 				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
@@ -167,10 +167,10 @@ public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
 	{
 		switch (featureID)
 		{
-			case XscriptPackage.XPACKAGE_USE__NS_URI:
+			case XscriptPackage.XE_PACKAGE_IMPORT__NS_URI:
 				setNsUri((String)newValue);
 				return;
-			case XscriptPackage.XPACKAGE_USE__NAME:
+			case XscriptPackage.XE_PACKAGE_IMPORT__NAME:
 				setName((String)newValue);
 				return;
 		}
@@ -187,10 +187,10 @@ public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
 	{
 		switch (featureID)
 		{
-			case XscriptPackage.XPACKAGE_USE__NS_URI:
+			case XscriptPackage.XE_PACKAGE_IMPORT__NS_URI:
 				setNsUri(NS_URI_EDEFAULT);
 				return;
-			case XscriptPackage.XPACKAGE_USE__NAME:
+			case XscriptPackage.XE_PACKAGE_IMPORT__NAME:
 				setName(NAME_EDEFAULT);
 				return;
 		}
@@ -207,9 +207,9 @@ public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
 	{
 		switch (featureID)
 		{
-			case XscriptPackage.XPACKAGE_USE__NS_URI:
+			case XscriptPackage.XE_PACKAGE_IMPORT__NS_URI:
 				return NS_URI_EDEFAULT == null ? nsUri != null : !NS_URI_EDEFAULT.equals(nsUri);
-			case XscriptPackage.XPACKAGE_USE__NAME:
+			case XscriptPackage.XE_PACKAGE_IMPORT__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
@@ -234,4 +234,4 @@ public class XPackageUseImpl extends XExpressionImpl implements XPackageUse
 		return result.toString();
 	}
 
-} //XPackageUseImpl
+} //XEPackageImportImpl

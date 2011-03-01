@@ -10,31 +10,19 @@
  *******************************************************************************/
 package org.xrepl.xscript;
 
-import static java.lang.Thread.currentThread;
-
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationContext;
-import org.eclipse.xtext.xbase.interpreter.impl.EvaluationException;
 import org.eclipse.xtext.xbase.interpreter.impl.XbaseInterpreter;
 
 public class XscriptInterpreter extends XbaseInterpreter {
 	
 	
-	@Override
-	protected Object internalEvaluate(XExpression expression,
-			IEvaluationContext context) throws EvaluationException {
-		if(currentThread().isInterrupted()){
-			throw new RuntimeException("Execution interrupted");
-		}
-		return super.internalEvaluate(expression, context);
-	}
-	
-	public Object _evaluateUseEPackage(
-			XPackageUse packageUse, IEvaluationContext context) {
+	public Object _evaluateEPackageImport(XEPackageImport packageUse, IEvaluationContext context, CancelIndicator cancelIndicator) {
 		Object ePackage = EPackage.Registry.INSTANCE.get(packageUse.getNsUri());
 		if(ePackage == null){
 			throw new RuntimeException("Could not resolve EPackage with uri '" + packageUse.getNsUri() + "'");
@@ -43,17 +31,16 @@ public class XscriptInterpreter extends XbaseInterpreter {
 		}
 	}
 	
-	public Object _evaluateXScript(XScript literal, IEvaluationContext context) {
+	public Object _evaluateXScript(XScript literal, IEvaluationContext context, CancelIndicator cancelIndicator) {
 		List<XExpression> expressions = literal.getExpressions();
 		Object result = null;
 		for (XExpression expression : expressions) {
-			result = internalEvaluate(expression, context);
+			result = internalEvaluate(expression, context, cancelIndicator);
 		}
 		return result;
 	}
 	
-	public Object _evaluateNewEObject(
-			XNewEObject newEObject, IEvaluationContext context) {
+	public Object _evaluateXNewEObject(XNewEObject newEObject, IEvaluationContext context, CancelIndicator cancelIndicator) {
 		EClass type = newEObject.getType();
 		if(type == null || type.eIsProxy()){
 			return null;

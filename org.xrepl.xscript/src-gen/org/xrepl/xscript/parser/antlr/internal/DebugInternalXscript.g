@@ -15,12 +15,30 @@ ruleXScript :
 // Rule XScriptExpression
 ruleXScriptExpression :
 	ruleXImport |
-	ruleXPackageUse
+	ruleXEPackageImport
 ;
 
-// Rule XConstructorCall
-ruleXConstructorCall :
-	'new' RULE_ID
+// Rule XPrimaryExpression
+ruleXPrimaryExpression :
+	ruleXConstructorCall |
+	ruleXBlockExpression |
+	ruleXSwitchExpression |
+	ruleXFeatureCall |
+	ruleXLiteral |
+	ruleXIfExpression |
+	ruleXForLoopExpression |
+	ruleXWhileExpression |
+	ruleXDoWhileExpression |
+	ruleXThrowExpression |
+	ruleXReturnExpression |
+	ruleXTryCatchFinallyExpression |
+	ruleXParenthesizedExpression |
+	ruleXNewEObject
+;
+
+// Rule XNewEObject
+ruleXNewEObject :
+	'create' RULE_ID
 ;
 
 // Rule QualifiedNameWithWildCard
@@ -37,9 +55,9 @@ ruleXImport :
 	)? ruleQualifiedNameWithWildCard
 ;
 
-// Rule XPackageUse
-ruleXPackageUse :
-	'use' RULE_STRING (
+// Rule XEPackageImport
+ruleXEPackageImport :
+	'import' RULE_STRING (
 		'as' RULE_ID
 	)?
 ;
@@ -240,23 +258,6 @@ ruleXMemberFeatureCall :
 	)*
 ;
 
-// Rule XPrimaryExpression
-ruleXPrimaryExpression :
-	ruleXConstructorCall |
-	ruleXBlockExpression |
-	ruleXSwitchExpression |
-	ruleXFeatureCall |
-	ruleXLiteral |
-	ruleXIfExpression |
-	ruleXForLoopExpression |
-	ruleXWhileExpression |
-	ruleXDoWhileExpression |
-	ruleXThrowExpression |
-	ruleXReturnExpression |
-	ruleXTryCatchFinallyExpression |
-	ruleXParenthesizedExpression
-;
-
 // Rule XLiteral
 ruleXLiteral :
 	ruleXClosure |
@@ -395,6 +396,26 @@ ruleXFeatureCall :
 			)*
 		)? ')'
 	)?
+;
+
+// Rule XConstructorCall
+ruleXConstructorCall :
+	'new' ruleQualifiedName (
+		'<' ruleJvmArgumentTypeReference (
+			',' ruleJvmArgumentTypeReference
+		)* '>'
+	)? '(' (
+		( (
+		(
+			ruleJvmFormalParameter (
+				',' ruleJvmFormalParameter
+			)*
+		)? '|'
+		) => ruleXShortClosure ) |
+		ruleXExpression (
+			',' ruleXExpression
+		)*
+	)? ')'
 ;
 
 // Rule XBooleanLiteral

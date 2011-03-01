@@ -47,14 +47,15 @@ public class EvaluationController {
 		this.outputView = outputView;
 	}
 
-	public void evaluate(String input) {
-		if (emptyInput(input)) {
+	public void evaluate(final String input) {
+		if (empty(input)) {
 			inputField.revert();
 			return;
 		}
 		if (!repl.canEvaluate(input)) {
 			return;
 		}
+		inputField.freeze();
 		outputView.showInput(input);
 		try {
 			Object result = repl.evaluate(input);
@@ -63,12 +64,12 @@ public class EvaluationController {
 		} catch (Throwable e) {
 			outputView.showError(e);
 			inputField.revert();
-		} 
+		}
 		outputView.flush();
+		inputField.unfreeze();
 	}
 
-
-	private boolean emptyInput(String input) {
+	private boolean empty(String input) {
 		return input.trim().length() == 0;
 	}
 
@@ -96,6 +97,10 @@ public class EvaluationController {
 
 	public boolean canEvaluate(String input) {
 		return repl.canEvaluate(input);
+	}
+
+	public void cancel() {
+		repl.cancelEvaluation();
 	}
 
 }

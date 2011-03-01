@@ -17,10 +17,10 @@ import org.eclipse.xtext.common.types.TypesPackage;
 import org.eclipse.xtext.xbase.XbasePackage;
 
 import org.xrepl.xscript.XEClassType;
+import org.xrepl.xscript.XEPackageImport;
 import org.xrepl.xscript.XImport;
 import org.xrepl.xscript.XNamespace;
 import org.xrepl.xscript.XNewEObject;
-import org.xrepl.xscript.XPackageUse;
 import org.xrepl.xscript.XScript;
 import org.xrepl.xscript.XScriptExpression;
 import org.xrepl.xscript.XscriptFactory;
@@ -60,7 +60,7 @@ public class XscriptPackageImpl extends EPackageImpl implements XscriptPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass xPackageUseEClass = null;
+	private EClass xePackageImportEClass = null;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -224,9 +224,9 @@ public class XscriptPackageImpl extends EPackageImpl implements XscriptPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getXPackageUse()
+	public EClass getXEPackageImport()
 	{
-		return xPackageUseEClass;
+		return xePackageImportEClass;
 	}
 
 	/**
@@ -234,9 +234,9 @@ public class XscriptPackageImpl extends EPackageImpl implements XscriptPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getXPackageUse_NsUri()
+	public EAttribute getXEPackageImport_NsUri()
 	{
-		return (EAttribute)xPackageUseEClass.getEStructuralFeatures().get(0);
+		return (EAttribute)xePackageImportEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
@@ -244,9 +244,9 @@ public class XscriptPackageImpl extends EPackageImpl implements XscriptPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getXPackageUse_Name()
+	public EAttribute getXEPackageImport_Name()
 	{
-		return (EAttribute)xPackageUseEClass.getEStructuralFeatures().get(1);
+		return (EAttribute)xePackageImportEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
@@ -329,9 +329,9 @@ public class XscriptPackageImpl extends EPackageImpl implements XscriptPackage
 		xNamespaceEClass = createEClass(XNAMESPACE);
 		createEAttribute(xNamespaceEClass, XNAMESPACE__NAME);
 
-		xPackageUseEClass = createEClass(XPACKAGE_USE);
-		createEAttribute(xPackageUseEClass, XPACKAGE_USE__NS_URI);
-		createEAttribute(xPackageUseEClass, XPACKAGE_USE__NAME);
+		xePackageImportEClass = createEClass(XE_PACKAGE_IMPORT);
+		createEAttribute(xePackageImportEClass, XE_PACKAGE_IMPORT__NS_URI);
+		createEAttribute(xePackageImportEClass, XE_PACKAGE_IMPORT__NAME);
 
 		xNewEObjectEClass = createEClass(XNEW_EOBJECT);
 		createEReference(xNewEObjectEClass, XNEW_EOBJECT__TYPE);
@@ -377,8 +377,8 @@ public class XscriptPackageImpl extends EPackageImpl implements XscriptPackage
 		xScriptEClass.getESuperTypes().add(theXbasePackage.getXBlockExpression());
 		xImportEClass.getESuperTypes().add(this.getXScriptExpression());
 		xNamespaceEClass.getESuperTypes().add(this.getXScriptExpression());
-		xPackageUseEClass.getESuperTypes().add(this.getXScriptExpression());
-		xNewEObjectEClass.getESuperTypes().add(theXbasePackage.getXConstructorCall());
+		xePackageImportEClass.getESuperTypes().add(this.getXScriptExpression());
+		xNewEObjectEClass.getESuperTypes().add(this.getXScriptExpression());
 		xScriptExpressionEClass.getESuperTypes().add(theXbasePackage.getXExpression());
 		xeClassTypeEClass.getESuperTypes().add(theTypesPackage.getJvmGenericType());
 
@@ -393,9 +393,9 @@ public class XscriptPackageImpl extends EPackageImpl implements XscriptPackage
 		initEClass(xNamespaceEClass, XNamespace.class, "XNamespace", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXNamespace_Name(), ecorePackage.getEString(), "name", null, 0, 1, XNamespace.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(xPackageUseEClass, XPackageUse.class, "XPackageUse", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXPackageUse_NsUri(), ecorePackage.getEString(), "nsUri", null, 0, 1, XPackageUse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getXPackageUse_Name(), ecorePackage.getEString(), "name", null, 0, 1, XPackageUse.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(xePackageImportEClass, XEPackageImport.class, "XEPackageImport", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getXEPackageImport_NsUri(), ecorePackage.getEString(), "nsUri", null, 0, 1, XEPackageImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXEPackageImport_Name(), ecorePackage.getEString(), "name", null, 0, 1, XEPackageImport.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xNewEObjectEClass, XNewEObject.class, "XNewEObject", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXNewEObject_Type(), ecorePackage.getEClass(), null, "type", null, 0, 1, XNewEObject.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

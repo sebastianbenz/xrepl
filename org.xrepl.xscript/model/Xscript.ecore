@@ -12,11 +12,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="XNamespace" eSuperTypes="#//XScriptExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XPackageUse" eSuperTypes="#//XScriptExpression">
+  <eClassifiers xsi:type="ecore:EClass" name="XEPackageImport" eSuperTypes="#//XScriptExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="nsUri" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XNewEObject" eSuperTypes="../../org.eclipse.xtext.xbase/model/Xbase.ecore#//XConstructorCall">
+  <eClassifiers xsi:type="ecore:EClass" name="XNewEObject" eSuperTypes="#//XScriptExpression">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EClass"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XScriptExpression" abstract="true" interface="true"

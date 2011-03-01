@@ -20,6 +20,7 @@ import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.xbase.XExpression;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationContext;
@@ -27,11 +28,30 @@ import org.eclipse.xtext.xbase.interpreter.IEvaluationResult;
 import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.eclipse.xtext.xbase.interpreter.impl.DefaultEvaluationContext;
 import org.eclipse.xtext.xbase.interpreter.impl.EvaluationException;
+import org.eclipse.xtext.xbase.interpreter.impl.InterpreterCanceledException;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 public class DefaultEvaluator implements Evaluator {
+
+	private final class SimpleCancelIndicator implements
+			CancelIndicator {
+		private boolean isCanceled = false;
+
+		public boolean isCanceled() {
+			return isCanceled;
+		}
+
+		public CancelIndicator reset() {
+			isCanceled = false;
+			return this;
+		}
+
+		public void setCanceled() {
+			isCanceled = true;
+		}
+	}
 
 	private static final String PREFIX = "__REPL_RESOURCE_";
 
@@ -46,6 +66,8 @@ public class DefaultEvaluator implements Evaluator {
 	private int steps = 0;
 
 	private IEvaluationContext context;
+	
+	private SimpleCancelIndicator cancelIndicator = new SimpleCancelIndicator();
 	
 	
 
@@ -78,8 +100,11 @@ public class DefaultEvaluator implements Evaluator {
 	public boolean canEvaluate(String input) {
 		try {
 			parseScript(input);
-			return currentResource != null
-					&& currentResource.getErrors().isEmpty();
+			if(currentResource == null){
+				return false;
+			}
+			resolveAll(currentResource);
+			return currentResource.getErrors().isEmpty();
 		} catch (IOException e) {
 			return false;
 		}
@@ -98,7 +123,10 @@ public class DefaultEvaluator implements Evaluator {
 		parseScript(toEvaluate);
 		try {
 			IEvaluationResult evaluation = interpreter.evaluate(
-					currentExpression(), getContext());
+					currentExpression(), getContext(), cancelIndicator.reset());
+			if(evaluation == null){
+				throw new InterpreterCanceledException();
+			}
 			Throwable exception = evaluation.getException();
 			if (exception != null) {
 				handleEvaluationException(exception);
@@ -149,6 +177,9 @@ public class DefaultEvaluator implements Evaluator {
 	}
 
 	protected XExpression currentExpression() {
+		if(currentResource.getContents().isEmpty()){
+			return null;
+		}
 		return (XExpression) currentResource.getContents()
 				.get(0);
 	}
@@ -186,6 +217,10 @@ public class DefaultEvaluator implements Evaluator {
 
 	public void setResourceSet(ResourceSet resourceSet) {
 		this.resourceSet = resourceSet;
+	}
+
+	public void cancelEvaluation() {
+		cancelIndicator.setCanceled();
 	}
 
 }

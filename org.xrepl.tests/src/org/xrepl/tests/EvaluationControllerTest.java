@@ -40,6 +40,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 	@Test public void shouldEvaluateInput() throws Exception {
 		checking(new Expectations() {
 			{
+				oneOf(inputField).freeze();
 				oneOf(output).showInput("1 == 1");
 				inSequence(outputs);
 				oneOf(output).showResult(true);
@@ -48,6 +49,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 				inSequence(outputs);
 
 				oneOf(inputField).clear();
+				oneOf(inputField).unfreeze();
 			}
 		});
 
@@ -57,6 +59,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 	@Test public void shouldHandleEvaluationException() throws Exception {
 		checking(new Expectations() {
 			{
+				oneOf(inputField).freeze();
 				oneOf(output).showInput("null.toString");
 				inSequence(outputs);
 				oneOf(output)
@@ -66,6 +69,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 				inSequence(outputs);
 
 				oneOf(inputField).revert();
+				oneOf(inputField).unfreeze();
 			}
 		});
 
@@ -95,8 +99,9 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 
 	@Test public void shouldDoNothingOnSyntaxError() throws Exception {
 		evaluate("1 %$¤ 2");
+		evaluate("1 %$¤ 2");
 	}
-
+	
 	@Test public void shouldTriggerEvaluationIfEnterIsPressedAndCursorAtTheEnd() {
 		assertThat(isEvaluationTrigger("\n"), is(true));
 	}
@@ -112,6 +117,9 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 	@Test public void shouldNotTriggerEvaluationIfEnterIsPressedAndCursorNotAtTheEnd() {
 		assertThat(isEvaluationTrigger("true\ntrue\n", 3, 30), is(false));
 	}
+	
+	
+	
 	
 	private boolean isEvaluationTrigger(String text) {
 		return isEvaluationTrigger(text, 0, text.length());

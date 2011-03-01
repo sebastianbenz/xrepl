@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.xrepl;
 
-import org.eclipse.xtext.resource.XtextResourceSet;
 
 /**
  * Not required by command line repl.
@@ -18,19 +17,19 @@ import org.eclipse.xtext.resource.XtextResourceSet;
 public class CommandLineInput implements InputField {
 
 	public void clear() {
-		// 
 	}
 
 	public void revert() {
-		//
 	}
 
 	public int inputLength() {
 		return -1;
 	}
 
-	public void setContext(XtextResourceSet resourceSet) {
+	public void freeze() {
+	}
 
+	public void unfreeze() {
 	}
 
 }

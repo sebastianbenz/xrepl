@@ -22,7 +22,6 @@ import org.eclipse.xtext.common.types.JvmType;
 import org.eclipse.xtext.common.types.JvmTypeParameterDeclarator;
 
 import org.eclipse.xtext.xbase.XBlockExpression;
-import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XExpression;
 
 import org.xrepl.xscript.*;
@@ -106,9 +105,9 @@ public class XscriptAdapterFactory extends AdapterFactoryImpl
 				return createXNamespaceAdapter();
 			}
 			@Override
-			public Adapter caseXPackageUse(XPackageUse object)
+			public Adapter caseXEPackageImport(XEPackageImport object)
 			{
-				return createXPackageUseAdapter();
+				return createXEPackageImportAdapter();
 			}
 			@Override
 			public Adapter caseXNewEObject(XNewEObject object)
@@ -134,11 +133,6 @@ public class XscriptAdapterFactory extends AdapterFactoryImpl
 			public Adapter caseXBlockExpression(XBlockExpression object)
 			{
 				return createXBlockExpressionAdapter();
-			}
-			@Override
-			public Adapter caseXConstructorCall(XConstructorCall object)
-			{
-				return createXConstructorCallAdapter();
 			}
 			@Override
 			public Adapter caseJvmAnnotationTarget(JvmAnnotationTarget object)
@@ -248,16 +242,16 @@ public class XscriptAdapterFactory extends AdapterFactoryImpl
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link org.xrepl.xscript.XPackageUse <em>XPackage Use</em>}'.
+	 * Creates a new adapter for an object of class '{@link org.xrepl.xscript.XEPackageImport <em>XE Package Import</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
 	 * <!-- end-user-doc -->
 	 * @return the new adapter.
-	 * @see org.xrepl.xscript.XPackageUse
+	 * @see org.xrepl.xscript.XEPackageImport
 	 * @generated
 	 */
-	public Adapter createXPackageUseAdapter()
+	public Adapter createXEPackageImportAdapter()
 	{
 		return null;
 	}
@@ -333,21 +327,6 @@ public class XscriptAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	public Adapter createXBlockExpressionAdapter()
-	{
-		return null;
-	}
-
-	/**
-	 * Creates a new adapter for an object of class '{@link org.eclipse.xtext.xbase.XConstructorCall <em>XConstructor Call</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
-	 * @return the new adapter.
-	 * @see org.eclipse.xtext.xbase.XConstructorCall
-	 * @generated
-	 */
-	public Adapter createXConstructorCallAdapter()
 	{
 		return null;
 	}

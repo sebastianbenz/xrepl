@@ -21,4 +21,8 @@ public interface InputField {
 
 	public int inputLength();
 
+	public void freeze();
+	
+	public void unfreeze();
+
 }

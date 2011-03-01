@@ -8,22 +8,22 @@ package org.xrepl.xscript;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>XPackage Use</b></em>'.
+ * A representation of the model object '<em><b>XE Package Import</b></em>'.
  * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.xrepl.xscript.XPackageUse#getNsUri <em>Ns Uri</em>}</li>
- *   <li>{@link org.xrepl.xscript.XPackageUse#getName <em>Name</em>}</li>
+ *   <li>{@link org.xrepl.xscript.XEPackageImport#getNsUri <em>Ns Uri</em>}</li>
+ *   <li>{@link org.xrepl.xscript.XEPackageImport#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.xrepl.xscript.XscriptPackage#getXPackageUse()
+ * @see org.xrepl.xscript.XscriptPackage#getXEPackageImport()
  * @model
  * @generated
  */
-public interface XPackageUse extends XScriptExpression
+public interface XEPackageImport extends XScriptExpression
 {
 	/**
 	 * Returns the value of the '<em><b>Ns Uri</b></em>' attribute.
@@ -35,14 +35,14 @@ public interface XPackageUse extends XScriptExpression
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Ns Uri</em>' attribute.
 	 * @see #setNsUri(String)
-	 * @see org.xrepl.xscript.XscriptPackage#getXPackageUse_NsUri()
+	 * @see org.xrepl.xscript.XscriptPackage#getXEPackageImport_NsUri()
 	 * @model
 	 * @generated
 	 */
 	String getNsUri();
 
 	/**
-	 * Sets the value of the '{@link org.xrepl.xscript.XPackageUse#getNsUri <em>Ns Uri</em>}' attribute.
+	 * Sets the value of the '{@link org.xrepl.xscript.XEPackageImport#getNsUri <em>Ns Uri</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Ns Uri</em>' attribute.
@@ -61,14 +61,14 @@ public interface XPackageUse extends XScriptExpression
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.xrepl.xscript.XscriptPackage#getXPackageUse_Name()
+	 * @see org.xrepl.xscript.XscriptPackage#getXEPackageImport_Name()
 	 * @model
 	 * @generated
 	 */
 	String getName();
 
 	/**
-	 * Sets the value of the '{@link org.xrepl.xscript.XPackageUse#getName <em>Name</em>}' attribute.
+	 * Sets the value of the '{@link org.xrepl.xscript.XEPackageImport#getName <em>Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Name</em>' attribute.
@@ -77,4 +77,4 @@ public interface XPackageUse extends XScriptExpression
 	 */
 	void setName(String value);
 
-} // XPackageUse
+} // XEPackageImport

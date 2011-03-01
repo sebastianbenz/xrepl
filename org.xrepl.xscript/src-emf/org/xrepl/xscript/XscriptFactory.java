@@ -53,13 +53,13 @@ public interface XscriptFactory extends EFactory
 	XNamespace createXNamespace();
 
 	/**
-	 * Returns a new object of class '<em>XPackage Use</em>'.
+	 * Returns a new object of class '<em>XE Package Import</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>XPackage Use</em>'.
+	 * @return a new object of class '<em>XE Package Import</em>'.
 	 * @generated
 	 */
-	XPackageUse createXPackageUse();
+	XEPackageImport createXEPackageImport();
 
 	/**
 	 * Returns a new object of class '<em>XNew EObject</em>'.

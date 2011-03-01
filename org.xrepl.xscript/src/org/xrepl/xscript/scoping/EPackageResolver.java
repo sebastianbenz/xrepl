@@ -31,7 +31,7 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.util.SimpleCache;
 import org.eclipse.xtext.util.Tuples;
-import org.xrepl.xscript.XPackageUse;
+import org.xrepl.xscript.XEPackageImport;
 import org.xrepl.xscript.XScript;
 
 import com.google.common.base.Function;
@@ -42,9 +42,9 @@ public final class EPackageResolver {
 
 
 	public Iterable<EPackage> getEPackages(XScript root) {
-		List<XPackageUse> ePackageUris = getEPackageUris(root);
+		List<XEPackageImport> ePackageUris = getEPackageUris(root);
 		List<EPackage> result = new ArrayList<EPackage>(ePackageUris.size());
-		for (XPackageUse XPackageUse : ePackageUris) {
+		for (XEPackageImport XPackageUse : ePackageUris) {
 			try {
 				EPackage ePackage = resolve(root.eResource(),
 						XPackageUse.getNsUri());
@@ -56,8 +56,8 @@ public final class EPackageResolver {
 		return result;
 	}
 
-	private List<XPackageUse> getEPackageUris(XScript root) {
-		return newArrayList(filter(root.getExpressions(), XPackageUse.class));
+	private List<XEPackageImport> getEPackageUris(XScript root) {
+		return newArrayList(filter(root.getExpressions(), XEPackageImport.class));
 	}
 	
 	private SimpleCache<Pair<Resource, String>, EPackage> cache = new SimpleCache<Pair<Resource, String>, EPackage>(

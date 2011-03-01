@@ -185,14 +185,14 @@ public interface XscriptPackage extends EPackage
 	int XNAMESPACE_FEATURE_COUNT = XSCRIPT_EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
-	 * The meta object id for the '{@link org.xrepl.xscript.impl.XPackageUseImpl <em>XPackage Use</em>}' class.
+	 * The meta object id for the '{@link org.xrepl.xscript.impl.XEPackageImportImpl <em>XE Package Import</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see org.xrepl.xscript.impl.XPackageUseImpl
-	 * @see org.xrepl.xscript.impl.XscriptPackageImpl#getXPackageUse()
+	 * @see org.xrepl.xscript.impl.XEPackageImportImpl
+	 * @see org.xrepl.xscript.impl.XscriptPackageImpl#getXEPackageImport()
 	 * @generated
 	 */
-	int XPACKAGE_USE = 3;
+	int XE_PACKAGE_IMPORT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Ns Uri</b></em>' attribute.
@@ -201,7 +201,7 @@ public interface XscriptPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int XPACKAGE_USE__NS_URI = XSCRIPT_EXPRESSION_FEATURE_COUNT + 0;
+	int XE_PACKAGE_IMPORT__NS_URI = XSCRIPT_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -210,16 +210,16 @@ public interface XscriptPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int XPACKAGE_USE__NAME = XSCRIPT_EXPRESSION_FEATURE_COUNT + 1;
+	int XE_PACKAGE_IMPORT__NAME = XSCRIPT_EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
-	 * The number of structural features of the '<em>XPackage Use</em>' class.
+	 * The number of structural features of the '<em>XE Package Import</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int XPACKAGE_USE_FEATURE_COUNT = XSCRIPT_EXPRESSION_FEATURE_COUNT + 2;
+	int XE_PACKAGE_IMPORT_FEATURE_COUNT = XSCRIPT_EXPRESSION_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link org.xrepl.xscript.impl.XNewEObjectImpl <em>XNew EObject</em>}' class.
@@ -232,58 +232,13 @@ public interface XscriptPackage extends EPackage
 	int XNEW_EOBJECT = 4;
 
 	/**
-	 * The feature id for the '<em><b>Constructor</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int XNEW_EOBJECT__CONSTRUCTOR = XbasePackage.XCONSTRUCTOR_CALL__CONSTRUCTOR;
-
-	/**
-	 * The feature id for the '<em><b>Arguments</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int XNEW_EOBJECT__ARGUMENTS = XbasePackage.XCONSTRUCTOR_CALL__ARGUMENTS;
-
-	/**
-	 * The feature id for the '<em><b>Type Arguments</b></em>' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int XNEW_EOBJECT__TYPE_ARGUMENTS = XbasePackage.XCONSTRUCTOR_CALL__TYPE_ARGUMENTS;
-
-	/**
-	 * The feature id for the '<em><b>Invalid Feature Issue Code</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int XNEW_EOBJECT__INVALID_FEATURE_ISSUE_CODE = XbasePackage.XCONSTRUCTOR_CALL__INVALID_FEATURE_ISSUE_CODE;
-
-	/**
-	 * The feature id for the '<em><b>Valid Feature</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int XNEW_EOBJECT__VALID_FEATURE = XbasePackage.XCONSTRUCTOR_CALL__VALID_FEATURE;
-
-	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int XNEW_EOBJECT__TYPE = XbasePackage.XCONSTRUCTOR_CALL_FEATURE_COUNT + 0;
+	int XNEW_EOBJECT__TYPE = XSCRIPT_EXPRESSION_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>XNew EObject</em>' class.
@@ -292,7 +247,7 @@ public interface XscriptPackage extends EPackage
 	 * @generated
 	 * @ordered
 	 */
-	int XNEW_EOBJECT_FEATURE_COUNT = XbasePackage.XCONSTRUCTOR_CALL_FEATURE_COUNT + 1;
+	int XNEW_EOBJECT_FEATURE_COUNT = XSCRIPT_EXPRESSION_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link org.xrepl.xscript.impl.XEClassTypeImpl <em>XE Class Type</em>}' class.
@@ -515,36 +470,36 @@ public interface XscriptPackage extends EPackage
 	EAttribute getXNamespace_Name();
 
 	/**
-	 * Returns the meta object for class '{@link org.xrepl.xscript.XPackageUse <em>XPackage Use</em>}'.
+	 * Returns the meta object for class '{@link org.xrepl.xscript.XEPackageImport <em>XE Package Import</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>XPackage Use</em>'.
-	 * @see org.xrepl.xscript.XPackageUse
+	 * @return the meta object for class '<em>XE Package Import</em>'.
+	 * @see org.xrepl.xscript.XEPackageImport
 	 * @generated
 	 */
-	EClass getXPackageUse();
+	EClass getXEPackageImport();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.xrepl.xscript.XPackageUse#getNsUri <em>Ns Uri</em>}'.
+	 * Returns the meta object for the attribute '{@link org.xrepl.xscript.XEPackageImport#getNsUri <em>Ns Uri</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Ns Uri</em>'.
-	 * @see org.xrepl.xscript.XPackageUse#getNsUri()
-	 * @see #getXPackageUse()
+	 * @see org.xrepl.xscript.XEPackageImport#getNsUri()
+	 * @see #getXEPackageImport()
 	 * @generated
 	 */
-	EAttribute getXPackageUse_NsUri();
+	EAttribute getXEPackageImport_NsUri();
 
 	/**
-	 * Returns the meta object for the attribute '{@link org.xrepl.xscript.XPackageUse#getName <em>Name</em>}'.
+	 * Returns the meta object for the attribute '{@link org.xrepl.xscript.XEPackageImport#getName <em>Name</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Name</em>'.
-	 * @see org.xrepl.xscript.XPackageUse#getName()
-	 * @see #getXPackageUse()
+	 * @see org.xrepl.xscript.XEPackageImport#getName()
+	 * @see #getXEPackageImport()
 	 * @generated
 	 */
-	EAttribute getXPackageUse_Name();
+	EAttribute getXEPackageImport_Name();
 
 	/**
 	 * Returns the meta object for class '{@link org.xrepl.xscript.XNewEObject <em>XNew EObject</em>}'.
@@ -673,14 +628,14 @@ public interface XscriptPackage extends EPackage
 		EAttribute XNAMESPACE__NAME = eINSTANCE.getXNamespace_Name();
 
 		/**
-		 * The meta object literal for the '{@link org.xrepl.xscript.impl.XPackageUseImpl <em>XPackage Use</em>}' class.
+		 * The meta object literal for the '{@link org.xrepl.xscript.impl.XEPackageImportImpl <em>XE Package Import</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see org.xrepl.xscript.impl.XPackageUseImpl
-		 * @see org.xrepl.xscript.impl.XscriptPackageImpl#getXPackageUse()
+		 * @see org.xrepl.xscript.impl.XEPackageImportImpl
+		 * @see org.xrepl.xscript.impl.XscriptPackageImpl#getXEPackageImport()
 		 * @generated
 		 */
-		EClass XPACKAGE_USE = eINSTANCE.getXPackageUse();
+		EClass XE_PACKAGE_IMPORT = eINSTANCE.getXEPackageImport();
 
 		/**
 		 * The meta object literal for the '<em><b>Ns Uri</b></em>' attribute feature.
@@ -688,7 +643,7 @@ public interface XscriptPackage extends EPackage
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute XPACKAGE_USE__NS_URI = eINSTANCE.getXPackageUse_NsUri();
+		EAttribute XE_PACKAGE_IMPORT__NS_URI = eINSTANCE.getXEPackageImport_NsUri();
 
 		/**
 		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
@@ -696,7 +651,7 @@ public interface XscriptPackage extends EPackage
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EAttribute XPACKAGE_USE__NAME = eINSTANCE.getXPackageUse_Name();
+		EAttribute XE_PACKAGE_IMPORT__NAME = eINSTANCE.getXEPackageImport_Name();
 
 		/**
 		 * The meta object literal for the '{@link org.xrepl.xscript.impl.XNewEObjectImpl <em>XNew EObject</em>}' class.
