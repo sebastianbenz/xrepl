@@ -35,23 +35,6 @@ import com.google.inject.name.Named;
 
 public class DefaultEvaluator implements Evaluator {
 
-	private final class SimpleCancelIndicator implements
-			CancelIndicator {
-		private boolean isCanceled = false;
-
-		public boolean isCanceled() {
-			return isCanceled;
-		}
-
-		public CancelIndicator reset() {
-			isCanceled = false;
-			return this;
-		}
-
-		public void setCanceled() {
-			isCanceled = true;
-		}
-	}
 
 	private static final String PREFIX = "__REPL_RESOURCE_";
 
@@ -67,7 +50,6 @@ public class DefaultEvaluator implements Evaluator {
 
 	private IEvaluationContext context;
 	
-	private SimpleCancelIndicator cancelIndicator = new SimpleCancelIndicator();
 	
 	
 
@@ -108,22 +90,26 @@ public class DefaultEvaluator implements Evaluator {
 		} catch (IOException e) {
 			return false;
 		}
+	
 	}
 
-	public Object evaluate(String input) throws Throwable {
+	public Object evaluate(String input) throws Throwable{
+			return evaluate(input, CancelIndicator.NullImpl);
+	}
+	public Object evaluate(String input, CancelIndicator cancelIndicator) throws Throwable {
 		try {
-			return execute(input);
+			return execute(input, cancelIndicator);
 		} catch (Exception e) {
 			history().undo();
 			throw e;
 		}
 	}
 
-	private Object execute(String toEvaluate) throws Throwable {
+	private Object execute(String toEvaluate, CancelIndicator cancelIndicator) throws Throwable {
 		parseScript(toEvaluate);
 		try {
 			IEvaluationResult evaluation = interpreter.evaluate(
-					currentExpression(), getContext(), cancelIndicator.reset());
+					currentExpression(), getContext(), cancelIndicator);
 			if(evaluation == null){
 				throw new InterpreterCanceledException();
 			}
@@ -219,8 +205,5 @@ public class DefaultEvaluator implements Evaluator {
 		this.resourceSet = resourceSet;
 	}
 
-	public void cancelEvaluation() {
-		cancelIndicator.setCanceled();
-	}
 
 }

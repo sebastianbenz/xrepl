@@ -41,6 +41,7 @@ import org.eclipse.ui.console.actions.ClearOutputAction;
 import org.eclipse.ui.part.Page;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.ui.editor.model.IXtextDocument;
+import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.concurrent.IUnitOfWork;
 import org.xrepl.EvaluationController;
 import org.xrepl.InputField;
@@ -56,6 +57,10 @@ public class XreplConsolePage extends Page {
 	public class CancelAction extends Action {
 
 		public CancelAction() {
+			init();
+		}
+
+		protected void init() {
 			setDisabledImageDescriptor(getImage("dlcl16/cancel.gif"));
 			setImageDescriptor(getImage("elcl16/cancel.gif"));
 			setEnabled(false);
@@ -63,8 +68,9 @@ public class XreplConsolePage extends Page {
 
 		@Override
 		public void run() {
-			evaluator.cancel();
-			setEnabled(false);
+			if (evaluationJob != null) {
+				evaluationJob.cancel();
+			}
 		}
 
 		@Override
@@ -72,10 +78,41 @@ public class XreplConsolePage extends Page {
 			return "Cancel execution";
 		}
 
-		private ImageDescriptor getImage(String path) {
+		protected ImageDescriptor getImage(String path) {
 			return XreplActivator.getImageDescriptor("icons/" + path);
 		}
 
+	}
+
+	private class EvaluationJob extends Job {
+		private final String input;
+
+		private EvaluationJob(String input) {
+			super("evaluating script");
+			this.input = input;
+			setPriority(INTERACTIVE);
+		}
+
+		@Override
+		protected IStatus run(final IProgressMonitor monitor) {
+			evaluator.evaluate(input, asCancelIndicator(monitor));
+			cancelAction.setEnabled(false);
+			if (monitor.isCanceled()) {
+				return Status.CANCEL_STATUS;
+			} else {
+				return Status.OK_STATUS;
+			}
+		}
+
+		protected CancelIndicator asCancelIndicator(
+				final IProgressMonitor monitor) {
+			return new CancelIndicator() {
+
+				public boolean isCanceled() {
+					return monitor.isCanceled();
+				}
+			};
+		}
 	}
 
 	private class ResetAndClearAction extends ClearOutputAction {
@@ -125,6 +162,8 @@ public class XreplConsolePage extends Page {
 
 	private CancelAction cancelAction;
 
+	private Job evaluationJob;
+
 	@Inject
 	public XreplConsolePage(
 			EvaluationController.Factory documentEvaluatorFactory,
@@ -164,24 +203,13 @@ public class XreplConsolePage extends Page {
 	}
 
 	private void triggerEvaluation() {
-		cancelAction.setEnabled(true);
 		getDocument().readOnly(new IUnitOfWork<Object, XtextResource>() {
+
 			public Object exec(XtextResource state) throws Exception {
 				final String input = getDocument().get();
-				new Job("evaluating script") {
-					{
-						setPriority(INTERACTIVE);
-					}
-					@Override
-					protected IStatus run(IProgressMonitor monitor) {
-						try {
-							evaluator.evaluate(input);
-						} finally {
-							cancelAction.setEnabled(false);
-						}
-						return Status.OK_STATUS;
-					}
-				}.schedule();
+				cancelAction.setEnabled(true);
+				evaluationJob = new EvaluationJob(input);
+				evaluationJob.schedule();
 				return null;
 			}
 
@@ -195,11 +223,14 @@ public class XreplConsolePage extends Page {
 	private void createActions() {
 		ResetAndClearAction resetAndClear = createResetAndClearAction();
 		cancelAction = createCancelAction();
-
 		addToMenu(resetAndClear, cancelAction);
 
 		addToToolbar(IConsoleConstants.OUTPUT_GROUP, resetAndClear);
 		addToToolbar(IConsoleConstants.LAUNCH_GROUP, cancelAction);
+	}
+
+	protected CancelAction createCancelAction() {
+		return new CancelAction();
 	}
 
 	protected void addToToolbar(String group, Action action) {
@@ -212,10 +243,6 @@ public class XreplConsolePage extends Page {
 		for (Action action : actions) {
 			menu.add(action);
 		}
-	}
-
-	protected CancelAction createCancelAction() {
-		return new CancelAction();
 	}
 
 	protected ResetAndClearAction createResetAndClearAction() {

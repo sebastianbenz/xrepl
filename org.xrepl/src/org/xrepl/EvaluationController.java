@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.xrepl;
 
+import org.eclipse.xtext.util.CancelIndicator;
+
 import com.google.inject.Inject;
 
 public class EvaluationController {
@@ -35,7 +37,7 @@ public class EvaluationController {
 
 	private OutputView outputView;
 
-	private final DefaultEvaluator repl;
+	private final Evaluator repl;
 
 	private final InputField inputField;
 
@@ -48,6 +50,10 @@ public class EvaluationController {
 	}
 
 	public void evaluate(final String input) {
+		evaluate(input, CancelIndicator.NullImpl);
+	}
+	
+	public void evaluate(final String input, CancelIndicator cancelIndicator) {
 		if (empty(input)) {
 			inputField.revert();
 			return;
@@ -56,12 +62,13 @@ public class EvaluationController {
 			return;
 		}
 		inputField.freeze();
-		outputView.showInput(input);
 		try {
-			Object result = repl.evaluate(input);
+			Object result = repl.evaluate(input, cancelIndicator);
+			outputView.showInput(input);
 			outputView.showResult(result);
 			inputField.clear();
 		} catch (Throwable e) {
+			outputView.showInput(input);
 			outputView.showError(e);
 			inputField.revert();
 		}
@@ -99,8 +106,5 @@ public class EvaluationController {
 		return repl.canEvaluate(input);
 	}
 
-	public void cancel() {
-		repl.cancelEvaluation();
-	}
 
 }

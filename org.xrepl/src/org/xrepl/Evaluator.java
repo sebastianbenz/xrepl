@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.xrepl;
 
+import org.eclipse.xtext.util.CancelIndicator;
+
 public interface Evaluator {
 
 	public abstract Object evaluate(String code) throws Throwable;
@@ -17,5 +19,8 @@ public interface Evaluator {
 	public abstract void reset();
 
 	public abstract boolean canEvaluate(String input);
+
+	public abstract Object evaluate(String input,
+			CancelIndicator cancelIndicator) throws Throwable;
 
 }
