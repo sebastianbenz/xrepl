@@ -19,12 +19,15 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.junit.internal.matchers.IsCollectionContaining.hasItem;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.TreeIterator;
@@ -39,8 +42,9 @@ import org.xrepl.DefaultEvaluator;
 
 import com.google.common.base.Function;
 import com.google.inject.Inject;
+import com.google.inject.internal.Lists;
 
-public class DefaultEvaluatorTest extends AbstractXScriptTest {
+public class EvaluatorTest extends AbstractXScriptTest {
 
 	@Inject
 	private DefaultEvaluator evaluator;
@@ -114,12 +118,20 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 	}
 
 	@Test public void shouldAllowSettingAttributes() throws Throwable {
-		evalToString("import 'http://www.eclipse.org/emf/2002/Ecore'");
+		eval("import 'http://www.eclipse.org/emf/2002/Ecore'");
 		eval("var aPackage = create EPackage");
 		eval("aPackage.name = 'test'");
 		assertThat(evalToString("aPackage.name"), is("test"));
 	}
 
+	@Test
+	public void shouldSupportClojures() throws Throwable {
+		eval("var list = new java.util.ArrayList()");
+		eval("list.add('a')");
+		eval("list.forEach(e | e.toUpperCase)");
+		assertThat(evalToString("list"), is("[A]"));
+	}
+	
 	@Test public void shouldAllowSettingAttributesViaSetMethod() throws Throwable {
 		evalToString("import 'http://www.eclipse.org/emf/2002/Ecore'");
 		eval("var aPackage = create EPackage");
@@ -162,6 +174,20 @@ public class DefaultEvaluatorTest extends AbstractXScriptTest {
 		eval("var x = 'aVariable'");
 		evaluator.reset();
 		assertThat(evalutionException("var x = 'aVariable'"), is(nullValue()));
+	}
+	
+	@Test public void shouldSupportJavaImports() throws Throwable {
+		eval("import java.util.*");
+		assertThat(evalToString("new ArrayList()"), is(ArrayList.class));
+	}
+	
+	@Test public void shouldSupportStaticJavaImports() throws Throwable {
+		eval("import static java.util.Arrays.*");
+		assertThat(evalToString("asList('x', 'y')"), is(List.class));
+	}
+	
+	@Test public void shouldSupportStaticJavaImports2() throws Throwable {
+		assertThat(evalToString("java.util.Arrays.asList('x', 'y')"), is(List.class));
 	}
 
 	private Iterable<String> resourceSet() {

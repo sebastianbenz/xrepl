@@ -70,12 +70,10 @@ public class XNewEObjectImpl extends XExpressionImpl implements XNewEObject
 	 */
 	public EClass getType()
 	{
-		if (type != null && type.eIsProxy())
-		{
+		if (type != null && type.eIsProxy()) {
 			InternalEObject oldType = (InternalEObject)type;
 			type = (EClass)eResolveProxy(oldType);
-			if (type != oldType)
-			{
+			if (type != oldType) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, XscriptPackage.XNEW_EOBJECT__TYPE, oldType, type));
 			}
@@ -114,8 +112,7 @@ public class XNewEObjectImpl extends XExpressionImpl implements XNewEObject
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case XscriptPackage.XNEW_EOBJECT__TYPE:
 				if (resolve) return getType();
 				return basicGetType();
@@ -131,8 +128,7 @@ public class XNewEObjectImpl extends XExpressionImpl implements XNewEObject
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case XscriptPackage.XNEW_EOBJECT__TYPE:
 				setType((EClass)newValue);
 				return;
@@ -148,8 +144,7 @@ public class XNewEObjectImpl extends XExpressionImpl implements XNewEObject
 	@Override
 	public void eUnset(int featureID)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case XscriptPackage.XNEW_EOBJECT__TYPE:
 				setType((EClass)null);
 				return;
@@ -165,8 +160,7 @@ public class XNewEObjectImpl extends XExpressionImpl implements XNewEObject
 	@Override
 	public boolean eIsSet(int featureID)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case XscriptPackage.XNEW_EOBJECT__TYPE:
 				return type != null;
 		}

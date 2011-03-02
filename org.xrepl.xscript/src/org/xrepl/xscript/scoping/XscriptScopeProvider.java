@@ -20,18 +20,22 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.scoping.impl.SimpleScope;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.scoping.XbaseScopeProvider;
+import org.eclipse.xtext.xbase.scoping.featurecalls.DefaultJvmFeatureDescriptionProvider;
+import org.eclipse.xtext.xbase.scoping.featurecalls.IJvmFeatureDescriptionProvider;
 import org.xrepl.xscript.XNewEObject;
 import org.xrepl.xscript.XScript;
 import org.xrepl.xscript.XscriptPackage;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 /**
  * This class contains custom scoping description.
  * 
@@ -43,6 +47,10 @@ public class XscriptScopeProvider extends XbaseScopeProvider {
 	
 	@Inject 
 	private EPackageScopeProvider packageScopeProvider;
+	
+	@Inject
+	private Provider<StaticallyImportedFeaturesProvider> staticallyImportedFeaturesProvider;
+
 
 	public class DeclarativeScopeProvider extends AbstractDeclarativeScopeProvider{
 		public IScope scope_XNewEObject_type(XNewEObject context, EReference ref){
@@ -85,6 +93,19 @@ public class XscriptScopeProvider extends XbaseScopeProvider {
 
 	private boolean isXScriptFeature(EReference reference) {
 		return reference.getEContainingClass().getEPackage() == XscriptPackage.eINSTANCE;
+	}
+	
+	@Override
+	protected List<IJvmFeatureDescriptionProvider> getStaticFeatureDescriptionProviders(Resource context,
+			JvmDeclaredType contextType) {
+		List<IJvmFeatureDescriptionProvider> result = super.getStaticFeatureDescriptionProviders(context, contextType);
+		final DefaultJvmFeatureDescriptionProvider defaultProvider = newDefaultFeatureDescProvider();
+		StaticallyImportedFeaturesProvider staticProvider = staticallyImportedFeaturesProvider.get();
+		staticProvider.setContext(context);
+		defaultProvider.setContextType(contextType);
+		defaultProvider.setFeaturesForTypeProvider(staticProvider);
+		result.add(0, defaultProvider);
+		return result;
 	}
 	
 	

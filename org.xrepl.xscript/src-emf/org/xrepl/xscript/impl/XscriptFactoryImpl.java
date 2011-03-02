@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import org.xrepl.xscript.*;
+import org.xrepl.xscript.custom.XImportImplCustom;
 
 /**
  * <!-- begin-user-doc -->
@@ -31,16 +32,13 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	 */
 	public static XscriptFactory init()
 	{
-		try
-		{
+		try {
 			XscriptFactory theXscriptFactory = (XscriptFactory)EPackage.Registry.INSTANCE.getEFactory("http://www.xrepl.org/xscript/"); 
-			if (theXscriptFactory != null)
-			{
+			if (theXscriptFactory != null) {
 				return theXscriptFactory;
 			}
 		}
-		catch (Exception exception)
-		{
+		catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new XscriptFactoryImpl();
@@ -65,8 +63,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	@Override
 	public EObject create(EClass eClass)
 	{
-		switch (eClass.getClassifierID())
-		{
+		switch (eClass.getClassifierID()) {
 			case XscriptPackage.XSCRIPT: return createXScript();
 			case XscriptPackage.XIMPORT: return createXImport();
 			case XscriptPackage.XNAMESPACE: return createXNamespace();
@@ -92,11 +89,11 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public XImport createXImport()
 	{
-		XImportImpl xImport = new XImportImpl();
+		XImportImpl xImport = new XImportImplCustom();
 		return xImport;
 	}
 

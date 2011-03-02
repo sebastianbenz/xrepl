@@ -47,5 +47,9 @@ public class XscriptInterpreter extends XbaseInterpreter {
 		}
 		return type.getEPackage().getEFactoryInstance().create(type);
 	}
+	
+	public Object _evaluateXImport(XImport xImport, IEvaluationContext context, CancelIndicator cancelIndicator) {
+		return xImport.getImportedNamespace();
+	}
 
 }

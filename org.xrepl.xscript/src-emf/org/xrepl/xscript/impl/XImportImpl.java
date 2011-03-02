@@ -188,11 +188,32 @@ public class XImportImpl extends XExpressionImpl implements XImport
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public boolean isWildcard() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getImportedTypeName() {
+		// TODO: implement this method
+		// Ensure that you remove @generated or mark it @generated NOT
+		throw new UnsupportedOperationException();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case XscriptPackage.XIMPORT__IMPORTED_NAMESPACE:
 				return getImportedNamespace();
 			case XscriptPackage.XIMPORT__EXTENSION:
@@ -211,8 +232,7 @@ public class XImportImpl extends XExpressionImpl implements XImport
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case XscriptPackage.XIMPORT__IMPORTED_NAMESPACE:
 				setImportedNamespace((String)newValue);
 				return;
@@ -234,8 +254,7 @@ public class XImportImpl extends XExpressionImpl implements XImport
 	@Override
 	public void eUnset(int featureID)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case XscriptPackage.XIMPORT__IMPORTED_NAMESPACE:
 				setImportedNamespace(IMPORTED_NAMESPACE_EDEFAULT);
 				return;
@@ -257,8 +276,7 @@ public class XImportImpl extends XExpressionImpl implements XImport
 	@Override
 	public boolean eIsSet(int featureID)
 	{
-		switch (featureID)
-		{
+		switch (featureID) {
 			case XscriptPackage.XIMPORT__IMPORTED_NAMESPACE:
 				return IMPORTED_NAMESPACE_EDEFAULT == null ? importedNamespace != null : !IMPORTED_NAMESPACE_EDEFAULT.equals(importedNamespace);
 			case XscriptPackage.XIMPORT__EXTENSION:
