@@ -19,7 +19,7 @@ public class XImportImplCustom extends XImportImpl {
 				return result.substring(0, result.length() - 2);
 			return null;
 		}
-		return result;
+		return result.substring(0, result.lastIndexOf("."));
 	}
 
 }

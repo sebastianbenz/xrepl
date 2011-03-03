@@ -24,7 +24,7 @@ public class StaticallyImportedFeaturesProvider extends AbstractStaticMethodsFea
 		XImport imported;
 		while(imports.hasNext()){
 			imported = imports.next();
-			if (imported.isStatic() && (!extension || imported.isExtension()) && imported.isWildcard()) {
+			if (imported.isStatic() ) {
 				String typeName = imported.getImportedTypeName();
 				if (!Strings.isEmpty(typeName))
 					result.add(typeName);

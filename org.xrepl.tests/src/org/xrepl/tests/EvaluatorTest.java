@@ -177,17 +177,39 @@ public class EvaluatorTest extends AbstractXScriptTest {
 	}
 	
 	@Test public void shouldSupportJavaImports() throws Throwable {
+		eval("import java.util.ArrayList");
+		assertThat(eval("new ArrayList()"), is(ArrayList.class));
+	}
+	
+	@Test public void shouldSupportJavaImportsWithWildCard() throws Throwable {
 		eval("import java.util.*");
-		assertThat(evalToString("new ArrayList()"), is(ArrayList.class));
+		assertThat(eval("new ArrayList()"), is(ArrayList.class));
+	}
+	
+	@Test public void shouldSupportJavaQualifiedNames() throws Throwable {
+		assertThat(eval("new java.util.ArrayList()"), is(ArrayList.class));
+	}
+	
+	@Test public void shouldSupportStaticJavaImportsWithWildCard() throws Throwable {
+		eval("import static java.lang.Math.*");
+		assertThat(eval("random()"), is(double.class));
 	}
 	
 	@Test public void shouldSupportStaticJavaImports() throws Throwable {
-		eval("import static java.util.Arrays.*");
-		assertThat(evalToString("asList('x', 'y')"), is(List.class));
+		assertThat(eval("Math.random()"), is(double.class));
 	}
 	
-	@Test public void shouldSupportStaticJavaImports2() throws Throwable {
-		assertThat(evalToString("java.util.Arrays.asList('x', 'y')"), is(List.class));
+	@Test public void shouldSupportStaticJavaImportsByQualifiedName() throws Throwable {
+		eval("import static java.lang.Math.random");
+		assertThat(eval("random()"), is(double.class));
+	}
+	
+	@Test public void shouldSupportStaticJavaImportsByQualifiedName2() throws Throwable {
+		assertThat(eval("java.lang.Math.random()"), is(double.class));
+	}
+
+	@Test public void shouldSupportStaticJavaImportsByQualifiedNameWithParams() throws Throwable {
+		assertThat(eval("java.util.Arrays.asList('x', 'y')"), is(List.class));
 	}
 
 	private Iterable<String> resourceSet() {

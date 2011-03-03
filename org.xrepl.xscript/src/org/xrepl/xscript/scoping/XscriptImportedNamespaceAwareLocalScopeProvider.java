@@ -34,7 +34,7 @@ public class XscriptImportedNamespaceAwareLocalScopeProvider extends
 		Iterator<XImport> imports = Iterators.filter(contents, XImport.class);
 		while (imports.hasNext()) {
 			XImport xImport = (XImport) imports.next();
-			importedNamespaceResolvers.add(new ImportNormalizer(nameConverter.toQualifiedName(xImport.getImportedNamespace()), true, ignoreCase));
+			importedNamespaceResolvers.add(new ImportNormalizer(nameConverter.toQualifiedName(xImport.getImportedTypeName()), true, ignoreCase));
 		}
 		return importedNamespaceResolvers;
 	}

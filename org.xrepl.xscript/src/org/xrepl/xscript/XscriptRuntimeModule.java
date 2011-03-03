@@ -21,6 +21,7 @@ import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
 import org.eclipse.xtext.xbase.interpreter.impl.DefaultEvaluationContext;
 import org.eclipse.xtext.xbase.resource.XbaseResource;
 import org.eclipse.xtext.xbase.typing.ITypeProvider;
+import org.xrepl.xscript.scoping.XscriptGlobalScopeProvider;
 import org.xrepl.xscript.scoping.XscriptImportedNamespaceAwareLocalScopeProvider;
 import org.xrepl.xscript.scoping.XscriptScopeProvider;
 import org.xrepl.xscript.typing.XscriptTypeProvider;
@@ -63,4 +64,9 @@ public class XscriptRuntimeModule extends org.xrepl.xscript.AbstractXscriptRunti
 	public Class<? extends XtextResource> bindXtextResource() {
 		return XbaseResource.class;
 	}
+	
+	
+	public java.lang.Class<? extends org.eclipse.xtext.scoping.IGlobalScopeProvider> bindIGlobalScopeProvider() {
+		return XscriptGlobalScopeProvider.class;
+	};
 }
