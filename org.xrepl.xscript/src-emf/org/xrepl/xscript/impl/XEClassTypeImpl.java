@@ -7,7 +7,6 @@ package org.xrepl.xscript.impl;
 
 import org.eclipse.emf.ecore.EClass;
 
-import org.eclipse.xtext.common.types.impl.JvmGenericTypeImpl;
 import org.eclipse.xtext.common.types.impl.JvmGenericTypeImplCustom;
 
 import org.xrepl.xscript.XEClassType;
@@ -22,7 +21,7 @@ import org.xrepl.xscript.XscriptPackage;
  *
  * @generated
  */
-public class XEClassTypeImpl extends JvmGenericTypeImpl implements XEClassType
+public class XEClassTypeImpl extends JvmGenericTypeImplCustom implements XEClassType
 {
 	/**
 	 * <!-- begin-user-doc -->

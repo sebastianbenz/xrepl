@@ -35,5 +35,6 @@ public class XscriptStandaloneSetupGenerated implements ISetup {
 		
 
 
+
 	}
 }

@@ -52,7 +52,8 @@ public class XscriptAdapterFactory extends AdapterFactoryImpl
 	 */
 	public XscriptAdapterFactory()
 	{
-		if (modelPackage == null) {
+		if (modelPackage == null)
+		{
 			modelPackage = XscriptPackage.eINSTANCE;
 		}
 	}
@@ -68,10 +69,12 @@ public class XscriptAdapterFactory extends AdapterFactoryImpl
 	@Override
 	public boolean isFactoryForType(Object object)
 	{
-		if (object == modelPackage) {
+		if (object == modelPackage)
+		{
 			return true;
 		}
-		if (object instanceof EObject) {
+		if (object instanceof EObject)
+		{
 			return ((EObject)object).eClass().getEPackage() == modelPackage;
 		}
 		return false;
@@ -84,77 +87,96 @@ public class XscriptAdapterFactory extends AdapterFactoryImpl
 	 * @generated
 	 */
 	protected XscriptSwitch<Adapter> modelSwitch =
-		new XscriptSwitch<Adapter>() {
+		new XscriptSwitch<Adapter>()
+		{
 			@Override
-			public Adapter caseXScript(XScript object) {
+			public Adapter caseXScript(XScript object)
+			{
 				return createXScriptAdapter();
 			}
 			@Override
-			public Adapter caseXImport(XImport object) {
+			public Adapter caseXImport(XImport object)
+			{
 				return createXImportAdapter();
 			}
 			@Override
-			public Adapter caseXNamespace(XNamespace object) {
+			public Adapter caseXNamespace(XNamespace object)
+			{
 				return createXNamespaceAdapter();
 			}
 			@Override
-			public Adapter caseXEPackageImport(XEPackageImport object) {
+			public Adapter caseXEPackageImport(XEPackageImport object)
+			{
 				return createXEPackageImportAdapter();
 			}
 			@Override
-			public Adapter caseXNewEObject(XNewEObject object) {
+			public Adapter caseXNewEObject(XNewEObject object)
+			{
 				return createXNewEObjectAdapter();
 			}
 			@Override
-			public Adapter caseXScriptExpression(XScriptExpression object) {
+			public Adapter caseXScriptExpression(XScriptExpression object)
+			{
 				return createXScriptExpressionAdapter();
 			}
 			@Override
-			public Adapter caseXEClassType(XEClassType object) {
+			public Adapter caseXEClassType(XEClassType object)
+			{
 				return createXEClassTypeAdapter();
 			}
 			@Override
-			public Adapter caseXExpression(XExpression object) {
+			public Adapter caseXExpression(XExpression object)
+			{
 				return createXExpressionAdapter();
 			}
 			@Override
-			public Adapter caseXBlockExpression(XBlockExpression object) {
+			public Adapter caseXBlockExpression(XBlockExpression object)
+			{
 				return createXBlockExpressionAdapter();
 			}
 			@Override
-			public Adapter caseJvmAnnotationTarget(JvmAnnotationTarget object) {
+			public Adapter caseJvmAnnotationTarget(JvmAnnotationTarget object)
+			{
 				return createJvmAnnotationTargetAdapter();
 			}
 			@Override
-			public Adapter caseJvmIdentifiableElement(JvmIdentifiableElement object) {
+			public Adapter caseJvmIdentifiableElement(JvmIdentifiableElement object)
+			{
 				return createJvmIdentifiableElementAdapter();
 			}
 			@Override
-			public Adapter caseJvmMember(JvmMember object) {
+			public Adapter caseJvmMember(JvmMember object)
+			{
 				return createJvmMemberAdapter();
 			}
 			@Override
-			public Adapter caseJvmType(JvmType object) {
+			public Adapter caseJvmType(JvmType object)
+			{
 				return createJvmTypeAdapter();
 			}
 			@Override
-			public Adapter caseJvmComponentType(JvmComponentType object) {
+			public Adapter caseJvmComponentType(JvmComponentType object)
+			{
 				return createJvmComponentTypeAdapter();
 			}
 			@Override
-			public Adapter caseJvmDeclaredType(JvmDeclaredType object) {
+			public Adapter caseJvmDeclaredType(JvmDeclaredType object)
+			{
 				return createJvmDeclaredTypeAdapter();
 			}
 			@Override
-			public Adapter caseJvmTypeParameterDeclarator(JvmTypeParameterDeclarator object) {
+			public Adapter caseJvmTypeParameterDeclarator(JvmTypeParameterDeclarator object)
+			{
 				return createJvmTypeParameterDeclaratorAdapter();
 			}
 			@Override
-			public Adapter caseJvmGenericType(JvmGenericType object) {
+			public Adapter caseJvmGenericType(JvmGenericType object)
+			{
 				return createJvmGenericTypeAdapter();
 			}
 			@Override
-			public Adapter defaultCase(EObject object) {
+			public Adapter defaultCase(EObject object)
+			{
 				return createEObjectAdapter();
 			}
 		};

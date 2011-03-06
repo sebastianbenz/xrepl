@@ -55,7 +55,8 @@ public class XscriptSwitch<T>
 	 */
 	public XscriptSwitch()
 	{
-		if (modelPackage == null) {
+		if (modelPackage == null)
+		{
 			modelPackage = XscriptPackage.eINSTANCE;
 		}
 	}
@@ -81,10 +82,12 @@ public class XscriptSwitch<T>
 	 */
 	protected T doSwitch(EClass theEClass, EObject theEObject)
 	{
-		if (theEClass.eContainer() == modelPackage) {
+		if (theEClass.eContainer() == modelPackage)
+		{
 			return doSwitch(theEClass.getClassifierID(), theEObject);
 		}
-		else {
+		else
+		{
 			List<EClass> eSuperTypes = theEClass.getESuperTypes();
 			return
 				eSuperTypes.isEmpty() ?
@@ -102,8 +105,10 @@ public class XscriptSwitch<T>
 	 */
 	protected T doSwitch(int classifierID, EObject theEObject)
 	{
-		switch (classifierID) {
-			case XscriptPackage.XSCRIPT: {
+		switch (classifierID)
+		{
+			case XscriptPackage.XSCRIPT:
+			{
 				XScript xScript = (XScript)theEObject;
 				T result = caseXScript(xScript);
 				if (result == null) result = caseXBlockExpression(xScript);
@@ -111,7 +116,8 @@ public class XscriptSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case XscriptPackage.XIMPORT: {
+			case XscriptPackage.XIMPORT:
+			{
 				XImport xImport = (XImport)theEObject;
 				T result = caseXImport(xImport);
 				if (result == null) result = caseXScriptExpression(xImport);
@@ -119,7 +125,8 @@ public class XscriptSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case XscriptPackage.XNAMESPACE: {
+			case XscriptPackage.XNAMESPACE:
+			{
 				XNamespace xNamespace = (XNamespace)theEObject;
 				T result = caseXNamespace(xNamespace);
 				if (result == null) result = caseXScriptExpression(xNamespace);
@@ -127,7 +134,8 @@ public class XscriptSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case XscriptPackage.XE_PACKAGE_IMPORT: {
+			case XscriptPackage.XE_PACKAGE_IMPORT:
+			{
 				XEPackageImport xePackageImport = (XEPackageImport)theEObject;
 				T result = caseXEPackageImport(xePackageImport);
 				if (result == null) result = caseXScriptExpression(xePackageImport);
@@ -135,7 +143,8 @@ public class XscriptSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case XscriptPackage.XNEW_EOBJECT: {
+			case XscriptPackage.XNEW_EOBJECT:
+			{
 				XNewEObject xNewEObject = (XNewEObject)theEObject;
 				T result = caseXNewEObject(xNewEObject);
 				if (result == null) result = caseXScriptExpression(xNewEObject);
@@ -143,14 +152,16 @@ public class XscriptSwitch<T>
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case XscriptPackage.XSCRIPT_EXPRESSION: {
+			case XscriptPackage.XSCRIPT_EXPRESSION:
+			{
 				XScriptExpression xScriptExpression = (XScriptExpression)theEObject;
 				T result = caseXScriptExpression(xScriptExpression);
 				if (result == null) result = caseXExpression(xScriptExpression);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
-			case XscriptPackage.XE_CLASS_TYPE: {
+			case XscriptPackage.XE_CLASS_TYPE:
+			{
 				XEClassType xeClassType = (XEClassType)theEObject;
 				T result = caseXEClassType(xeClassType);
 				if (result == null) result = caseJvmGenericType(xeClassType);

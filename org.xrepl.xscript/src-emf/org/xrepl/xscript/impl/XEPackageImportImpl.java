@@ -147,7 +147,8 @@ public class XEPackageImportImpl extends XExpressionImpl implements XEPackageImp
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType)
 	{
-		switch (featureID) {
+		switch (featureID)
+		{
 			case XscriptPackage.XE_PACKAGE_IMPORT__NS_URI:
 				return getNsUri();
 			case XscriptPackage.XE_PACKAGE_IMPORT__NAME:
@@ -164,7 +165,8 @@ public class XEPackageImportImpl extends XExpressionImpl implements XEPackageImp
 	@Override
 	public void eSet(int featureID, Object newValue)
 	{
-		switch (featureID) {
+		switch (featureID)
+		{
 			case XscriptPackage.XE_PACKAGE_IMPORT__NS_URI:
 				setNsUri((String)newValue);
 				return;
@@ -183,7 +185,8 @@ public class XEPackageImportImpl extends XExpressionImpl implements XEPackageImp
 	@Override
 	public void eUnset(int featureID)
 	{
-		switch (featureID) {
+		switch (featureID)
+		{
 			case XscriptPackage.XE_PACKAGE_IMPORT__NS_URI:
 				setNsUri(NS_URI_EDEFAULT);
 				return;
@@ -202,7 +205,8 @@ public class XEPackageImportImpl extends XExpressionImpl implements XEPackageImp
 	@Override
 	public boolean eIsSet(int featureID)
 	{
-		switch (featureID) {
+		switch (featureID)
+		{
 			case XscriptPackage.XE_PACKAGE_IMPORT__NS_URI:
 				return NS_URI_EDEFAULT == null ? nsUri != null : !NS_URI_EDEFAULT.equals(nsUri);
 			case XscriptPackage.XE_PACKAGE_IMPORT__NAME:

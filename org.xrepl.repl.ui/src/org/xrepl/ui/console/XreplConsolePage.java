@@ -33,6 +33,7 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISelectionService;
 import org.eclipse.ui.IWorkbenchPart;
@@ -176,6 +177,29 @@ public class XreplConsolePage extends Page {
 
 	@Override
 	public void createControl(Composite parent) {
+		
+		getSite().getPage().addPartListener(new IPartListener() {
+			
+			public void partOpened(IWorkbenchPart part) {
+				System.out.println(part);
+			}
+			
+			public void partDeactivated(IWorkbenchPart part) {
+				System.out.println(part);	
+			}
+			
+			public void partClosed(IWorkbenchPart part) {
+				System.out.println(part);
+			}
+			
+			public void partBroughtToTop(IWorkbenchPart part) {
+				System.out.println(part);
+			}
+			
+			public void partActivated(IWorkbenchPart part) {
+				System.out.println(part);
+			}
+		});
 		createPanel(parent);
 		createOutputViewer();
 		createEditor();
