@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
 
 import org.xrepl.xscript.*;
+import org.xrepl.xscript.custom.XImportImplCustom;
 
 /**
  * <!-- begin-user-doc -->
@@ -92,11 +93,11 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @generated
+	 * @generated NOT
 	 */
 	public XImport createXImport()
 	{
-		XImportImpl xImport = new XImportImpl();
+		XImportImpl xImport = new XImportImplCustom();
 		return xImport;
 	}
 

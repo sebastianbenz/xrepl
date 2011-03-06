@@ -4,8 +4,12 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
+import org.eclipse.core.expressions.IEvaluationContext;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -46,8 +50,10 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ActiveShellExpression;
+import org.eclipse.ui.ISources;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
@@ -55,6 +61,7 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
+import org.eclipse.ui.internal.expressions.ActivePartExpression;
 import org.eclipse.ui.navigator.ICommonMenuConstants;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.AnnotationPreference;
@@ -113,12 +120,10 @@ public class EmbeddedXtextEditor {
 
 	@Inject
 	private Provider<XtextResource> xtextResourceProvider;
-	
 
 	@Inject
 	private ResourceSet resourceSet;
-	
-	
+
 	@Inject
 	private IGrammarAccess fGrammarAccess;
 
@@ -167,6 +172,7 @@ public class EmbeddedXtextEditor {
 	 *            the file extension (without the DOT) of the textual DSL to
 	 *            edit
 	 */
+	@SuppressWarnings("restriction")
 	public EmbeddedXtextEditor(Composite control, Injector injector, int style) {
 		fControl = control;
 		fStyle = style;
@@ -285,10 +291,6 @@ public class EmbeddedXtextEditor {
 				fActions.get(ITextEditorActionConstants.COPY));
 		menu.appendToGroup(ITextEditorActionConstants.GROUP_EDIT,
 				fActions.get(ITextEditorActionConstants.PASTE));
-
-		menu.add(new Separator(ICommonMenuConstants.GROUP_GENERATE));
-		menu.appendToGroup(ICommonMenuConstants.GROUP_GENERATE, fActions
-				.get(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS)); //$NON-NLS-1$
 	}
 
 	private void createViewer(Composite parent) {
@@ -568,7 +570,16 @@ public class EmbeddedXtextEditor {
 
 		{
 			TextViewerAction action = new TextViewerAction(fSourceViewer,
-					ISourceViewer.CONTENTASSIST_PROPOSALS);
+					ISourceViewer.CONTENTASSIST_PROPOSALS){
+				public void run() {
+					super.run();
+				};
+				
+				@Override
+						public void runWithEvent(Event event) {
+							super.runWithEvent(event);
+						}
+			};
 			action.setText("Content Assist");
 			setAction(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS,
 					action);
@@ -581,6 +592,7 @@ public class EmbeddedXtextEditor {
 			action.setText("Format");
 			setAction(XTEXT_UI_FORMAT_ACTION, action);
 			setAsContextDependantAction(action);
+			
 		}
 
 		{
@@ -637,9 +649,22 @@ public class EmbeddedXtextEditor {
 		private final List<IHandlerActivation> fHandlerActivations;
 		private IContextActivation fContextActivation;
 
+		private IContextService contextService;
+
 		public SourceViewerFocusListener() {
-			fExpression = new ActiveShellExpression(fSourceViewer.getControl()
-					.getShell());
+			fExpression = new Expression() {
+				
+				@Override
+				public EvaluationResult evaluate(IEvaluationContext context)
+						throws CoreException {
+					Object values =  context.getVariable(ISources.ACTIVE_PART_ID_NAME);
+					if (values.equals("org.eclipse.ui.console.ConsoleView")) {
+						return EvaluationResult.TRUE;
+					}else{
+						return EvaluationResult.FALSE;
+					}
+				}
+			};
 			fHandlerActivations = Lists.newArrayList();
 
 			fSourceViewer.getControl().addDisposeListener(
@@ -674,17 +699,19 @@ public class EmbeddedXtextEditor {
 			IHandlerService handlerService = handlerService();
 
 			for (ActionHandler actionHandler : fActionHandlers) {
+				System.out.println(actionHandler.getAction().getId());
 				fHandlerActivations.add(handlerService.activateHandler(
-						actionHandler.getAction().getId(), actionHandler,
-						fExpression));
+						actionHandler.getAction().getId(), actionHandler, fExpression));
 			}
 		}
 
 		protected IContextService contextService() {
-			IContextService contextService = (IContextService) PlatformUI
-					.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.getActivePart().getSite()
-					.getService(IContextService.class);
+			if (contextService == null) {
+				contextService = (IContextService) PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage()
+						.getActivePart().getSite()
+						.getService(IContextService.class);
+			}
 			return contextService;
 		}
 	}
