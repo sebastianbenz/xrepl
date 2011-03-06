@@ -11,20 +11,18 @@
 package org.xrepl.ui;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.xrepl.ResourceSetProvider;
+import org.xrepl.XreplResourceSetProvider;
 import org.xrepl.ui.console.XreplConsole;
-import org.xrepl.ui.embedded.EmbeddedXtextEditorModule;
 
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.name.Names;
 
-public class XreplModule extends EmbeddedXtextEditorModule implements Module {
+public class XreplModule implements Module {
 	
-	@Override
 	public void configure(Binder binder) {
-		super.configure(binder);
 		binder.bind(String.class).annotatedWith(Names.named(XreplConsole.CONSOLE_TITLE)).toInstance(getConsoleTitle());
+		binder.bind(ResourceSet.class).toProvider(XreplResourceSetProvider.class);
 	}
 	
 	
@@ -83,7 +81,7 @@ public class XreplModule extends EmbeddedXtextEditorModule implements Module {
 	}
 	
 	public void configureResourceSet(Binder binder){
-		binder.bind(ResourceSet.class).toProvider(ResourceSetProvider.class);
+		binder.bind(ResourceSet.class).toProvider(XreplResourceSetProvider.class);
 	}
 	
 	

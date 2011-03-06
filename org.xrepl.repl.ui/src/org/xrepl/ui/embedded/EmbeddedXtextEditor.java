@@ -1,28 +1,23 @@
-/*******************************************************************************
- * Copyright (c) 2011 Sebastian Benz and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     Sebastian Benz - initial API and implementation
- *******************************************************************************/
 package org.xrepl.ui.embedded;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.text.IDocument;
-import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.ISynchronizable;
+import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationModel;
 import org.eclipse.jface.text.source.AnnotationPainter;
@@ -40,7 +35,10 @@ import org.eclipse.jface.text.source.OverviewRuler;
 import org.eclipse.jface.text.source.SourceViewer;
 import org.eclipse.jface.text.source.projection.ProjectionSupport;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusEvent;
@@ -48,8 +46,8 @@ import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.ActiveShellExpression;
-import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
 import org.eclipse.ui.contexts.IContextService;
@@ -57,16 +55,18 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
+import org.eclipse.ui.navigator.ICommonMenuConstants;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.AnnotationPreference;
 import org.eclipse.ui.texteditor.DefaultMarkerAnnotationAccess;
+import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
+import org.eclipse.ui.texteditor.IUpdate;
 import org.eclipse.ui.texteditor.MarkerAnnotationPreferences;
 import org.eclipse.ui.texteditor.SourceViewerDecorationSupport;
 import org.eclipse.xtext.Constants;
 import org.eclipse.xtext.IGrammarAccess;
 import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.ui.editor.XtextSourceViewer;
 import org.eclipse.xtext.ui.editor.XtextSourceViewerConfiguration;
 import org.eclipse.xtext.ui.editor.bracketmatching.BracketMatchingPreferencesInitializer;
@@ -84,17 +84,16 @@ import org.eclipse.xtext.validation.Issue;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
 
-@SuppressWarnings("restriction")
 public class EmbeddedXtextEditor {
 
 	private static final String XTEXT_UI_FORMAT_ACTION = "org.eclipse.xtext.ui.FormatAction";
 	private static final String XTEXT_UI_TOGGLE_SL_COMMENT_ACTION = "org.eclipse.xtext.ui.ToggleCommentAction";
-	private static final String EMBEDEDXTEXT_EDITOR_CONTEXT = EmbeddedXtextEditor.class.getName().toLowerCase() + ".context"; //$NON-NLS-1$
 
 	private Composite fControl;
 	private int fStyle;
@@ -113,6 +112,14 @@ public class EmbeddedXtextEditor {
 	private HighlightingHelper fHighlightingHelper;
 
 	@Inject
+	private Provider<XtextResource> xtextResourceProvider;
+	
+
+	@Inject
+	private ResourceSet resourceSet;
+	
+	
+	@Inject
 	private IGrammarAccess fGrammarAccess;
 
 	@Inject
@@ -125,8 +132,6 @@ public class EmbeddedXtextEditor {
 	private Provider<XtextDocument> fDocumentProvider;
 
 	@Inject
-	private Provider<XtextResource> fXtextResourceProvider;
-	@Inject
 	private IResourceValidator fResourceValidator;
 
 	@Inject
@@ -134,10 +139,6 @@ public class EmbeddedXtextEditor {
 
 	@Inject
 	private ICharacterPairMatcher characterPairMatcher;
-	
-	@Inject
-	private Provider<IDocumentPartitioner> documentPartitioner;
-
 
 	@Inject(optional = true)
 	private AnnotationPainter.IDrawingStrategy projectionAnnotationDrawingStrategy;
@@ -162,7 +163,6 @@ public class EmbeddedXtextEditor {
 	 *            reconcile the content of the editor with something else.
 	 * @param style
 	 *            the SWT style of the {@link SourceViewer} of this editor.
-	 * @param resourceSet 
 	 * @param fileExtension
 	 *            the file extension (without the DOT) of the textual DSL to
 	 *            edit
@@ -170,7 +170,6 @@ public class EmbeddedXtextEditor {
 	public EmbeddedXtextEditor(Composite control, Injector injector, int style) {
 		fControl = control;
 		fStyle = style;
-		this.resourceSet = new XtextResourceSet();
 		fAnnotationPreferences = EditorsPlugin.getDefault()
 				.getMarkerAnnotationPreferences();
 		fFoldingStructureProvider = new EmbeddedFoldingStructureProvider();
@@ -264,6 +263,32 @@ public class EmbeddedXtextEditor {
 		control.setLayoutData(data);
 
 		createActions();
+
+		MenuManager manager = new MenuManager(null, null);
+		manager.setRemoveAllWhenShown(true);
+		manager.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager mgr) {
+				EmbeddedXtextEditor.this.menuAboutToShow(mgr);
+			}
+		});
+
+		StyledText text = fSourceViewer.getTextWidget();
+		Menu menu = manager.createContextMenu(text);
+		text.setMenu(menu);
+	}
+
+	private void menuAboutToShow(IMenuManager menu) {
+		menu.add(new Separator(ITextEditorActionConstants.GROUP_EDIT));
+		menu.appendToGroup(ITextEditorActionConstants.GROUP_EDIT,
+				fActions.get(ITextEditorActionConstants.CUT));
+		menu.appendToGroup(ITextEditorActionConstants.GROUP_EDIT,
+				fActions.get(ITextEditorActionConstants.COPY));
+		menu.appendToGroup(ITextEditorActionConstants.GROUP_EDIT,
+				fActions.get(ITextEditorActionConstants.PASTE));
+
+		menu.add(new Separator(ICommonMenuConstants.GROUP_GENERATE));
+		menu.appendToGroup(ICommonMenuConstants.GROUP_GENERATE, fActions
+				.get(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS)); //$NON-NLS-1$
 	}
 
 	private void createViewer(Composite parent) {
@@ -324,11 +349,6 @@ public class EmbeddedXtextEditor {
 			}
 		});
 		fDocument = fDocumentProvider.get();
-		if (fDocument != null) {
-			IDocumentPartitioner partitioner = documentPartitioner.get();
-			partitioner.connect(fDocument);
-			fDocument.setDocumentPartitioner(partitioner);
-		}
 		ValidationJob job = new ValidationJob(fResourceValidator, fDocument,
 				new IValidationIssueProcessor() {
 					private AnnotationIssueProcessor annotationIssueProcessor;
@@ -347,8 +367,14 @@ public class EmbeddedXtextEditor {
 					}
 				}, CheckMode.FAST_ONLY);
 		fDocument.setValidationJob(job);
-	}
 
+		fSourceViewer
+				.addSelectionChangedListener(new ISelectionChangedListener() {
+					public void selectionChanged(SelectionChangedEvent event) {
+						updateSelectionDependentActions();
+					}
+				});
+	}
 
 	private static final String ERROR_ANNOTATION_TYPE = "org.eclipse.xtext.ui.editor.error";
 	private static final String WARNING_ANNOTATION_TYPE = "org.eclipse.xtext.ui.editor.warning";
@@ -442,7 +468,7 @@ public class EmbeddedXtextEditor {
 	 * @return the overview ruler
 	 */
 	private IOverviewRuler getOverviewRuler() {
-		if (fOverviewRuler == null)
+		if (fOverviewRuler == null && (fStyle & SWT.V_SCROLL) != 0)
 			fOverviewRuler = createOverviewRuler(getSharedColors());
 		return fOverviewRuler;
 	}
@@ -515,14 +541,38 @@ public class EmbeddedXtextEditor {
 		fSourceViewer.setRedraw(true);
 	}
 
-
 	private void createActions() {
+		{
+			TextViewerAction action = new TextViewerAction(fSourceViewer,
+					ITextOperationTarget.CUT);
+			action.setText("Cut");
+			setAction(ITextEditorActionConstants.CUT, action);
+			setAsSelectionDependantAction(action);
+		}
+
+		{
+			TextViewerAction action = new TextViewerAction(fSourceViewer,
+					ITextOperationTarget.COPY);
+			action.setText("Copy");
+			setAction(ITextEditorActionConstants.COPY, action);
+			setAsSelectionDependantAction(action);
+		}
+
+		{
+			TextViewerAction action = new TextViewerAction(fSourceViewer,
+					ITextOperationTarget.PASTE);
+			action.setText("Paste");
+			setAction(ITextEditorActionConstants.PASTE, action);
+			setAsSelectionDependantAction(action);
+		}
+
 		{
 			TextViewerAction action = new TextViewerAction(fSourceViewer,
 					ISourceViewer.CONTENTASSIST_PROPOSALS);
 			action.setText("Content Assist");
 			setAction(ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS,
 					action);
+			setAsContextDependantAction(action);
 		}
 
 		if (fViewerConfiguration.getContentFormatter(fSourceViewer) != null) {
@@ -530,37 +580,58 @@ public class EmbeddedXtextEditor {
 					ISourceViewer.FORMAT);
 			action.setText("Format");
 			setAction(XTEXT_UI_FORMAT_ACTION, action);
+			setAsContextDependantAction(action);
 		}
 
 		{
 			ToggleSLCommentAction action = new ToggleSLCommentAction(
 					fSourceViewer); //$NON-NLS-1$
 			setAction(XTEXT_UI_TOGGLE_SL_COMMENT_ACTION, action);
+			setAsContextDependantAction(action);
 			action.configure(fSourceViewer, fViewerConfiguration);
 		}
 	}
 
-	private void setAction(final String actionID, final IAction action) {
+	private void setAction(String actionID, IAction action) {
 		if (action.getId() == null)
 			action.setId(actionID); // make sure the action ID has been set
 
+		fActions.put(actionID, action);
+	}
+
+	private void setAsContextDependantAction(IAction action) {
 		fActionHandlers.add(new ActionHandler(action));
 	}
 
+	private void setAsSelectionDependantAction(IAction action) {
+		fSelectionDependentActions.add(action);
+	}
+
+	private void updateSelectionDependentActions() {
+		for (IAction action : fSelectionDependentActions) {
+			if (action instanceof IUpdate) {
+				((IUpdate) action).update();
+			}
+		}
+	}
+
+	protected void updateAction(IAction action) {
+
+	}
+
+	private Map<String, IAction> fActions = Maps.newHashMap();
+	private List<IAction> fSelectionDependentActions = Lists.newArrayList();
 	private List<ActionHandler> fActionHandlers = Lists.newArrayList();
-	
-	@Inject
-	private ResourceSet resourceSet;
 
 	/**
 	 * Source viewer focus listener that activates/deactivates action handlers
 	 * on focus state change.
 	 * 
-	 * @author MikaÃ«l Barbero
+	 * @author Mika‘l Barbero
 	 * 
 	 */
 	private final class SourceViewerFocusListener implements FocusListener {
-		
+		private static final String EMBEDEDXTEXT_EDITOR_CONTEXT = "org.xrepl.console.context";
 
 		private final Expression fExpression;
 		private final List<IHandlerActivation> fHandlerActivations;
@@ -574,44 +645,33 @@ public class EmbeddedXtextEditor {
 			fSourceViewer.getControl().addDisposeListener(
 					new DisposeListener() {
 						public void widgetDisposed(DisposeEvent e) {
-							IHandlerService handlerService = (IHandlerService) PlatformUI
-									.getWorkbench().getAdapter(
-											IHandlerService.class);
-							if (handlerService != null) {
-								handlerService
-										.deactivateHandlers(fHandlerActivations);
-							}
+							IHandlerService handlerService = handlerService();
+							handlerService
+									.deactivateHandlers(fHandlerActivations);
 							fHandlerActivations.clear();
 						}
 					});
 		}
 
 		public void focusLost(FocusEvent e) {
-			IEditorPart activeEditor = PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage()
-					.getActiveEditor();
-			if (activeEditor != null) {
-				IContextService contextService = (IContextService) activeEditor
-						.getSite().getService(IContextService.class);
-				contextService.deactivateContext(fContextActivation);
+			if (fContextActivation != null) {
+				contextService().deactivateContext(fContextActivation);
 			}
+
+			handlerService().deactivateHandlers(fHandlerActivations);
+		}
+
+		protected IHandlerService handlerService() {
 			IHandlerService handlerService = (IHandlerService) PlatformUI
 					.getWorkbench().getAdapter(IHandlerService.class);
-			handlerService.deactivateHandlers(fHandlerActivations);
+			return handlerService;
 		}
 
 		public void focusGained(FocusEvent e) {
-			IEditorPart activeEditor = PlatformUI.getWorkbench()
-					.getActiveWorkbenchWindow().getActivePage()
-					.getActiveEditor();
-			if (activeEditor != null) {
-				IContextService contextService = (IContextService) activeEditor
-						.getSite().getService(IContextService.class);
-				fContextActivation = contextService
-						.activateContext(EMBEDEDXTEXT_EDITOR_CONTEXT);
-			}
-			IHandlerService handlerService = (IHandlerService) PlatformUI
-					.getWorkbench().getAdapter(IHandlerService.class);
+			fContextActivation = contextService().activateContext(
+					EMBEDEDXTEXT_EDITOR_CONTEXT);
+
+			IHandlerService handlerService = handlerService();
 
 			for (ActionHandler actionHandler : fActionHandlers) {
 				fHandlerActivations.add(handlerService.activateHandler(
@@ -619,11 +679,18 @@ public class EmbeddedXtextEditor {
 						fExpression));
 			}
 		}
+
+		protected IContextService contextService() {
+			IContextService contextService = (IContextService) PlatformUI
+					.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.getActivePart().getSite()
+					.getService(IContextService.class);
+			return contextService;
+		}
 	}
 
 	protected XtextResource createResource() {
-		XtextResource result = (XtextResource) fXtextResourceProvider
-				.get();
+		XtextResource result = (XtextResource) xtextResourceProvider.get();
 		result.setURI(URI.createURI(fGrammarAccess.getGrammar().getName() + "."
 				+ fFileExtension));
 		resourceSet.getResources().add(result);
@@ -633,6 +700,5 @@ public class EmbeddedXtextEditor {
 	public void setFocus() {
 		getViewer().getTextWidget().setFocus();
 	}
-	
 
 }
