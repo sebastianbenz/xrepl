@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.xtext.xbase.impl.XExpressionImpl;
+import org.eclipse.xtext.xbase.impl.XExpressionImplCustom;
 
 import org.xrepl.xscript.XNamespace;
 import org.xrepl.xscript.XscriptPackage;
@@ -29,7 +29,7 @@ import org.xrepl.xscript.XscriptPackage;
  *
  * @generated
  */
-public class XNamespaceImpl extends XExpressionImpl implements XNamespace
+public class XNamespaceImpl extends XExpressionImplCustom implements XNamespace
 {
 	/**
 	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.

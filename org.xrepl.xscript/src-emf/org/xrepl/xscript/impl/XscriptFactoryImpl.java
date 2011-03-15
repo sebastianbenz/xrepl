@@ -43,7 +43,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 		{
 			EcorePlugin.INSTANCE.log(exception);
 		}
-		return new XscriptFactoryImpl();
+		return new XscriptFactoryImplCustom();
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	 */
 	public XScript createXScript()
 	{
-		XScriptImpl xScript = new XScriptImpl();
+		XScriptImplCustom xScript = new XScriptImplCustom();
 		return xScript;
 	}
 
@@ -96,7 +96,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	 */
 	public XImport createXImport()
 	{
-		XImportImpl xImport = new XImportImpl();
+		XImportImplCustom xImport = new XImportImplCustom();
 		return xImport;
 	}
 
@@ -107,7 +107,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	 */
 	public XNamespace createXNamespace()
 	{
-		XNamespaceImpl xNamespace = new XNamespaceImpl();
+		XNamespaceImplCustom xNamespace = new XNamespaceImplCustom();
 		return xNamespace;
 	}
 
@@ -118,7 +118,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	 */
 	public XEPackageImport createXEPackageImport()
 	{
-		XEPackageImportImpl xePackageImport = new XEPackageImportImpl();
+		XEPackageImportImplCustom xePackageImport = new XEPackageImportImplCustom();
 		return xePackageImport;
 	}
 
@@ -129,7 +129,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	 */
 	public XNewEObject createXNewEObject()
 	{
-		XNewEObjectImpl xNewEObject = new XNewEObjectImpl();
+		XNewEObjectImplCustom xNewEObject = new XNewEObjectImplCustom();
 		return xNewEObject;
 	}
 
@@ -140,7 +140,7 @@ public class XscriptFactoryImpl extends EFactoryImpl implements XscriptFactory
 	 */
 	public XEClassType createXEClassType()
 	{
-		XEClassTypeImpl xeClassType = new XEClassTypeImpl();
+		XEClassTypeImplCustom xeClassType = new XEClassTypeImplCustom();
 		return xeClassType;
 	}
 

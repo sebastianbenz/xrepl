@@ -26,8 +26,7 @@ Workflow {
 	component = org.eclipse.emf.mwe2.ecore.EcoreGenerator {
 		genModel = "platform:/resource/${projectName}/model/Xscript.genmodel"
 		srcPath ="platform:/resource/${projectName}/src"
-		srcPath ="platform:/resource/org.eclipse.xtext.common.types/src"
-		srcPath ="platform:/resource/org.eclipse.xtext.xbase/src"
+		generateCustomClasses = true
 	}
 	
 	component = DirectoryCleaner {
