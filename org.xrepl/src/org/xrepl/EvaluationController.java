@@ -96,7 +96,17 @@ public class EvaluationController {
 	}
 
 	private boolean endsWithLineBreak(String text) {
-		return text.charAt(text.length()-1) == '\n';
+		int i = text.length()-1;
+		while(i >= 0){
+			char c = text.charAt(i);
+			if(c == '\n'){
+				return true;
+			}else if(c != '\t' && c != ' '){
+				return false;
+			}
+			i--;
+		}
+		return false;
 	}
 
 	private boolean cursorAtTheEnd(TextChange event, int bottomIndexEndOffset) {
