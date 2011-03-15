@@ -91,7 +91,12 @@ public class EvaluationController {
 	}
 
 	private boolean isEnterPressed(TextChange event) {
-		return event.getText() != null && event.getText().contains(LINE_BREAK);
+		String text = event.getText();
+		return text != null && text.length() > 0 && endsWithLineBreak(text);
+	}
+
+	private boolean endsWithLineBreak(String text) {
+		return text.charAt(text.length()-1) == '\n';
 	}
 
 	private boolean cursorAtTheEnd(TextChange event, int bottomIndexEndOffset) {

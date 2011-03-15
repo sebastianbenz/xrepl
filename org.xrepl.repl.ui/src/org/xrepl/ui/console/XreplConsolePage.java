@@ -89,7 +89,7 @@ public class XreplConsolePage extends Page {
 		private final String input;
 
 		private EvaluationJob(String input) {
-			super("evaluating script");
+			super("Evaluating...");
 			this.input = input;
 			setPriority(INTERACTIVE);
 		}

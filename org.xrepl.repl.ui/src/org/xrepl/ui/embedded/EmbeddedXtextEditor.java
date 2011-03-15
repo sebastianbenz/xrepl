@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
@@ -20,6 +19,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IDocumentPartitioner;
 import org.eclipse.jface.text.ISynchronizable;
 import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.text.source.Annotation;
@@ -52,7 +52,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.ui.ActiveShellExpression;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.contexts.IContextActivation;
@@ -61,8 +60,6 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.internal.editors.text.EditorsPlugin;
-import org.eclipse.ui.internal.expressions.ActivePartExpression;
-import org.eclipse.ui.navigator.ICommonMenuConstants;
 import org.eclipse.ui.texteditor.AbstractDecoratedTextEditorPreferenceConstants;
 import org.eclipse.ui.texteditor.AnnotationPreference;
 import org.eclipse.ui.texteditor.DefaultMarkerAnnotationAccess;
@@ -135,6 +132,10 @@ public class EmbeddedXtextEditor {
 
 	@Inject
 	private Provider<XtextDocument> fDocumentProvider;
+	
+
+	@Inject
+	private Provider<IDocumentPartitioner> documentPartitioner;
 
 	@Inject
 	private IResourceValidator fResourceValidator;
@@ -351,6 +352,11 @@ public class EmbeddedXtextEditor {
 			}
 		});
 		fDocument = fDocumentProvider.get();
+		if (fDocument != null) {
+			IDocumentPartitioner partitioner = documentPartitioner.get();
+			partitioner.connect(fDocument);
+			fDocument.setDocumentPartitioner(partitioner);
+		}
 		ValidationJob job = new ValidationJob(fResourceValidator, fDocument,
 				new IValidationIssueProcessor() {
 					private AnnotationIssueProcessor annotationIssueProcessor;

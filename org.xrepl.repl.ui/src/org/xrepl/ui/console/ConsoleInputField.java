@@ -47,7 +47,19 @@ public class ConsoleInputField implements InputField {
 
 			public void run() {
 				String content = sourceEditor.getDocument().get();
-				sourceEditor.update(content.substring(0, content.length() - 1));
+				sourceEditor.update(removeLineBreak(content));
+			}
+
+			private String removeLineBreak(String content) {
+				int i = content.length()-1;
+				while( i != 0){
+					char c = content.charAt(i);
+					if(c != '\n' && c != '\r'){
+						return content.substring(0, i+1);
+					}
+					i--;
+				}
+				return "";
 			}
 		});
 	}
