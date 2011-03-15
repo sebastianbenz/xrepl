@@ -51,11 +51,11 @@ public class ConsoleInputField implements InputField {
 			}
 
 			private String removeLineBreak(String content) {
-				int i = content.length()-1;
-				while( i != 0){
+				int i = content.length() - 1;
+				while (i != 0) {
 					char c = content.charAt(i);
-					if(c != '\n' && c != '\r'){
-						return content.substring(0, i+1);
+					if (c != '\n' && c != '\t' && c != ' ') {
+						return content.substring(0, i + 1);
 					}
 					i--;
 				}
