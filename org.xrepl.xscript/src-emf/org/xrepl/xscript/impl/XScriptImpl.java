@@ -6,9 +6,7 @@
 package org.xrepl.xscript.impl;
 
 import org.eclipse.emf.ecore.EClass;
-
-import org.eclipse.xtext.xbase.impl.XBlockExpressionImplCustom;
-
+import org.eclipse.xtext.xbase.impl.XBlockExpressionImpl;
 import org.xrepl.xscript.XScript;
 import org.xrepl.xscript.XscriptPackage;
 
@@ -21,7 +19,7 @@ import org.xrepl.xscript.XscriptPackage;
  *
  * @generated
  */
-public class XScriptImpl extends XBlockExpressionImplCustom implements XScript
+public class XScriptImpl extends XBlockExpressionImpl implements XScript
 {
 	/**
 	 * <!-- begin-user-doc -->

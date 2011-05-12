@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.xtext.xbase.impl.XExpressionImplCustom;
+import org.eclipse.xtext.xbase.impl.XExpressionImpl;
 
 import org.xrepl.xscript.XImport;
 import org.xrepl.xscript.XscriptPackage;
@@ -31,7 +31,7 @@ import org.xrepl.xscript.XscriptPackage;
  *
  * @generated
  */
-public class XImportImpl extends XExpressionImplCustom implements XImport
+public class XImportImpl extends XExpressionImpl implements XImport
 {
 	/**
 	 * The default value of the '{@link #getImportedNamespace() <em>Imported Namespace</em>}' attribute.

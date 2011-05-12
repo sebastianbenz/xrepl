@@ -14,13 +14,15 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XImport/importedNamespace"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XImport/extension"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XImport/static"/>
+      <genOperations ecoreOperation="Xscript.ecore#//XImport/isWildcard"/>
+      <genOperations ecoreOperation="Xscript.ecore#//XImport/getImportedTypeName"/>
     </genClasses>
     <genClasses ecoreClass="Xscript.ecore#//XNamespace">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XNamespace/name"/>
     </genClasses>
-    <genClasses ecoreClass="Xscript.ecore#//XPackageUse">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XPackageUse/nsUri"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XPackageUse/name"/>
+    <genClasses ecoreClass="Xscript.ecore#//XEPackageImport">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XEPackageImport/nsUri"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Xscript.ecore#//XEPackageImport/name"/>
     </genClasses>
     <genClasses ecoreClass="Xscript.ecore#//XNewEObject">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Xscript.ecore#//XNewEObject/type"/>

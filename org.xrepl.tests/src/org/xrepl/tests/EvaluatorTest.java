@@ -19,7 +19,6 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -42,7 +41,6 @@ import org.xrepl.DefaultEvaluator;
 
 import com.google.common.base.Function;
 import com.google.inject.Inject;
-import com.google.inject.internal.Lists;
 
 public class EvaluatorTest extends AbstractXScriptTest {
 

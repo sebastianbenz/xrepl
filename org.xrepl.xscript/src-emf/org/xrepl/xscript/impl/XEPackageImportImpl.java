@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EClass;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
-import org.eclipse.xtext.xbase.impl.XExpressionImplCustom;
+import org.eclipse.xtext.xbase.impl.XExpressionImpl;
 
 import org.xrepl.xscript.XEPackageImport;
 import org.xrepl.xscript.XscriptPackage;
@@ -30,7 +30,7 @@ import org.xrepl.xscript.XscriptPackage;
  *
  * @generated
  */
-public class XEPackageImportImpl extends XExpressionImplCustom implements XEPackageImport
+public class XEPackageImportImpl extends XExpressionImpl implements XEPackageImport
 {
 	/**
 	 * The default value of the '{@link #getNsUri() <em>Ns Uri</em>}' attribute.
