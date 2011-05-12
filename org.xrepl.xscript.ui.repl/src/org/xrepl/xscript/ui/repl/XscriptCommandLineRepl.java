@@ -21,7 +21,6 @@ import com.google.inject.Injector;
 public class XscriptCommandLineRepl {
 	
 	public static void main(String[] args) throws IOException {
-		XscriptPackage.eINSTANCE.getClass();
 		Injector injector = new XscriptStandaloneSetup().createInjectorAndDoEMFRegistration();
 		injector.getInstance(CommandLineRepl.class).run();
 	}

@@ -17,6 +17,7 @@ var memoize = false
 Workflow {
 	bean = StandaloneSetup {
 		platformUri = "${runtimeProject}/.."
+		scanClassPath = true
 	}
 	
 	component = DirectoryCleaner {

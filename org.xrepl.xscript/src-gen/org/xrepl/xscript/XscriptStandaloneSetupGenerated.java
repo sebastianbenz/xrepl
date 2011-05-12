@@ -15,6 +15,7 @@ import com.google.inject.Injector;
 public class XscriptStandaloneSetupGenerated implements ISetup {
 
 	public Injector createInjectorAndDoEMFRegistration() {
+		XscriptPackage.eINSTANCE.getClass();
 		org.eclipse.xtext.xbase.XbaseStandaloneSetup.doSetup();
 
 		Injector injector = createInjector();

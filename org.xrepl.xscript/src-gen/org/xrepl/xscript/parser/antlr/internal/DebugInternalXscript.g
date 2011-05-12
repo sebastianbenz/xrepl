@@ -376,11 +376,11 @@ ruleJvmFormalParameter :
 
 // Rule XFeatureCall
 ruleXFeatureCall :
-	(
+	ruleStaticQualifier? (
 		'<' ruleJvmArgumentTypeReference (
 			',' ruleJvmArgumentTypeReference
 		)* '>'
-	)? RULE_ID (
+	)? ruleIdOrSuper (
 		( (
 		'('
 		) => '(' ) (
@@ -396,6 +396,19 @@ ruleXFeatureCall :
 			)*
 		)? ')'
 	)?
+;
+
+// Rule IdOrSuper
+ruleIdOrSuper :
+	RULE_ID |
+	'super'
+;
+
+// Rule StaticQualifier
+ruleStaticQualifier :
+	(
+		RULE_ID '::'
+	)+
 ;
 
 // Rule XConstructorCall
@@ -545,10 +558,12 @@ RULE_ID :
 	'^'? (
 		'a' .. 'z' |
 		'A' .. 'Z' |
+		'$' |
 		'_'
 	) (
 		'a' .. 'z' |
 		'A' .. 'Z' |
+		'$' |
 		'_' |
 		'0' .. '9'
 	)*

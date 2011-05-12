@@ -19,7 +19,9 @@ import org.eclipse.xtext.xbase.typing.XbaseTypeProvider;
 import org.xrepl.xscript.XNewEObject;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class XscriptTypeProvider extends XbaseTypeProvider {
 	
 	@Inject

@@ -15,7 +15,5 @@ class XscriptJvmModelInferrer implements IJvmModelInferrer {
 
 	@Inject IJvmModelAssociator 
 
-   	List<? extends EObject> inferJvmModel(EObject sourceObject) {
-   		return newArrayList();
-   	} 
 }
+0l
