@@ -25,13 +25,14 @@ import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
 import org.eclipse.xtext.scoping.impl.SimpleScope;
+import org.eclipse.xtext.xbase.XConstructorCall;
 import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.scoping.XbaseScopeProvider;
 import org.eclipse.xtext.xbase.scoping.featurecalls.DefaultJvmFeatureDescriptionProvider;
 import org.eclipse.xtext.xbase.scoping.featurecalls.IJvmFeatureDescriptionProvider;
-import org.xrepl.xscript.XNewEObject;
-import org.xrepl.xscript.XScript;
-import org.xrepl.xscript.XscriptPackage;
+import org.xrepl.xscript.xscript.XNewEObject;
+import org.xrepl.xscript.xscript.XScript;
+import org.xrepl.xscript.xscript.XscriptPackage;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;

@@ -10,26 +10,14 @@ var file.extensions = "xscript"
 var projectName = "org.xrepl.xscript"
 var runtimeProject = "../${projectName}"
 
-var uiProject = "${runtimeProject}.ui"
-var backtrack = false
-var memoize = false
-
 Workflow {
 	bean = StandaloneSetup {
-		platformUri = "${runtimeProject}/.."
 		scanClassPath = true
-	}
-	
-	component = DirectoryCleaner {
-		directory = "${runtimeProject}/src-emf"
+		platformUri = "${runtimeProject}/.."
+		registerGenModelFile = "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.genmodel"
+		registerGenModelFile = "platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.genmodel"// registerGenModelFile = "platform:/resource/org.xrepl.xscript/model/Xscript.genmodel"
 	}
 
-	component = org.eclipse.emf.mwe2.ecore.EcoreGenerator {
-		genModel = "platform:/resource/${projectName}/model/Xscript.genmodel"
-		srcPath ="platform:/resource/${projectName}/src"
-		generateCustomClasses = true
-	}
-	
 	component = DirectoryCleaner {
 		directory = "${runtimeProject}/src-gen"
 	}
@@ -40,37 +28,84 @@ Workflow {
 
 	component = Generator {
 		pathRtProject = runtimeProject
-		pathUiProject = uiProject
+		pathUiProject = "${runtimeProject}.ui"
 		projectNameRt = projectName
 		projectNameUi = "${projectName}.ui"
 		language = {
 			uri = grammarURI
 			fileExtensions = file.extensions
+
+			// Java API to access grammar elements (required by several other fragments)
 			fragment = grammarAccess.GrammarAccessFragment {}
+
+			// Generate java classes for Ecore models
+			fragment = ecore.EcoreGeneratorFragment {}
+
+			// the serialization component
 			fragment = parseTreeConstructor.ParseTreeConstructorFragment {}
+
+			// a custom ResourceFactory for use with EMF 
 			fragment = resourceFactory.ResourceFactoryFragment {
 				fileExtensions = file.extensions
 			}
-			fragment = XtextAntlrGeneratorFragment {
-				options = auto-inject {}
+
+			// the following fragment generates an Antlr parser 
+			fragment = parser.antlr.XtextAntlrGeneratorFragment {}
+
+			// java-based API for validation 
+			fragment = validation.JavaValidatorFragment {
+				composedCheck = "org.eclipse.xtext.validation.NamesAreUniqueValidator"
 			}
-			fragment = DebugAntlrGeneratorFragment {
-				options = auto-inject {}
+
+			// scoping API 
+			fragment = scoping.ImportNamespacesScopingFragment {
+				generateStub = false
 			}
-			fragment = validation.JavaValidatorFragment {}
-			fragment = scoping.ImportNamespacesScopingFragment {}
+			fragment = exporting.QualifiedNamesFragment {}
+			
+			// testing API
+			fragment = junit.Junit4Fragment {}
+
+			// formatter API 
+			fragment = formatting.FormatterFragment {}
+
+			// labeling API 
+			fragment = labeling.LabelProviderFragment {}
+
+			// outline API
+			fragment = outline.OutlineTreeProviderFragment {}
+			fragment = outline.QuickOutlineFragment {}
+
+			// java-based API for content assistance 
+			fragment = contentAssist.JavaBasedContentAssistFragment {}
+			fragment = parser.antlr.XtextAntlrUiGeneratorFragment {}
+
+			fragment = builder.BuilderIntegrationFragment {}
+
+			// quickfix API 
+			fragment = quickfix.QuickfixProviderFragment {}
+			
+			// rename refactoring
+			fragment = refactoring.RefactorElementNameFragment {
+				useJdtRefactoring = true
+			}
+			
+			// provides a compare view
+			fragment = compare.CompareFragment {
+				fileExtensions = file.extensions
+			}
+
+			// Xbase support
 			fragment = types.TypesGeneratorFragment {}
 			fragment = xbase.XbaseGeneratorFragment {}
-			fragment = builder.BuilderIntegrationFragment {}
-			fragment = formatting.FormatterFragment {}
-			fragment = quickfix.QuickfixProviderFragment {}
-			fragment = labeling.LabelProviderFragment {}
-			fragment = outline.OutlineTreeProviderFragment {}
-			fragment = contentAssist.JavaBasedContentAssistFragment {}
-			fragment = XtextAntlrUiGeneratorFragment {
-				options = auto-inject {}
+			
+			// Code generator
+			fragment = generator.GeneratorFragment {
+				generateJavaMain = false
+				generateMwe = false
 			}
-			fragment = refactoring.RefactorElementNameFragment {}
+			
+			fragment = templates.CodetemplatesGeneratorFragment {}
 		}
 	}
 }

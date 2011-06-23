@@ -13,18 +13,15 @@
  */
 package org.xrepl.xscript;
 
-import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.conversion.IValueConverterService;
 import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.scoping.impl.AbstractDeclarativeScopeProvider;
-import org.eclipse.xtext.xbase.interpreter.IEvaluationContext;
 import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
-import org.eclipse.xtext.xbase.interpreter.impl.DefaultEvaluationContext;
-import org.eclipse.xtext.xbase.resource.XbaseResource;
 import org.eclipse.xtext.xbase.typing.ITypeProvider;
-import org.xrepl.xscript.scoping.XscriptGlobalScopeProvider;
 import org.xrepl.xscript.scoping.XscriptImportedNamespaceAwareLocalScopeProvider;
 import org.xrepl.xscript.scoping.XscriptScopeProvider;
 import org.xrepl.xscript.typing.XscriptTypeProvider;
+import org.xrepl.xscript.valueconverter.XscriptValueConverterService;
 
 import com.google.inject.Binder;
 import com.google.inject.name.Names;
@@ -39,34 +36,22 @@ public class XscriptRuntimeModule extends org.xrepl.xscript.AbstractXscriptRunti
 		return XscriptTypeProvider.class;
 	}
 
-	@Override
-	public Class<? extends IScopeProvider> bindIScopeProvider() {
-		return XscriptScopeProvider.class;
-	}
-	
-	@Override
 	public Class<? extends IExpressionInterpreter> bindIExpressionInterpreter() {
 		return XscriptInterpreter.class;
 	}
 	
 	@Override
-	public Class<? extends IEvaluationContext> bindIEvaluationContext() {
-		return DefaultEvaluationContext.class;
+	public Class<? extends IValueConverterService> bindIValueConverterService() {
+		return XscriptValueConverterService.class;
 	}
-
+	
+	@Override
+	public Class<? extends IScopeProvider> bindIScopeProvider() {
+		return XscriptScopeProvider.class;
+	}
 	@Override
 	public void configureIScopeProviderDelegate(Binder binder) {
 		binder.bind(IScopeProvider.class).annotatedWith(Names.named(AbstractDeclarativeScopeProvider.NAMED_DELEGATE))
 		.to(XscriptImportedNamespaceAwareLocalScopeProvider.class);
 	}
-	
-	@Override
-	public Class<? extends XtextResource> bindXtextResource() {
-		return XbaseResource.class;
-	}
-	
-	
-	public java.lang.Class<? extends org.eclipse.xtext.scoping.IGlobalScopeProvider> bindIGlobalScopeProvider() {
-		return XscriptGlobalScopeProvider.class;
-	};
 }

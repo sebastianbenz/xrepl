@@ -23,9 +23,9 @@ import org.jmock.integration.junit4.JMock;
 import org.jmock.integration.junit4.JUnit4Mockery;
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.xrepl.xscript.XscriptPackage;
 import org.xrepl.xscript.XscriptRuntimeModule;
 import org.xrepl.xscript.XscriptStandaloneSetup;
+import org.xrepl.xscript.xscript.XscriptPackage;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

@@ -16,7 +16,7 @@ import org.eclipse.xtext.common.types.JvmVoid;
 import org.eclipse.xtext.common.types.TypesFactory;
 import org.eclipse.xtext.common.types.util.TypeReferences;
 import org.eclipse.xtext.xbase.typing.XbaseTypeProvider;
-import org.xrepl.xscript.XNewEObject;
+import org.xrepl.xscript.xscript.XNewEObject;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;

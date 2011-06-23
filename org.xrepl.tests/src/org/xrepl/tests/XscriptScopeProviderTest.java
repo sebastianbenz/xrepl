@@ -29,9 +29,9 @@ import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.util.StringInputStream;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.xrepl.xscript.XNewEObject;
-import org.xrepl.xscript.XScript;
-import org.xrepl.xscript.XscriptPackage;
+import org.xrepl.xscript.xscript.XNewEObject;
+import org.xrepl.xscript.xscript.XScript;
+import org.xrepl.xscript.xscript.XscriptPackage;
 
 import com.google.common.base.Function;
 import com.google.inject.Inject;

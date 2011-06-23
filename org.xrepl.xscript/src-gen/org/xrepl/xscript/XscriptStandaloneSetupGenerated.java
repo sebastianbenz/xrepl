@@ -27,12 +27,16 @@ public class XscriptStandaloneSetupGenerated implements ISetup {
 	}
 	
 	public void register(Injector injector) {
+	if (!EPackage.Registry.INSTANCE.containsKey("http://www.xrepl.org/xscript")) {
+		EPackage.Registry.INSTANCE.put("http://www.xrepl.org/xscript", org.xrepl.xscript.xscript.XscriptPackage.eINSTANCE);
+	}
 
 		org.eclipse.xtext.resource.IResourceFactory resourceFactory = injector.getInstance(org.eclipse.xtext.resource.IResourceFactory.class);
 		org.eclipse.xtext.resource.IResourceServiceProvider serviceProvider = injector.getInstance(org.eclipse.xtext.resource.IResourceServiceProvider.class);
 		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xscript", resourceFactory);
 		org.eclipse.xtext.resource.IResourceServiceProvider.Registry.INSTANCE.getExtensionToFactoryMap().put("xscript", serviceProvider);
 		
+
 
 
 

@@ -1,22 +1,22 @@
 grammar org.xrepl.xscript.Xscript with org.eclipse.xtext.xbase.Xbase
 
-import "platform:/resource/org.xrepl.xscript/model/Xscript.ecore" 
-import "platform:/resource/org.eclipse.xtext.xbase/model/Xbase.ecore" as base
-import "platform:/resource/org.eclipse.xtext.common.types/model/JavaVMTypes.ecore" as types
+import "http://www.eclipse.org/xtext/xbase/Xbase" as xbase
 import "http://www.eclipse.org/emf/2002/Ecore" as ecore
 
+generate xscript "http://www.xrepl.org/xscript" 
  
-XScript:
+ 
+XScript returns xbase::XExpression:
 	{XScript}
 	(expressions+=XExpression | expressions+=XScriptExpression | expressions+=XVariableDeclaration)*
 ;
 
-XScriptExpression: 
+XScriptExpression returns xbase::XExpression: 
 	XImport | XEPackageImport
 ;
 
  
-XPrimaryExpression returns base::XExpression:
+XPrimaryExpression returns xbase::XExpression:
 	XConstructorCall |
 	XBlockExpression |
 	XSwitchExpression |
@@ -32,7 +32,7 @@ XPrimaryExpression returns base::XExpression:
 	XParenthesizedExpression | 
 	XNewEObject
 ;
-
+ 
 
 // temporary syntax 
 XNewEObject: 

@@ -33,8 +33,8 @@ public class XreplResourceSetProvider implements Provider<ResourceSet> {
 			resourceSet = new SynchronizedXtextResourceSet();
 			resourceFactoryRegistry().getExtensionToFactoryMap()
 					.put(fileExtension, resourceFactory);
-			IJvmTypeProvider typeProvider = typeProviderFactory.createTypeProvider(resourceSet);
-			resourceFactoryRegistry().getProtocolToFactoryMap().put(URIHelperConstants.PROTOCOL, typeProvider);
+//			IJvmTypeProvider typeProvider = typeProviderFactory.createTypeProvider(resourceSet);
+//			resourceFactoryRegistry().getProtocolToFactoryMap().put(URIHelperConstants.PROTOCOL, typeProvider);
 		}
 		return resourceSet;
 	}

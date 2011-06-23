@@ -13,12 +13,20 @@ package org.xrepl.xscript;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.xbase.XExpression;
+import org.eclipse.xtext.xbase.XVariableDeclaration;
 import org.eclipse.xtext.xbase.interpreter.IEvaluationContext;
 import org.eclipse.xtext.xbase.interpreter.impl.XbaseInterpreter;
+import org.xrepl.xscript.xscript.XEPackageImport;
+import org.xrepl.xscript.xscript.XImport;
+import org.xrepl.xscript.xscript.XNewEObject;
+import org.xrepl.xscript.xscript.XScript;
 
+@SuppressWarnings("restriction")
 public class XscriptInterpreter extends XbaseInterpreter {
 	
 	
@@ -35,9 +43,17 @@ public class XscriptInterpreter extends XbaseInterpreter {
 		List<XExpression> expressions = literal.getExpressions();
 		Object result = null;
 		for (XExpression expression : expressions) {
-			result = internalEvaluate(expression, context, cancelIndicator);
+			result = internalEvaluate((XExpression) expression, context, cancelIndicator);
 		}
 		return result;
+	}
+	
+	@Override
+	protected Object _evaluateVariableDeclaration(
+			XVariableDeclaration variableDecl, IEvaluationContext context,
+			CancelIndicator indicator) {
+		super._evaluateVariableDeclaration(variableDecl, context, indicator);
+		return context.getValue(QualifiedName.create(variableDecl.getName()));
 	}
 	
 	public Object _evaluateXNewEObject(XNewEObject newEObject, IEvaluationContext context, CancelIndicator cancelIndicator) {

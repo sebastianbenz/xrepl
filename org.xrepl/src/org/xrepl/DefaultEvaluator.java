@@ -33,6 +33,7 @@ import org.eclipse.xtext.xbase.interpreter.impl.InterpreterCanceledException;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+@SuppressWarnings("restriction")
 public class DefaultEvaluator implements Evaluator {
 
 
@@ -49,22 +50,18 @@ public class DefaultEvaluator implements Evaluator {
 	private int steps = 0;
 
 	private IEvaluationContext context;
-	
-	
-	
 
-	@Inject
-	@Named(Constants.FILE_EXTENSIONS)
 	private String fileExtension;
 
 
 	private String lastEvaluatedString = "";
 
 	@Inject
-	public DefaultEvaluator(IExpressionInterpreter interpreter, ResourceSet resourceSet) {
+	public DefaultEvaluator(IExpressionInterpreter interpreter, ResourceSet resourceSet, @Named(Constants.FILE_EXTENSIONS) String fileExtension) {
 		super();
 		this.interpreter = interpreter;
 		this.resourceSet = resourceSet;
+		this.fileExtension = fileExtension;
 	}
 
 	private void appendToHistory(String toEvaluate) {
@@ -199,10 +196,6 @@ public class DefaultEvaluator implements Evaluator {
 		context = null;
 		steps = 0;
 		clearReplResources();
-	}
-
-	public void setResourceSet(ResourceSet resourceSet) {
-		this.resourceSet = resourceSet;
 	}
 
 

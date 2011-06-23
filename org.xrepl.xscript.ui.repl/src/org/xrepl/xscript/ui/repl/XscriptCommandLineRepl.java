@@ -13,7 +13,6 @@ package org.xrepl.xscript.ui.repl;
 import java.io.IOException;
 
 import org.xrepl.CommandLineRepl;
-import org.xrepl.xscript.XscriptPackage;
 import org.xrepl.xscript.XscriptStandaloneSetup;
 
 import com.google.inject.Injector;

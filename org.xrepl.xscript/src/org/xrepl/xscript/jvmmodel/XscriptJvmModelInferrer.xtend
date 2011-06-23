@@ -1,9 +1,11 @@
 package org.xrepl.xscript.jvmmodel
  
-import org.eclipse.xtext.xbase.jvmmodel.*
-import org.eclipse.xtext.common.types.*
+import org.eclipse.xtext.xbase.jvmmodel.IJvmModelInferrer
+import org.eclipse.xtext.xbase.jvmmodel.IJvmModelAssociator
+import org.eclipse.xtext.common.types.JvmDeclaredType
 import org.eclipse.emf.ecore.EObject
 import java.util.List
+import com.google.inject.Inject
 
 /**
  * <p>Infers a JVM model from the source model.</p> 
@@ -16,7 +18,8 @@ import java.util.List
  */
 class XscriptJvmModelInferrer implements IJvmModelInferrer {
 
-	@Inject IJvmModelAssociator 
+	@Inject 
+	IJvmModelAssociator jvmModelAssociator
 
    	override List<? extends JvmDeclaredType> inferJvmModel(EObject sourceObject) {
    		return newArrayList();

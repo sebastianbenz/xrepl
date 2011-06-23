@@ -31,8 +31,8 @@ import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.util.Pair;
 import org.eclipse.xtext.util.SimpleCache;
 import org.eclipse.xtext.util.Tuples;
-import org.xrepl.xscript.XEPackageImport;
-import org.xrepl.xscript.XScript;
+import org.xrepl.xscript.xscript.XEPackageImport;
+import org.xrepl.xscript.xscript.XScript;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;

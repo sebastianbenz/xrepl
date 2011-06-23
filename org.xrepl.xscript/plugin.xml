@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 
-<!--
- <copyright>
- </copyright>
-
- $Id$
--->
-
 <plugin>
 
-   <extension point="org.eclipse.emf.ecore.generated_package">
-      <package
-            uri="http://www.xrepl.org/xscript/"
-            class="org.xrepl.xscript.XscriptPackage"
-            genModel="model/Xscript.genmodel"/>
-   </extension>
+  <extension point="org.eclipse.emf.ecore.generated_package">
+    <package 
+       uri = "http://www.xrepl.org/xscript" 
+       class = "org.xrepl.xscript.xscript.XscriptPackage"
+       genModel = "org/xrepl/xscript/Xscript.genmodel" /> 
+	
+  </extension>
+
+
+
 
 </plugin>

@@ -73,7 +73,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 			}
 		});
 
-		evaluate("null.toString");
+		evaluate("null.toString()");
 	}
 
 	@Test public void shouldUndoEmptyInput() throws Exception {

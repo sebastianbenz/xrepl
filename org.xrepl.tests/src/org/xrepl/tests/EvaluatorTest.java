@@ -36,24 +36,36 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.xbase.interpreter.IExpressionInterpreter;
+import org.eclipse.xtext.xbase.interpreter.impl.XbaseInterpreter;
 import org.junit.Test;
 import org.xrepl.DefaultEvaluator;
+import org.xrepl.xscript.XscriptInterpreter;
 
 import com.google.common.base.Function;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
 public class EvaluatorTest extends AbstractXScriptTest {
 
-	@Inject
 	private DefaultEvaluator evaluator;
 
 	@Inject
 	private ResourceSet resourceSet;
 
+	@Inject
+	private XscriptInterpreter interpreter;
+	
+	@Inject
+	@Named(Constants.FILE_EXTENSIONS)
+	private String fileExtension;
+
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		evaluator.setResourceSet(resourceSet);
+		interpreter.setClassLoader(getClass().getClassLoader());
+		evaluator = new DefaultEvaluator(interpreter, resourceSet, fileExtension);
 	}
 
 	@Test public void shouldReportSyntaxErrors() {
@@ -97,7 +109,7 @@ public class EvaluatorTest extends AbstractXScriptTest {
 	}
 	
 	@Test public void shouldAllowCreationOfObjects() throws Throwable {
-		assertThat(evalToString("new java.lang.String('aString')"),
+		assertThat(evalToString("new String('aString')"),
 				is("aString"));
 	}
 
@@ -126,7 +138,7 @@ public class EvaluatorTest extends AbstractXScriptTest {
 	public void shouldSupportClojures() throws Throwable {
 		eval("var list = new java.util.ArrayList()");
 		eval("list.add('a')");
-		eval("list.forEach(e | e.toUpperCase)");
+		eval("list = list.map(e | e.toString.toUpperCase)");
 		assertThat(evalToString("list"), is("[A]"));
 	}
 	

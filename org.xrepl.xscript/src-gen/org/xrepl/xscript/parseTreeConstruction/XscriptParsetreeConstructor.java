@@ -91,7 +91,7 @@ protected class ThisRootNode extends RootToken {
 
 /************ begin Rule XScript ****************
  *
- * XScript:
+ * XScript returns xbase::XExpression:
  * 	{XScript} (expressions+=XExpression | expressions+=XScriptExpression | expressions+=XVariableDeclaration)*;
  *
  **/
@@ -324,7 +324,7 @@ protected class XScript_ExpressionsAssignment_1_2 extends AssignmentToken  {
 
 /************ begin Rule XScriptExpression ****************
  *
- * XScriptExpression:
+ * XScriptExpression returns xbase::XExpression:
  * 	XImport | XEPackageImport;
  *
  **/
@@ -438,7 +438,7 @@ protected class XScriptExpression_XEPackageImportParserRuleCall_1 extends RuleCa
 
 /************ begin Rule XPrimaryExpression ****************
  *
- * XPrimaryExpression returns base::XExpression:
+ * XPrimaryExpression returns xbase::XExpression:
  * 	XConstructorCall | XBlockExpression | XSwitchExpression | XFeatureCall | XLiteral | XIfExpression | XForLoopExpression
  * 	| XWhileExpression | XDoWhileExpression | XThrowExpression | XReturnExpression | XTryCatchFinallyExpression |
  * 	XParenthesizedExpression | XNewEObject;
@@ -1558,13 +1558,13 @@ protected class XExpression_XAssignmentParserRuleCall extends RuleCallToken {
 /************ begin Rule XAssignment ****************
  *
  * XAssignment returns XExpression:
- * 	{XAssignment} / * (declaringType=[types::JvmDeclaredType] '::')? * / feature=[types::JvmIdentifiableElement]
+ * 	{XAssignment} / * (declaringType=[types::JvmDeclaredType] '::')? * / feature=[types::JvmIdentifiableElement|ValidID]
  * 	OpSingleAssign value=XAssignment | XOrExpression (=> ({XBinaryOperation.leftOperand=current}
  * 	feature=[types::JvmIdentifiableElement|OpMultiAssign]) rightOperand=XAssignment)?;
  *
  **/
 
-// {XAssignment} / * (declaringType=[types::JvmDeclaredType] '::')? * / feature=[types::JvmIdentifiableElement]
+// {XAssignment} / * (declaringType=[types::JvmDeclaredType] '::')? * / feature=[types::JvmIdentifiableElement|ValidID]
 // OpSingleAssign value=XAssignment | XOrExpression (=> ({XBinaryOperation.leftOperand=current}
 // feature=[types::JvmIdentifiableElement|OpMultiAssign]) rightOperand=XAssignment)?
 protected class XAssignment_Alternatives extends AlternativesToken {
@@ -1619,7 +1619,7 @@ protected class XAssignment_Alternatives extends AlternativesToken {
 
 }
 
-// {XAssignment} / * (declaringType=[types::JvmDeclaredType] '::')? * / feature=[types::JvmIdentifiableElement]
+// {XAssignment} / * (declaringType=[types::JvmDeclaredType] '::')? * / feature=[types::JvmIdentifiableElement|ValidID]
 // OpSingleAssign value=XAssignment
 protected class XAssignment_Group_0 extends GroupToken {
 	
@@ -1675,7 +1675,7 @@ protected class XAssignment_XAssignmentAction_0_0 extends ActionToken  {
 	}
 }
 
-// / * (declaringType=[types::JvmDeclaredType] '::')? * / feature=[types::JvmIdentifiableElement]
+// / * (declaringType=[types::JvmDeclaredType] '::')? * / feature=[types::JvmIdentifiableElement|ValidID]
 protected class XAssignment_FeatureAssignment_0_1 extends AssignmentToken  {
 	
 	public XAssignment_FeatureAssignment_0_1(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -4785,18 +4785,18 @@ protected class XCastedExpression_TypeAssignment_1_1 extends AssignmentToken  {
 /************ begin Rule XMemberFeatureCall ****************
  *
  * XMemberFeatureCall returns XExpression:
- * 	XPrimaryExpression (=> ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement] OpSingleAssign)
- * 	value=XAssignment | => ({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." | spreading?="*.")) ("<"
- * 	typeArguments+=JvmArgumentTypeReference ("," typeArguments+=JvmArgumentTypeReference)* ">")?
- * 	feature=[types::JvmIdentifiableElement] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure |
+ * 	XPrimaryExpression (=> ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement|ValidID]
+ * 	OpSingleAssign) value=XAssignment | => ({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." |
+ * 	spreading?="*.")) ("<" typeArguments+=JvmArgumentTypeReference ("," typeArguments+=JvmArgumentTypeReference)* ">")?
+ * 	feature=[types::JvmIdentifiableElement|ValidID] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure |
  * 	memberCallArguments+=XExpression ("," memberCallArguments+=XExpression)*)? ")")?)*;
  *
  **/
 
-// XPrimaryExpression (=> ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement] OpSingleAssign)
-// value=XAssignment | => ({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." | spreading?="*.")) ("<"
-// typeArguments+=JvmArgumentTypeReference ("," typeArguments+=JvmArgumentTypeReference)* ">")?
-// feature=[types::JvmIdentifiableElement] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure |
+// XPrimaryExpression (=> ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement|ValidID]
+// OpSingleAssign) value=XAssignment | => ({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." |
+// spreading?="*.")) ("<" typeArguments+=JvmArgumentTypeReference ("," typeArguments+=JvmArgumentTypeReference)* ">")?
+// feature=[types::JvmIdentifiableElement|ValidID] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure |
 // memberCallArguments+=XExpression ("," memberCallArguments+=XExpression)*)? ")")?)*
 protected class XMemberFeatureCall_Group extends GroupToken {
 	
@@ -4884,10 +4884,10 @@ protected class XMemberFeatureCall_XPrimaryExpressionParserRuleCall_0 extends Ru
 	}	
 }
 
-// (=> ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement] OpSingleAssign) value=XAssignment | =>
-// ({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." | spreading?="*.")) ("<"
+// (=> ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement|ValidID] OpSingleAssign)
+// value=XAssignment | => ({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." | spreading?="*.")) ("<"
 // typeArguments+=JvmArgumentTypeReference ("," typeArguments+=JvmArgumentTypeReference)* ">")?
-// feature=[types::JvmIdentifiableElement] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure |
+// feature=[types::JvmIdentifiableElement|ValidID] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure |
 // memberCallArguments+=XExpression ("," memberCallArguments+=XExpression)*)? ")")?)*
 protected class XMemberFeatureCall_Alternatives_1 extends AlternativesToken {
 
@@ -4919,7 +4919,8 @@ protected class XMemberFeatureCall_Alternatives_1 extends AlternativesToken {
 
 }
 
-// => ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement] OpSingleAssign) value=XAssignment
+// => ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement|ValidID] OpSingleAssign)
+// value=XAssignment
 protected class XMemberFeatureCall_Group_1_0 extends GroupToken {
 	
 	public XMemberFeatureCall_Group_1_0(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -4948,7 +4949,7 @@ protected class XMemberFeatureCall_Group_1_0 extends GroupToken {
 
 }
 
-// => ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement] OpSingleAssign)
+// => ({XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement|ValidID] OpSingleAssign)
 protected class XMemberFeatureCall_Group_1_0_0 extends GroupToken {
 	
 	public XMemberFeatureCall_Group_1_0_0(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -4970,7 +4971,7 @@ protected class XMemberFeatureCall_Group_1_0_0 extends GroupToken {
 
 }
 
-// {XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement] OpSingleAssign
+// {XAssignment.assignable=current} "." feature=[types::JvmIdentifiableElement|ValidID] OpSingleAssign
 protected class XMemberFeatureCall_Group_1_0_0_0 extends GroupToken {
 	
 	public XMemberFeatureCall_Group_1_0_0_0(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -5044,7 +5045,7 @@ protected class XMemberFeatureCall_FullStopKeyword_1_0_0_0_1 extends KeywordToke
 
 }
 
-// feature=[types::JvmIdentifiableElement]
+// feature=[types::JvmIdentifiableElement|ValidID]
 protected class XMemberFeatureCall_FeatureAssignment_1_0_0_0_2 extends AssignmentToken  {
 	
 	public XMemberFeatureCall_FeatureAssignment_1_0_0_0_2(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -5154,7 +5155,7 @@ protected class XMemberFeatureCall_ValueAssignment_1_0_1 extends AssignmentToken
 
 // => ({XMemberFeatureCall.memberCallTarget=current} ("." | nullSafe?="?." | spreading?="*.")) ("<"
 // typeArguments+=JvmArgumentTypeReference ("," typeArguments+=JvmArgumentTypeReference)* ">")?
-// feature=[types::JvmIdentifiableElement] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure |
+// feature=[types::JvmIdentifiableElement|ValidID] (=> explicitOperationCall?="(" (memberCallArguments+=XShortClosure |
 // memberCallArguments+=XExpression ("," memberCallArguments+=XExpression)*)? ")")?
 protected class XMemberFeatureCall_Group_1_1 extends GroupToken {
 	
@@ -5582,7 +5583,7 @@ protected class XMemberFeatureCall_GreaterThanSignKeyword_1_1_1_3 extends Keywor
 }
 
 
-// feature=[types::JvmIdentifiableElement]
+// feature=[types::JvmIdentifiableElement|ValidID]
 protected class XMemberFeatureCall_FeatureAssignment_1_1_2 extends AssignmentToken  {
 	
 	public XMemberFeatureCall_FeatureAssignment_1_1_2(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -7353,12 +7354,12 @@ protected class XIfExpression_ElseAssignment_6_1 extends AssignmentToken  {
 /************ begin Rule XSwitchExpression ****************
  *
  * XSwitchExpression returns XExpression:
- * 	{XSwitchExpression} "switch" (localVarName=ID ":")? switch=XExpression "{" cases+=XCasePart+ ("default" ":"
+ * 	{XSwitchExpression} "switch" (localVarName=ValidID ":")? switch=XExpression "{" cases+=XCasePart+ ("default" ":"
  * 	default=XExpression)? "}";
  *
  **/
 
-// {XSwitchExpression} "switch" (localVarName=ID ":")? switch=XExpression "{" cases+=XCasePart+ ("default" ":"
+// {XSwitchExpression} "switch" (localVarName=ValidID ":")? switch=XExpression "{" cases+=XCasePart+ ("default" ":"
 // default=XExpression)? "}"
 protected class XSwitchExpression_Group extends GroupToken {
 	
@@ -7436,7 +7437,7 @@ protected class XSwitchExpression_SwitchKeyword_1 extends KeywordToken  {
 
 }
 
-// (localVarName=ID ":")?
+// (localVarName=ValidID ":")?
 protected class XSwitchExpression_Group_2 extends GroupToken {
 	
 	public XSwitchExpression_Group_2(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -7458,7 +7459,7 @@ protected class XSwitchExpression_Group_2 extends GroupToken {
 
 }
 
-// localVarName=ID
+// localVarName=ValidID
 protected class XSwitchExpression_LocalVarNameAssignment_2_0 extends AssignmentToken  {
 	
 	public XSwitchExpression_LocalVarNameAssignment_2_0(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -7482,9 +7483,9 @@ protected class XSwitchExpression_LocalVarNameAssignment_2_0 extends AssignmentT
 	public IEObjectConsumer tryConsume() {
 		if((value = eObjectConsumer.getConsumable("localVarName",false)) == null) return null;
 		IEObjectConsumer obj = eObjectConsumer.cloneAndConsume("localVarName");
-		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getXSwitchExpressionAccess().getLocalVarNameIDTerminalRuleCall_2_0_0(), value, null)) {
-			type = AssignmentType.TERMINAL_RULE_CALL;
-			element = grammarAccess.getXSwitchExpressionAccess().getLocalVarNameIDTerminalRuleCall_2_0_0();
+		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getXSwitchExpressionAccess().getLocalVarNameValidIDParserRuleCall_2_0_0(), value, null)) {
+			type = AssignmentType.DATATYPE_RULE_CALL;
+			element = grammarAccess.getXSwitchExpressionAccess().getLocalVarNameValidIDParserRuleCall_2_0_0();
 			return obj;
 		}
 		return null;
@@ -9124,12 +9125,12 @@ protected class XExpressionInsideBlock_XExpressionParserRuleCall_1 extends RuleC
 /************ begin Rule XVariableDeclaration ****************
  *
  * XVariableDeclaration returns XExpression:
- * 	{XVariableDeclaration} (writeable?="var" | "val") (=> (type=JvmTypeReference name=ID) | name=ID) ("="
+ * 	{XVariableDeclaration} (writeable?="var" | "val") (=> (type=JvmTypeReference name=ValidID) | name=ValidID) ("="
  * 	right=XExpression)?;
  *
  **/
 
-// {XVariableDeclaration} (writeable?="var" | "val") (=> (type=JvmTypeReference name=ID) | name=ID) ("="
+// {XVariableDeclaration} (writeable?="var" | "val") (=> (type=JvmTypeReference name=ValidID) | name=ValidID) ("="
 // right=XExpression)?
 protected class XVariableDeclaration_Group extends GroupToken {
 	
@@ -9266,7 +9267,7 @@ protected class XVariableDeclaration_ValKeyword_1_1 extends KeywordToken  {
 }
 
 
-// => (type=JvmTypeReference name=ID) | name=ID
+// => (type=JvmTypeReference name=ValidID) | name=ValidID
 protected class XVariableDeclaration_Alternatives_2 extends AlternativesToken {
 
 	public XVariableDeclaration_Alternatives_2(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -9289,7 +9290,7 @@ protected class XVariableDeclaration_Alternatives_2 extends AlternativesToken {
 
 }
 
-// => (type=JvmTypeReference name=ID)
+// => (type=JvmTypeReference name=ValidID)
 protected class XVariableDeclaration_Group_2_0 extends GroupToken {
 	
 	public XVariableDeclaration_Group_2_0(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -9311,7 +9312,7 @@ protected class XVariableDeclaration_Group_2_0 extends GroupToken {
 
 }
 
-// type=JvmTypeReference name=ID
+// type=JvmTypeReference name=ValidID
 protected class XVariableDeclaration_Group_2_0_0 extends GroupToken {
 	
 	public XVariableDeclaration_Group_2_0_0(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -9379,7 +9380,7 @@ protected class XVariableDeclaration_TypeAssignment_2_0_0_0 extends AssignmentTo
 	}	
 }
 
-// name=ID
+// name=ValidID
 protected class XVariableDeclaration_NameAssignment_2_0_0_1 extends AssignmentToken  {
 	
 	public XVariableDeclaration_NameAssignment_2_0_0_1(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -9403,9 +9404,9 @@ protected class XVariableDeclaration_NameAssignment_2_0_0_1 extends AssignmentTo
 	public IEObjectConsumer tryConsume() {
 		if((value = eObjectConsumer.getConsumable("name",true)) == null) return null;
 		IEObjectConsumer obj = eObjectConsumer.cloneAndConsume("name");
-		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getXVariableDeclarationAccess().getNameIDTerminalRuleCall_2_0_0_1_0(), value, null)) {
-			type = AssignmentType.TERMINAL_RULE_CALL;
-			element = grammarAccess.getXVariableDeclarationAccess().getNameIDTerminalRuleCall_2_0_0_1_0();
+		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_2_0_0_1_0(), value, null)) {
+			type = AssignmentType.DATATYPE_RULE_CALL;
+			element = grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_2_0_0_1_0();
 			return obj;
 		}
 		return null;
@@ -9415,7 +9416,7 @@ protected class XVariableDeclaration_NameAssignment_2_0_0_1 extends AssignmentTo
 
 
 
-// name=ID
+// name=ValidID
 protected class XVariableDeclaration_NameAssignment_2_1 extends AssignmentToken  {
 	
 	public XVariableDeclaration_NameAssignment_2_1(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -9439,9 +9440,9 @@ protected class XVariableDeclaration_NameAssignment_2_1 extends AssignmentToken 
 	public IEObjectConsumer tryConsume() {
 		if((value = eObjectConsumer.getConsumable("name",true)) == null) return null;
 		IEObjectConsumer obj = eObjectConsumer.cloneAndConsume("name");
-		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getXVariableDeclarationAccess().getNameIDTerminalRuleCall_2_1_0(), value, null)) {
-			type = AssignmentType.TERMINAL_RULE_CALL;
-			element = grammarAccess.getXVariableDeclarationAccess().getNameIDTerminalRuleCall_2_1_0();
+		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_2_1_0(), value, null)) {
+			type = AssignmentType.DATATYPE_RULE_CALL;
+			element = grammarAccess.getXVariableDeclarationAccess().getNameValidIDParserRuleCall_2_1_0();
 			return obj;
 		}
 		return null;
@@ -9548,11 +9549,11 @@ protected class XVariableDeclaration_RightAssignment_3_1 extends AssignmentToken
 /************ begin Rule JvmFormalParameter ****************
  *
  * JvmFormalParameter returns types::JvmFormalParameter:
- * 	parameterType=JvmTypeReference? name=ID;
+ * 	parameterType=JvmTypeReference? name=ValidID;
  *
  **/
 
-// parameterType=JvmTypeReference? name=ID
+// parameterType=JvmTypeReference? name=ValidID
 protected class JvmFormalParameter_Group extends GroupToken {
 	
 	public JvmFormalParameter_Group(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -9626,7 +9627,7 @@ protected class JvmFormalParameter_ParameterTypeAssignment_0 extends AssignmentT
 	}	
 }
 
-// name=ID
+// name=ValidID
 protected class JvmFormalParameter_NameAssignment_1 extends AssignmentToken  {
 	
 	public JvmFormalParameter_NameAssignment_1(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -9650,9 +9651,9 @@ protected class JvmFormalParameter_NameAssignment_1 extends AssignmentToken  {
 	public IEObjectConsumer tryConsume() {
 		if((value = eObjectConsumer.getConsumable("name",true)) == null) return null;
 		IEObjectConsumer obj = eObjectConsumer.cloneAndConsume("name");
-		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getJvmFormalParameterAccess().getNameIDTerminalRuleCall_1_0(), value, null)) {
-			type = AssignmentType.TERMINAL_RULE_CALL;
-			element = grammarAccess.getJvmFormalParameterAccess().getNameIDTerminalRuleCall_1_0();
+		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0(), value, null)) {
+			type = AssignmentType.DATATYPE_RULE_CALL;
+			element = grammarAccess.getJvmFormalParameterAccess().getNameValidIDParserRuleCall_1_0();
 			return obj;
 		}
 		return null;
@@ -13787,11 +13788,11 @@ protected class JvmLowerBound_TypeReferenceAssignment_1 extends AssignmentToken 
 /************ begin Rule JvmTypeParameter ****************
  *
  * JvmTypeParameter:
- * 	name=ID (constraints+=JvmUpperBound constraints+=JvmUpperBoundAnded* | constraints+=JvmLowerBound)?;
+ * 	name=ValidID (constraints+=JvmUpperBound constraints+=JvmUpperBoundAnded* | constraints+=JvmLowerBound)?;
  *
  **/
 
-// name=ID (constraints+=JvmUpperBound constraints+=JvmUpperBoundAnded* | constraints+=JvmLowerBound)?
+// name=ValidID (constraints+=JvmUpperBound constraints+=JvmUpperBoundAnded* | constraints+=JvmLowerBound)?
 protected class JvmTypeParameter_Group extends GroupToken {
 	
 	public JvmTypeParameter_Group(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -13821,7 +13822,7 @@ protected class JvmTypeParameter_Group extends GroupToken {
 
 }
 
-// name=ID
+// name=ValidID
 protected class JvmTypeParameter_NameAssignment_0 extends AssignmentToken  {
 	
 	public JvmTypeParameter_NameAssignment_0(AbstractToken lastRuleCallOrigin, AbstractToken next, int transitionIndex, IEObjectConsumer eObjectConsumer) {
@@ -13844,9 +13845,9 @@ protected class JvmTypeParameter_NameAssignment_0 extends AssignmentToken  {
 	public IEObjectConsumer tryConsume() {
 		if((value = eObjectConsumer.getConsumable("name",true)) == null) return null;
 		IEObjectConsumer obj = eObjectConsumer.cloneAndConsume("name");
-		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getJvmTypeParameterAccess().getNameIDTerminalRuleCall_0_0(), value, null)) {
-			type = AssignmentType.TERMINAL_RULE_CALL;
-			element = grammarAccess.getJvmTypeParameterAccess().getNameIDTerminalRuleCall_0_0();
+		if(valueSerializer.isValid(obj.getEObject(), grammarAccess.getJvmTypeParameterAccess().getNameValidIDParserRuleCall_0_0(), value, null)) {
+			type = AssignmentType.DATATYPE_RULE_CALL;
+			element = grammarAccess.getJvmTypeParameterAccess().getNameValidIDParserRuleCall_0_0();
 			return obj;
 		}
 		return null;
@@ -14043,5 +14044,6 @@ protected class JvmTypeParameter_ConstraintsAssignment_1_1 extends AssignmentTok
 
 
 /************ end Rule JvmTypeParameter ****************/
+
 
 }

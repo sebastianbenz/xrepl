@@ -33,8 +33,8 @@ import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.scoping.IScope;
 import org.eclipse.xtext.scoping.Scopes;
 import org.eclipse.xtext.scoping.impl.SimpleScope;
-import org.xrepl.xscript.XScript;
 import org.xrepl.xscript.util.EcoreUtil3;
+import org.xrepl.xscript.xscript.XScript;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
