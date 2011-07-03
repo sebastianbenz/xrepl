@@ -18,7 +18,8 @@ Require-Bundle: org.xrepl.xscript;visibility:=reexport,
  org.eclipse.xtext.xbase.lib;bundle-version="2.0.0",
  org.eclipse.compare,
  org.eclipse.xtext.ui.codetemplates.ui,
- org.eclipse.xtext.purexbase.ui;bundle-version="2.0.0"
+ org.eclipse.xtext.purexbase.ui;bundle-version="2.0.0",
+ org.xrepl.ui;bundle-version="0.7.0"
 Import-Package: org.apache.log4j,
  org.apache.commons.logging
 Bundle-RequiredExecutionEnvironment: J2SE-1.5

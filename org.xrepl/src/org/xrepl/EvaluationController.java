@@ -33,8 +33,6 @@ public class EvaluationController {
 
 	}
 
-	private static final CharSequence LINE_BREAK = "\n";
-
 	private OutputView outputView;
 
 	private final Evaluator repl;

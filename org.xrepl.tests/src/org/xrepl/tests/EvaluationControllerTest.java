@@ -60,7 +60,7 @@ public class EvaluationControllerTest extends AbstractXScriptTest {
 		checking(new Expectations() {
 			{
 				oneOf(inputField).freeze();
-				oneOf(output).showInput("null.toString");
+				oneOf(output).showInput("throw new IllegalArgumentException()");
 				inSequence(outputs);
 				oneOf(output)
 						.showError(

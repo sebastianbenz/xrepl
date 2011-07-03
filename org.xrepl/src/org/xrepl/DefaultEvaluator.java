@@ -13,6 +13,7 @@ package org.xrepl;
 import static org.eclipse.emf.ecore.util.EcoreUtil.resolveAll;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.eclipse.emf.common.util.URI;
@@ -20,6 +21,7 @@ import org.eclipse.emf.common.util.WrappedException;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.Constants;
+import org.eclipse.xtext.resource.XtextResourceSet;
 import org.eclipse.xtext.util.CancelIndicator;
 import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.xbase.XExpression;
@@ -57,14 +59,14 @@ public class DefaultEvaluator implements Evaluator {
 	private String lastEvaluatedString = "";
 
 	@Inject
-	public DefaultEvaluator(IExpressionInterpreter interpreter, ResourceSet resourceSet, @Named(Constants.FILE_EXTENSIONS) String fileExtension) {
+	public DefaultEvaluator(IExpressionInterpreter interpreter, XreplResourceSetProvider resourceSetProvider, @Named(Constants.FILE_EXTENSIONS) String fileExtension) {
 		super();
 		this.interpreter = interpreter;
-		this.resourceSet = resourceSet;
+		this.resourceSet = resourceSetProvider.get();
 		this.fileExtension = fileExtension;
 	}
 
-	private void appendToHistory(String toEvaluate) {
+	protected void appendToHistory(String toEvaluate) {
 		history().append(toEvaluate + LINE_BREAK).toString();
 		lastEvaluatedString = toEvaluate;
 	}
@@ -102,7 +104,7 @@ public class DefaultEvaluator implements Evaluator {
 		}
 	}
 
-	private Object execute(String toEvaluate, CancelIndicator cancelIndicator) throws Throwable {
+	protected Object execute(String toEvaluate, CancelIndicator cancelIndicator) throws Throwable {
 		parseScript(toEvaluate);
 		try {
 			IEvaluationResult evaluation = interpreter.evaluate(
@@ -122,14 +124,14 @@ public class DefaultEvaluator implements Evaluator {
 		}
 	}
 
-	private IEvaluationContext getContext() {
+	protected IEvaluationContext getContext() {
 		if (context == null) {
 			context = new DefaultEvaluationContext();
 		}
 		return context;
 	}
 
-	private void handleEvaluationException(Throwable exception)
+	protected void handleEvaluationException(Throwable exception)
 			throws Throwable {
 		if (exception instanceof EvaluationException) {
 			exception = exception.getCause();
@@ -140,7 +142,7 @@ public class DefaultEvaluator implements Evaluator {
 		throw exception;
 	}
 
-	private void clearReplResources() {
+	protected void clearReplResources() {
 		Iterator<Resource> allResources = resourceSet.getResources().iterator();
 		while (allResources.hasNext()) {
 			Resource resource = (Resource) allResources.next();
@@ -150,12 +152,11 @@ public class DefaultEvaluator implements Evaluator {
 		}
 	}
 
-	private void parseScript(String toEvaluate) throws IOException {
+	protected void parseScript(String toEvaluate) throws IOException {
 		if (isAlreadyParsed(toEvaluate)) {
 			return;
 		}
 		load(toEvaluate);
-		resolveAll(currentResource);
 		appendToHistory(toEvaluate);
 	}
 
@@ -167,12 +168,12 @@ public class DefaultEvaluator implements Evaluator {
 				.get(0);
 	}
 
-	private boolean isAlreadyParsed(String toEvaluate) {
+	protected boolean isAlreadyParsed(String toEvaluate) {
 		return lastEvaluatedString.equals(toEvaluate);
 	}
 
-	private void load(String input) throws IOException {
-		URI uri = uniqueResourceUri();
+	protected void load(String input) throws IOException {
+		URI uri = newResourceUri();
 		currentResource = resourceSet.getResource(
 				uri, false);
 		if (currentResource == null) {
@@ -181,11 +182,15 @@ public class DefaultEvaluator implements Evaluator {
 			currentResource.unload();
 		}
 		currentResource.load(new StringInputStream(input), null);
+		resolveAll(currentResource);
 	}
 
-	private URI uniqueResourceUri() {
-		return URI.createURI(PREFIX
-				+ steps + "." + fileExtension);
+	protected URI newResourceUri() {
+		return URI.createURI(newResourceName());
+	}
+
+	protected String newResourceName() {
+		return PREFIX + steps + "." + fileExtension;
 	}
 
 
@@ -198,5 +203,15 @@ public class DefaultEvaluator implements Evaluator {
 		clearReplResources();
 	}
 
+	protected String getFileExtension() {
+		return fileExtension;
+	}
 
+	protected ResourceSet getResourceSet() {
+		return resourceSet;
+	}
+	
+	public IExpressionInterpreter getInterpreter() {
+		return interpreter;
+	}
 }

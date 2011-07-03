@@ -85,6 +85,7 @@ import org.eclipse.xtext.util.StringInputStream;
 import org.eclipse.xtext.validation.CheckMode;
 import org.eclipse.xtext.validation.IResourceValidator;
 import org.eclipse.xtext.validation.Issue;
+import org.xrepl.XreplResourceSetProvider;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
@@ -118,8 +119,6 @@ public class EmbeddedXtextEditor {
 	@Inject
 	private Provider<XtextResource> xtextResourceProvider;
 
-	@Inject
-	private ResourceSet resourceSet;
 
 	@Inject
 	private IGrammarAccess fGrammarAccess;
@@ -640,6 +639,7 @@ public class EmbeddedXtextEditor {
 	private Map<String, IAction> fActions = Maps.newHashMap();
 	private List<IAction> fSelectionDependentActions = Lists.newArrayList();
 	private List<ActionHandler> fActionHandlers = Lists.newArrayList();
+	private ResourceSet resourceSet;
 
 	/**
 	 * Source viewer focus listener that activates/deactivates action handlers
@@ -722,12 +722,14 @@ public class EmbeddedXtextEditor {
 		}
 	}
 
+	@Inject
+	public void setResourceSetProvider(XreplResourceSetProvider resourceSetProvider){
+		this.resourceSet = resourceSetProvider.get();
+	}
+	
 	protected XtextResource createResource() {
-		XtextResource result = (XtextResource) xtextResourceProvider.get();
-		result.setURI(URI.createURI(fGrammarAccess.getGrammar().getName() + "."
+		return (XtextResource) resourceSet.createResource(URI.createURI(fGrammarAccess.getGrammar().getName() + "."
 				+ fFileExtension));
-		resourceSet.getResources().add(result);
-		return result;
 	}
 
 	public void setFocus() {

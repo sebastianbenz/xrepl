@@ -20,6 +20,7 @@ import java.util.List;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtext.common.types.JvmDeclaredType;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.scoping.IScope;
@@ -80,11 +81,12 @@ public class XscriptScopeProvider extends XbaseScopeProvider {
 	}
 
 	private Iterable<IEObjectDescription> allVariables(XScript xScript) {
-		if(xScript.eResource() == null || xScript.eResource().getResourceSet() == null){
+		ResourceSet resourceSet = xScript.eResource().getResourceSet();
+		if(xScript.eResource() == null || resourceSet == null){
 			return Collections.emptyList();
 		}
 		List<XVariableDeclaration> variables = Lists.newArrayList();
-		for (Resource resource : xScript.eResource().getResourceSet().getResources()) {
+		for (Resource resource : resourceSet.getResources()) {
 			for (XScript script : filter(resource.getContents(), XScript.class)) {
 				addAll(variables, filter(script.getExpressions(), XVariableDeclaration.class));
 			}

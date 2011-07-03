@@ -15,14 +15,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.xrepl.EvaluationController.Factory;
+
 import com.google.inject.Inject;
 
 public class CommandLineRepl {
-
+	
 	private EvaluationController evaluator;
+	
+	@Inject
+	public CommandLineRepl(InputField inputField, OutputView outputView,
+			Factory evaluatorFactory) {
+		super();
+		evaluator = evaluatorFactory.create(inputField, outputView);
+	}
+
 
 	public void run() throws IOException {
-		evaluator = evaluatorFactory.create(inputField, outputView);
 		BufferedReader input = createReader(System.in);
 
 		while (true) {
@@ -46,14 +55,5 @@ public class CommandLineRepl {
 	private BufferedReader createReader(InputStream inputStream) {
 		return new BufferedReader(new InputStreamReader(inputStream));
 	}
-
-	@Inject
-	private InputField inputField;
-
-	@Inject
-	private OutputView outputView;
-
-	@Inject
-	private EvaluationController.Factory evaluatorFactory;
 
 }
