@@ -1,6 +1,6 @@
 h1. Xrepl - an interactive console for Xtext
 
-For more information see: "xrepl.org":http://sebastianbenz.github.io/xrepl/
+For more information see: "http://sebastianbenz.github.io/xrepl/":http://sebastianbenz.github.io/xrepl/
 
 h2. Installation
 
